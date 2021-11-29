@@ -4,10 +4,10 @@
             <img src="../assets/logo.svg" alt="Logo">
         </div>
         <div class="element">
-            Home
+            <router-link class="routerlink" to="/">Login</router-link>
         </div>
         <div class="element">
-            About
+            <router-link class="routerlink" to="/about">About</router-link>
         </div>
     </div>
 </template>
@@ -43,5 +43,10 @@ export default {
     padding: 5%;
     width:auto;
     border-bottom: 2px solid #2c3e50;
+    color: #1a2815;
+}
+.routerlink {
+    color: #1a2815;
+    text-decoration: none;
 }
 </style>

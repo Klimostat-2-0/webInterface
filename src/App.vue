@@ -1,6 +1,6 @@
 <template>
   <Sidebar />
-  <router-view>
+  <router-view id="keyview">
   </router-view>
   <Footer />
 </template>

@@ -1,7 +1,7 @@
 <template>
     <footer>
         <p>Copyright &copy; 2021</p>
-        <a href="/about">About us</a>
+        <router-link to="/about">About us</router-link>
     </footer>
 </template>
 
@@ -16,13 +16,13 @@ footer {
     margin-top: 20px;
     text-align: center;
     background: #1a2815;
-    color: white;
+    
     position:absolute;
     bottom:0;
     width:100%;
     height:100px;   
 }
-a {
+*{
     color: white;
 }
 </style>

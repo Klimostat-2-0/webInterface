@@ -1,16 +1,19 @@
 <template>
-<router-view>
-</router-view>
+  <Sidebar />
+  <router-view>
+  </router-view>
   <Footer />
 </template>
 
 <script>
   import Footer from './components/Footer.vue'
+  import Sidebar from './components/Sidebar.vue'
 
 export default {
   name: 'App',
   components: {
-    Footer
+    Footer,
+    Sidebar
   }
 }
 </script>

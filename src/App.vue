@@ -1,4 +1,5 @@
 <template>
+  <Sidebar />
   <Login />
 </template>
 
@@ -8,7 +9,7 @@
 export default {
   name: 'App',
   components: {
-    Login
+    Login,
   }
 }
 </script>

@@ -1,13 +1,13 @@
 <template>
   <h1>Login</h1>
-  <form>
+  <form v-on:submit="onClick">
     <div>
       <label>Email: </label>
-      <input type="text" name="username" placeholder="Username" />
+      <input v-model="username" type="text" name="username" placeholder="Username" />
     </div>
     <div>
       <label>Passwort: </label>
-      <input type="password" name="password" placeholder="Password" />
+      <input v-model="password" type="password" name="password" placeholder="Password" />
     </div>
     <input class="loginbutton" type="submit" value="Login" />
   </form>
@@ -16,6 +16,26 @@
 <script>
 export default {
   name: "Login",
+  methods: {
+    onClick(e) {
+      e.preventDefault()
+      fetch(process.env.VUE_APP_BASEURL + 'auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({"email": this.username, "password": this.password})
+      })
+      .then(response => response.json())
+      .then(data => console.log(data))
+    }
+  },
+  data() {
+    return {
+      username: '',
+      password: ''
+    }
+  }
 };
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <Sidebar />
-  <router-view id="keyview">
+  <router-view>
   </router-view>
   <Footer />
 </template>
@@ -14,6 +14,11 @@ export default {
   components: {
     Footer,
     Sidebar
+  },
+  data() {
+    return {
+      userKey: String
+    }
   }
 }
 </script>

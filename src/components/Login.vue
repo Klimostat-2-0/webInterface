@@ -2,14 +2,14 @@
   <h1>Login</h1>
   <form>
     <div>
-      <label>User: </label>
+      <label>Email: </label>
       <input type="text" name="username" placeholder="Username" />
     </div>
     <div>
-      <label>Password: </label>
+      <label>Passwort: </label>
       <input type="password" name="password" placeholder="Password" />
     </div>
-    <input type="submit" value="Login" />
+    <input class="loginbutton" type="submit" value="Login" />
   </form>
 </template>
 
@@ -19,13 +19,27 @@ export default {
 };
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+h1{
+    margin-bottom: 50px;
+}
+div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.loginbutton {
+  background-color: #1a2815;
+  border: none;
+  color: #dbff78;
+  padding: 5px 20px;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 30px;
+}
+label {
+    display: inline-block;
+    width: 140px;
+    text-align: right;
+    margin-right: 20px;
 }
 </style>

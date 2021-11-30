@@ -20,7 +20,7 @@ export default {
     onClick(e) {
       let user = this.username
       let password = this.password
-      this.$store.dispatch('login', {"email": this.username, "password": this.password})
+      this.$store.dispatch('login', JSON.stringify({"email": this.username, "password": this.password}))
     }
   },
   data() {

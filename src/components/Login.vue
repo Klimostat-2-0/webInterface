@@ -20,19 +20,7 @@ export default {
     onClick(e) {
       let user = this.username
       let password = this.password
-      this.$store.dispatch('login', {user, password})
-       .then(() => console.log('Called Action'))
-       .catch(err => console.log(err))
-
-      fetch(process.env.VUE_APP_BASEURL + 'auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({"email": this.username, "password": this.password})
-      })
-      .then(response => response.json())
-      .then(data => this.$store.token = data)
+      this.$store.dispatch('login', {"email": this.username, "password": this.password})
     }
   },
   data() {

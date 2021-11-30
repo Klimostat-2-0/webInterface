@@ -9,7 +9,22 @@
   export default {
   name: 'Room',
   components: {
-  }
+  },
+  methods: {
+      
+  },
+  async created(){
+      console.log(this.$store.state.tokens)
+      console.log(btoa(this.$store.state.tokens))
+          let res = await fetch(process.env.VUE_APP_BASEURL + 'measurement', {
+            method: 'GET',
+            headers: {
+              'Authorization': 'Bearer '+ this.$store.state.tokens, 
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          })
+          console.log(await res.json())
+      }
 }
 </script>
 

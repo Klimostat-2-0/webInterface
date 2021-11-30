@@ -3,7 +3,7 @@ import router from "../router"
 
 export default createStore({
     state: {
-        tokens: null,
+        tokens: localStorage.getItem("tokens") || "",
         user: null
     },
     mutations: {
@@ -22,9 +22,10 @@ export default createStore({
             body: user
           })
           let data = await res.json()
-          localStorage.setItem("tokens", data.tokens)
+          console.log(data.tokens.access.token)
+          localStorage.setItem("tokens", data.tokens.access.token)
           localStorage.setItem("username", data.user)
-          commit("auth_success", data.token, data.user)
+          commit("auth_success", data.tokens.access.token, data.user)
           if (res.status == 200){
             router.push('Room')
           }

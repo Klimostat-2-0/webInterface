@@ -1,23 +1,33 @@
 import {createStore} from "vuex"
+import router from "../router"
 
 export default createStore({
     state: {
-        token: null
+        tokens: null,
+        user: null
     },
     mutations: {
-
+      auth_success(state, token, user) {
+        state.token = token
+        state.user = user
+      }
     },
     actions: {
-        login({commit}, user) {
-          fetch(process.env.VUE_APP_BASEURL + 'auth/login', {
+        async login({commit}, user) {
+          let res = await fetch(process.env.VUE_APP_BASEURL + 'auth/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: user
           })
-          .then(response => response.json())
-          .then(data => console.log(data))
+          let data = await res.json()
+          localStorage.setItem("tokens", data.tokens)
+          localStorage.setItem("username", data.user)
+          commit("auth_success", data.token, data.user)
+          if (res.status == 200){
+            router.push('Room')
+          }
         }
     },
     modules: {

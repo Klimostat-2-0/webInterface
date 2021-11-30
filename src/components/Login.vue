@@ -1,6 +1,6 @@
 <template>
   <h1>Login</h1>
-  <form v-on:submit="onClick">
+  <form @submit.prevent="onClick">
     <div>
       <label>Email: </label>
       <input v-model="username" type="text" name="username" placeholder="Username" />
@@ -18,7 +18,12 @@ export default {
   name: "Login",
   methods: {
     onClick(e) {
-      e.preventDefault()
+      let user = this.username
+      let password = this.password
+      this.$store.dispatch('login', {user, password})
+       .then(() => console.log('Called Action'))
+       .catch(err => console.log(err))
+
       fetch(process.env.VUE_APP_BASEURL + 'auth/login', {
         method: 'POST',
         headers: {
@@ -27,7 +32,7 @@ export default {
         body: JSON.stringify({"email": this.username, "password": this.password})
       })
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then(data => this.$store.token = data)
     }
   },
   data() {

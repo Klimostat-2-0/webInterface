@@ -3,12 +3,8 @@
         <div class="element">
             <img src="../assets/logo.svg" alt="Logo">
         </div>
-        <div class="element">
-            <router-link class="routerlink" to="/">Login</router-link>
-        </div>
-        <div class="element">
-            <router-link class="routerlink" to="/about">About</router-link>
-        </div>
+        <router-link class="element" to="/" tag="div">Login</router-link>
+        <router-link class="element" to="/about" tag="div">About</router-link>
     </div>
 </template>
 
@@ -18,7 +14,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .sidebar {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -44,9 +40,10 @@ export default {
     width:auto;
     border-bottom: 2px solid #2c3e50;
     color: #1a2815;
-}
-.routerlink {
-    color: #1a2815;
     text-decoration: none;
+}
+
+.element:hover {
+    background: rgb(211, 255, 211);
 }
 </style>

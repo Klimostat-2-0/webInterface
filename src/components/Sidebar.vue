@@ -3,8 +3,8 @@
         <div class="element">
             <img src="../assets/logo.svg" alt="Logo">
         </div>
-        <router-link class="element" to="/" tag="div">Login</router-link>
-        <router-link class="element" to="/about" tag="div">About</router-link>
+        <router-link class="element linkHighlight" to="/" tag="div">Login</router-link>
+        <router-link class="element linkHighlight" to="/about" tag="div">About</router-link>
     </div>
 </template>
 
@@ -43,7 +43,7 @@ export default {
     text-decoration: none;
 }
 
-.element:hover {
-    background: rgb(211, 255, 211);
+.linkHighlight:hover {
+    background: #cecece;
 }
 </style>

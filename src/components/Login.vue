@@ -9,6 +9,7 @@
       <label>Passwort: </label>
       <input v-model="password" type="password" name="password" placeholder="Password" />
     </div>
+    <p class="error" v-if="this.$store.state.showLoginError != null">{{this.$store.state.showLoginError}}</p>
     <input class="loginbutton" type="submit" value="Login" />
   </form>
 </template>
@@ -18,8 +19,6 @@ export default {
   name: "Login",
   methods: {
     onClick(e) {
-      let user = this.username
-      let password = this.password
       this.$store.dispatch('login', JSON.stringify({"email": this.username, "password": this.password}))
     }
   },
@@ -54,5 +53,9 @@ label {
     width: 140px;
     text-align: right;
     margin-right: 20px;
+}
+.error {
+  font-size: 14px;
+  color: red;
 }
 </style>

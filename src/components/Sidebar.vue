@@ -5,15 +5,19 @@
         </div>
         <router-link v-if="!this.$store.state.loggedIn" class="element linkHighlight" to="/" tag="div">Login</router-link>
         <router-link class="element linkHighlight" to="/about" tag="div">About</router-link>
-        <router-link v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/about" tag="div">Rooms</router-link>
+        <router-link v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/Room" tag="div">Rooms</router-link>
         <router-link v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/about" tag="div">Add Account</router-link>
-        <router-link v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/about" tag="div">Logout</router-link>
+        <router-link @click="logOut" v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/" tag="div">Logout</router-link>
     </div>
 </template>
 
 <script>
 export default {
-    
+    methods: {
+        logOut(e) {
+            this.$store.dispatch('logout')
+        }
+    }
 }
 </script>
 

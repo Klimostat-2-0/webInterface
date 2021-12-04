@@ -20,6 +20,12 @@ export default createStore({
       },
       wrong_user(state) {
         state.showLoginError = "You have entered a wrong username or password"
+      },
+      logout(state) {
+        state.tokens = "",
+        state.user = null,
+        state.showLoginError = null,
+        state.loggedIn = false
       }
     },
     actions: {
@@ -44,6 +50,11 @@ export default createStore({
           } catch(err) {
             commit("server_offline")
           }
+        },
+        logout({commit}){
+          localStorage.removeItem("tokens")
+          localStorage.removeItem("username")
+          commit("logout")
         }
     },
     modules: {

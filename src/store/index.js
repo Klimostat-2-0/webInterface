@@ -5,13 +5,15 @@ export default createStore({
     state: {
         tokens: localStorage.getItem("tokens") || "",
         user: null,
-        showLoginError: null
+        showLoginError: null,
+        loggedIn: false
     },
     mutations: {
       auth_success(state, token, user) {
         state.token = token
         state.user = user
         state.showLoginError = null
+        state.loggedIn = true
       },
       server_offline(state) {
         state.showLoginError = "The login Server seems to be offline"

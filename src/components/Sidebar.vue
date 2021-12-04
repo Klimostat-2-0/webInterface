@@ -3,8 +3,11 @@
         <div class="element">
             <img src="../assets/logo.svg" alt="Logo">
         </div>
-        <router-link class="element linkHighlight" to="/" tag="div">Login</router-link>
+        <router-link v-if="!this.$store.state.loggedIn" class="element linkHighlight" to="/" tag="div">Login</router-link>
         <router-link class="element linkHighlight" to="/about" tag="div">About</router-link>
+        <router-link v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/about" tag="div">Rooms</router-link>
+        <router-link v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/about" tag="div">Add Account</router-link>
+        <router-link v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/about" tag="div">Logout</router-link>
     </div>
 </template>
 

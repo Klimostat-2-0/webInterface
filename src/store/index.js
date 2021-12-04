@@ -55,6 +55,9 @@ export default createStore({
           localStorage.removeItem("tokens")
           localStorage.removeItem("username")
           commit("logout")
+        },
+        redirectError({commit}){
+          router.push('Error')
         }
     },
     modules: {

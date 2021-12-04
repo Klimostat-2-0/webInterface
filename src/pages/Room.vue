@@ -14,17 +14,20 @@
       
   },
   async created(){
-      console.log(this.$store.state.tokens)
-      console.log(btoa(this.$store.state.tokens))
-          let res = await fetch(process.env.VUE_APP_BASEURL + 'measurement', {
-            method: 'GET',
-            headers: {
-              'Authorization': 'Bearer '+ this.$store.state.tokens, 
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          })
-          console.log(await res.json())
-      }
+    try {
+      let res = await fetch(process.env.VUE_APP_BASEURL + 'measurement', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer '+ this.$store.state.tokens, 
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      let data = await res.json()
+      console.log(data)
+    } catch(err) {
+      this.$store.dispatch('redirectError')
+    }
+}
 }
 </script>
 

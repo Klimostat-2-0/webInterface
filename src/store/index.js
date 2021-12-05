@@ -58,10 +58,10 @@ export default createStore({
           commit("logout")
         },
         redirectError({commit}){
-          router.push('Error')
+          router.push('/Error')
         },
         redirectAlreadyLoggedIn({commit}){
-          router.push('Dashboard')
+          router.push('/Dashboard')
         }
     },
     modules: {

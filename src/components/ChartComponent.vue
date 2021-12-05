@@ -24,23 +24,41 @@ export default {
           }
       } 
   },
+  methods: {
+      updateData(newValue){
+        this.chart.data.labels.push("NotIndexed");
+        this.chart.data.datasets.forEach((dataset) => {
+        dataset.data.push(newValue);
+        });
+        this.chart.update();
+      }
+  },
   data() {
       return {
           values: [],
-          xValues: []
+          xValues: [],
+          chart: Chart
       }
+  },
+  computed: {
+    calcNewValueX: function () {
+      return this.chartData.map(element => element[0]).reverse()
+    },
+    calcNewValue: function () {
+      return this.chartData.map(element => element[1]).reverse()
+    }
   },
   async mounted() {
       const chartElement  = document.getElementById(this.chartTitle);
-      this.xValues = this.chartData.map(element => element[0])
-      this.values = this.chartData.map(element => element[1])
-      const myChart = new Chart(chartElement , {
+      this.xValues = this.calcNewValueX
+      this.values = this.calcNewValue
+      this.chart = new Chart(chartElement , {
       type: 'line',
       data: {
-        labels: this.xValues,
+        labels: this.calcNewValueX,
         datasets: [{
             label: this.chartTitle,
-            data: this.values,
+            data: this.calcNewValue,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)'
             ],

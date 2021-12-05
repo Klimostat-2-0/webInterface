@@ -17,7 +17,8 @@
   },
   methods: {
     async requestDataUpdate(element) {
-      const res2 = await fetch(process.env.VUE_APP_BASEURL + 'measurement?station=' + element.id + '&sortBy=desc&limit=1&page=1', {
+      const res2 = await fetch(process.env.VUE_APP_BASEURL + 'measurement?station=' 
+      + element.id + '&sortBy=timestamp%3Adesc&limit=1&page=1', {
         method: 'GET',
         headers: {
           'Authorization': 'Bearer '+ this.$store.state.tokens, 

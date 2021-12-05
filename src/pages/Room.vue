@@ -2,7 +2,13 @@
   <h1>Room</h1>
   <div>
     <h2>CO2</h2>
-      <chart-component :chartTitle='"CO2 Belastung"' :chartData="co2" v-if="!isFetching"/>
+    <chart-component :chartTitle='"ppm"' :chartData="co2" v-if="!isFetching"/>
+    <hr>
+    <h2>Temperatur</h2>
+    <chart-component :chartTitle='"Grad"' :chartData="temp" v-if="!isFetching"/>
+    <hr>
+    <h2>Luftfeuchtigkeit</h2>
+    <chart-component :chartTitle='"Prozent"' :chartData="humidity" v-if="!isFetching"/>
   </div>
 </template>
 
@@ -22,13 +28,11 @@
       co2: [],
       temp: [],
       humidity: [],
-      time: [],
       isFetching: true
     }
   },
   created(){
     try {
-      console.log("in room: " + this.$store.state.tokens)
       fetch(process.env.VUE_APP_BASEURL + 'measurement', {
         method: 'GET',
         headers: {
@@ -45,7 +49,6 @@
       this.isFetching = false
       })
     } catch(err) {
-      console.log(err)
       this.$store.dispatch('redirectError')
     }
 }

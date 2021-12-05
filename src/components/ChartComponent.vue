@@ -1,6 +1,6 @@
 <template>
     <div id="chartContainer">
-        <canvas id="display"></canvas>
+        <canvas v-bind:id="chartTitle"></canvas>
     </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
       }
   },
   async mounted() {
-      const chartElement  = document.getElementById("display");
+      const chartElement  = document.getElementById(this.chartTitle);
       this.xValues = this.chartData.map(element => element[0])
       this.values = this.chartData.map(element => element[1])
       const myChart = new Chart(chartElement , {

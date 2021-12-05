@@ -43,7 +43,6 @@ export default createStore({
               localStorage.setItem("tokens", data.tokens.access.token)
               localStorage.setItem("username", data.user)
               commit("auth_success", data.tokens.access.token, data.user)
-              console.log("In action" + data.tokens.access.token)
               router.push('Room')
             }else {
               commit("wrong_user")

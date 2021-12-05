@@ -27,6 +27,11 @@ export default {
       username: '',
       password: ''
     }
+  },
+  created() {
+    if(localStorage.getItem("loggedIn")) {
+      this.$store.dispatch('redirectAlreadyLoggedIn')
+    }
   }
 };
 </script>

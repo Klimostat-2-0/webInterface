@@ -3,10 +3,10 @@ import router from "../router"
 
 export default createStore({
     state: {
-        tokens: "",
-        user: null,
+        tokens: localStorage.getItem("tokens") || "",
+        user: localStorage.getItem("username") || null,
         showLoginError: null,
-        loggedIn: false
+        loggedIn: localStorage.getItem("loggedIn") || false
     },
     mutations: {
       auth_success(state, token, user) {
@@ -42,6 +42,7 @@ export default createStore({
               let data = await res.json()
               localStorage.setItem("tokens", data.tokens.access.token)
               localStorage.setItem("username", data.user)
+              localStorage.setItem("loggedIn", true)
               commit("auth_success", data.tokens.access.token, data.user)
               router.push('Room')
             }else {
@@ -54,10 +55,14 @@ export default createStore({
         logout({commit}){
           localStorage.removeItem("tokens")
           localStorage.removeItem("username")
+          localStorage.removeItem("loggedIn")
           commit("logout")
         },
         redirectError({commit}){
           router.push('Error')
+        },
+        redirectAlreadyLoggedIn({commit}){
+          router.push('Room')
         }
     },
     modules: {

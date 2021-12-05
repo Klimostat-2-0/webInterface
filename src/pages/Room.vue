@@ -48,10 +48,9 @@
         this.$store.dispatch('redirectError')
       }
       const chartData = await res.json()
-      let modDate = /\d{4}-(\d{2}-\d{2})T(\d{2}:\d{2}):\d{2}.*/
       for (const element of chartData.results) {
-        let date = modDate.exec(element.timestamp)
-        let foramted = date[1] + " " + date[2]
+        let date = new Date(element.timestamp)
+        let foramted = date.getHours() + ":" + date.getMinutes() + " " + (date.getMonth()+1) + "-" + date.getDate()
         this.co2.push([foramted, element.co2])
         this.temp.push([foramted, element.temperature])
         this.humidity.push([foramted, element.humidity])
@@ -64,7 +63,7 @@
 
     let that = this
     this.intervalls.push(setInterval(function(){
-      that.$refs.co2.updateData(Math.floor(Math.random()*1000));
+      //that.$refs.co2.updateData(Math.floor(Math.random()*1000));
     }, 1000))
 },
   beforeUnmount() {

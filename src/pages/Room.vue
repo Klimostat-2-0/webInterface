@@ -2,7 +2,7 @@
   <h1>Room</h1>
   <div>
     <h2>CO2</h2>
-      <chart-component :name="co2Diagramm" :chartData="co2" />
+      <chart-component :chartTitle='"CO2 Belastung"' :chartData="co2" v-if="!isFetching"/>
   </div>
 </template>
 
@@ -21,26 +21,31 @@
     return {
       co2: [],
       temp: [],
-      humidity: []
+      humidity: [],
+      time: [],
+      isFetching: true
     }
   },
-  async created(){
+  beforeCreate(){
     try {
-      let res = await fetch(process.env.VUE_APP_BASEURL + 'measurement', {
+
+      fetch(process.env.VUE_APP_BASEURL + 'measurement', {
         method: 'GET',
         headers: {
           'Authorization': 'Bearer '+ this.$store.state.tokens, 
           'Content-Type': 'application/x-www-form-urlencoded'
         }
+      }).then(res => res.json()).then(data => {
+        for (const element of data.results) {
+          let date = element.timestamp
+          this.co2.push([date, element.co2])
+          this.temp.push([date, element.temperature])
+          this.humidity.push([date, element.humidity])
+        }
+      this.isFetching = false
       })
-      let data = await res.json()
-      for (const element of data.results) {
-        let date = element.timestamp
-        this.co2.push([date, element.co2])
-        this.temp.push([date, element.temperature])
-        this.humidity.push([date, element.humidity])
-      }
     } catch(err) {
+      console.log(err)
       this.$store.dispatch('redirectError')
     }
 }

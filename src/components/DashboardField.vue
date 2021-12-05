@@ -1,6 +1,6 @@
 <template>
 <div :style="{'background-color': calcColor}" class="dashboardComponent">
-    <router-link class="dashboardComponentLink" v-bind:id="stationID" to="/" tag="div">
+    <router-link class="dashboardComponentLink" v-bind:id="stationID" :to="`/room/${routeId}`" tag="div">
         <h2>{{stationID}}</h2>
         <p>Current CO2 Level: {{ co2 }}</p>
     </router-link>
@@ -13,6 +13,8 @@ export default {
       co2Prop: {
           type: String,
       },stationIdProp: {
+          type: String,
+      },routeIdProp: {
           type: String,
       },
   },
@@ -27,12 +29,14 @@ export default {
   data() {
       return {
           co2: String,
-          stationID: String
+          stationID: String,
+          routeId: String
       }
   },
   async created() {
       this.co2 = this.co2Prop
       this.stationID = this.stationIdProp
+      this.routeId = this.routeIdProp
 }
 };
 </script>

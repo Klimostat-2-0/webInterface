@@ -28,12 +28,14 @@
       co2: [],
       temp: [],
       humidity: [],
+      stationId: String,
       isFetching: true
     }
   },
   async created(){
+    this.stationId = this.$route.params.id
     try {
-      const res = await fetch(process.env.VUE_APP_BASEURL + 'measurement', {
+      const res = await fetch(process.env.VUE_APP_BASEURL + 'measurement?station=' + this.stationId, {
         method: 'GET',
         headers: {
           'Authorization': 'Bearer '+ this.$store.state.tokens, 

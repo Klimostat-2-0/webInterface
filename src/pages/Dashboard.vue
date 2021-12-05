@@ -2,8 +2,8 @@
   <h1>Dashboard</h1>
   <p>This is an Overview of all Stations</p>
   <div id="flexbox" v-if="!isFetching">
-    <dashboard-field v-for="station in stations" :key="station.id" :stationIdProp='"Room" + station[2]' :co2Prop='station[4]'/>
-
+    <dashboard-field v-for="station in stations" :key="station.id" 
+    :routeIdProp="station[3]" :stationIdProp='"Room" + station[2]' :co2Prop='station[4]'/>
   </div>
 </template>
 

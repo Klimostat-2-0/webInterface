@@ -3,15 +3,13 @@ import router from "../router"
 
 export default createStore({
     state: {
-        tokens: localStorage.getItem("tokens") || "",
-        user: localStorage.getItem("username") || null,
+        tokens: localStorage.getItem("tokens") || null,
         showLoginError: null,
         loggedIn: localStorage.getItem("loggedIn") || false
     },
     mutations: {
-      auth_success(state, token, user) {
+      auth_success(state, token) {
         state.tokens = token
-        state.user = user
         state.showLoginError = null
         state.loggedIn = true
       },
@@ -22,8 +20,7 @@ export default createStore({
         state.showLoginError = "You have entered a wrong username or password"
       },
       logout(state) {
-        state.tokens = "",
-        state.user = null,
+        state.tokens = null,
         state.showLoginError = null,
         state.loggedIn = false
       }
@@ -41,9 +38,8 @@ export default createStore({
             if (res.status == 200){
               let data = await res.json()
               localStorage.setItem("tokens", data.tokens.access.token)
-              localStorage.setItem("username", data.user)
               localStorage.setItem("loggedIn", true)
-              commit("auth_success", data.tokens.access.token, data.user)
+              commit("auth_success", data.tokens.access.token)
               router.push('Dashboard')
             }else {
               commit("wrong_user")
@@ -52,9 +48,8 @@ export default createStore({
             commit("server_offline")
           }
         },
-        logout({commit}){
+        async logout({commit}){
           localStorage.removeItem("tokens")
-          localStorage.removeItem("username")
           localStorage.removeItem("loggedIn")
           commit("logout")
         },

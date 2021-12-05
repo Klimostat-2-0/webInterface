@@ -18,6 +18,7 @@ export default {
   },
   computed: {
     calcColor: function () {
+      if (this.co2 == "noValues") return "#bbbbbb"
       if (this.co2 > 1500) return "#ff9187"
       if (this.co2 > 800) return "#fcffb3"
       return "#bbffb3"

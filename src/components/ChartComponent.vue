@@ -61,8 +61,8 @@ export default {
 
 <style scoped>
 #chartContainer {
-    width: 60%;
+    width: 70%;
     display: inline-block;
-    margin-left: 50px;
+    text-align: center;
 }
 </style>

@@ -14,7 +14,7 @@
 
 <style scoped>
 p {
-    width: 70%;
+    width: 80%;
     display: inline-block;
 }
 </style>

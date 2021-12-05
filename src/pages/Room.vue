@@ -56,8 +56,5 @@
 </script>
 
 <style scoped>
-p {
-    width: 70%;
-    display: inline-block;
-}
+
 </style>

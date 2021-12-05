@@ -1,7 +1,9 @@
 <template>
   <Sidebar />
-  <router-view>
-  </router-view>
+  <div id="mainview">
+    <router-view>
+    </router-view>
+  </div>
   <Footer />
 </template>
 
@@ -32,4 +34,9 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+#mainview {
+  margin-left: 150px;
+  margin-bottom: 100px;
+}
+
 </style>

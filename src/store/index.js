@@ -3,7 +3,7 @@ import router from "../router"
 
 export default createStore({
     state: {
-        tokens: localStorage.getItem("tokens") || "",
+        tokens: "",
         user: null,
         showLoginError: null,
         loggedIn: false

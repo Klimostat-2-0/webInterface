@@ -31,23 +31,26 @@
       isFetching: true
     }
   },
-  created(){
+  async created(){
     try {
-      fetch(process.env.VUE_APP_BASEURL + 'measurement', {
+      const res = await fetch(process.env.VUE_APP_BASEURL + 'measurement', {
         method: 'GET',
         headers: {
           'Authorization': 'Bearer '+ this.$store.state.tokens, 
           'Content-Type': 'application/x-www-form-urlencoded'
         }
-      }).then(res => res.json()).then(data => {
-        for (const element of data.results) {
-          let date = element.timestamp
-          this.co2.push([date, element.co2])
-          this.temp.push([date, element.temperature])
-          this.humidity.push([date, element.humidity])
-        }
-      this.isFetching = false
       })
+      if(res.status != 200) {
+        this.$store.dispatch('redirectError')
+      }
+      const chartData = await res.json()
+      for (const element of chartData.results) {
+        let date = element.timestamp
+        this.co2.push([date, element.co2])
+        this.temp.push([date, element.temperature])
+        this.humidity.push([date, element.humidity])
+      }
+      this.isFetching = false
     } catch(err) {
       this.$store.dispatch('redirectError')
     }

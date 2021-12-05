@@ -2,7 +2,7 @@
 <div :style="{'background-color': calcColor}" class="dashboardComponent">
     <router-link class="dashboardComponentLink" v-bind:id="stationID" :to="`/room/${routeId}`" tag="div">
         <h2>{{stationID}}</h2>
-        <p>Current CO2 Level: {{ co2 }}</p>
+        <p>Current CO2 Level: {{ this.$store.state.dashboardValues[co2] }}</p>
     </router-link>
 </div>
 </template>
@@ -20,9 +20,9 @@ export default {
   },
   computed: {
     calcColor: function () {
-      if (this.co2 == "noValues") return "#bbbbbb"
-      if (this.co2 > 1500) return "#ff9187"
-      if (this.co2 > 800) return "#fcffb3"
+      if (this.$store.state.dashboardValues[this.co2] == "noValues") return "#bbbbbb"
+      if (this.$store.state.dashboardValues[this.co2] > 1500) return "#ff9187"
+      if (this.$store.state.dashboardValues[this.co2] > 800) return "#fcffb3"
       return "#bbffb3"
     }
   },

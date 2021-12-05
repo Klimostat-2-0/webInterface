@@ -5,7 +5,8 @@ export default createStore({
     state: {
         tokens: localStorage.getItem("tokens") || null,
         showLoginError: null,
-        loggedIn: localStorage.getItem("loggedIn") || false
+        loggedIn: localStorage.getItem("loggedIn") || false,
+        dashboardValues: []
     },
     mutations: {
       auth_success(state, token) {
@@ -23,6 +24,9 @@ export default createStore({
         state.tokens = null,
         state.showLoginError = null,
         state.loggedIn = false
+      },
+      updateDashboard(state, data) {
+        state.dashboardValues[data[0]] = data[1]
       }
     },
     actions: {
@@ -62,5 +66,10 @@ export default createStore({
     },
     modules: {
 
+    },
+    getters: {
+      getDashboardValues: state => {
+        return state.dashboardValues
+      }
     }
 }) 

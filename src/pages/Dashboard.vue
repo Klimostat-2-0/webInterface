@@ -21,7 +21,8 @@
   data() {
     return {
       stations: [],
-      isFetching: true
+      isFetching: true,
+      intervalls: []
     }
   },
   async created(){
@@ -37,6 +38,7 @@
         this.$store.dispatch('redirectError')
       }
       const stationData = await res.json()
+      let index = 0
       for (const element of stationData.results) {
         const res2 = await fetch(process.env.VUE_APP_BASEURL + 'measurement?station=' + element.id + '&sortBy=desc&limit=1&page=1', {
         method: 'GET',
@@ -53,11 +55,23 @@
       if(co2Data.results.length > 0) {
         currentCO2 = co2Data.results[0].co2.toString()
       }
-        this.stations.push([element.name, element.location, element.roomNr, element.id, currentCO2])
+      this.$store.commit("updateDashboard", [index, currentCO2])
+      this.stations.push([element.name, element.location, element.roomNr, element.id, index.toString()])
+      let that = this
+      const constIndex = index
+      this.intervalls.push(setInterval(function(idx = constIndex){
+        that.$store.commit("updateDashboard", [idx, Math.floor(Math.random()*2000)])
+      }, 5000))
+      index++
       }
       this.isFetching = false
     } catch(err) {
       this.$store.dispatch('redirectError')
+    }
+  },
+  beforeUnmount() {
+    for(const element of this.intervalls){
+      clearInterval(element)
     }
   }
 }

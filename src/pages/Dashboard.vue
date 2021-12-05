@@ -16,7 +16,24 @@
     DashboardField
   },
   methods: {
-      
+    async requestDataUpdate(element) {
+      const res2 = await fetch(process.env.VUE_APP_BASEURL + 'measurement?station=' + element.id + '&sortBy=desc&limit=1&page=1', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer '+ this.$store.state.tokens, 
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+        })
+      if(res2.status != 200) {
+        this.$store.dispatch('redirectError')
+      }
+      const co2Data = await res2.json()
+      let currentCO2 = "noValues"
+      if(co2Data.results.length > 0) {
+        currentCO2 = co2Data.results[0].co2.toString()
+      }
+      return currentCO2
+    }
   },
   data() {
     return {
@@ -40,27 +57,13 @@
       const stationData = await res.json()
       let index = 0
       for (const element of stationData.results) {
-        const res2 = await fetch(process.env.VUE_APP_BASEURL + 'measurement?station=' + element.id + '&sortBy=desc&limit=1&page=1', {
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer '+ this.$store.state.tokens, 
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-        })
-      if(res2.status != 200) {
-        this.$store.dispatch('redirectError')
-      }
-      const co2Data = await res2.json()
-      let currentCO2 = "noValues"
-      if(co2Data.results.length > 0) {
-        currentCO2 = co2Data.results[0].co2.toString()
-      }
-      this.$store.commit("updateDashboard", [index, currentCO2])
+      this.$store.commit("updateDashboard", [index, await this.requestDataUpdate(element)])
       this.stations.push([element.name, element.location, element.roomNr, element.id, index.toString()])
       let that = this
       const constIndex = index
-      this.intervalls.push(setInterval(function(idx = constIndex){
-        that.$store.commit("updateDashboard", [idx, Math.floor(Math.random()*2000)])
+      this.intervalls.push(setInterval(async function(idx = constIndex){
+        const resultCO2 = await that.requestDataUpdate(element)
+        that.$store.commit("updateDashboard", [idx, resultCO2])
       }, 5000))
       index++
       }

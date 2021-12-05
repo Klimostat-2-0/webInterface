@@ -10,7 +10,7 @@ export default createStore({
     },
     mutations: {
       auth_success(state, token, user) {
-        state.token = token
+        state.tokens = token
         state.user = user
         state.showLoginError = null
         state.loggedIn = true
@@ -43,6 +43,7 @@ export default createStore({
               localStorage.setItem("tokens", data.tokens.access.token)
               localStorage.setItem("username", data.user)
               commit("auth_success", data.tokens.access.token, data.user)
+              console.log("In action" + data.tokens.access.token)
               router.push('Room')
             }else {
               commit("wrong_user")

@@ -26,9 +26,9 @@
       isFetching: true
     }
   },
-  beforeCreate(){
+  created(){
     try {
-
+      console.log("in room: " + this.$store.state.tokens)
       fetch(process.env.VUE_APP_BASEURL + 'measurement', {
         method: 'GET',
         headers: {

@@ -4,6 +4,7 @@ import About from '../pages/About'
 import Startpage from '../pages/Startpage'
 import Room from '../pages/Room'
 import ErrorPage from '../pages/ErrorPage'
+import Dashboard from '../pages/Dashboard'
 
 const routes = [
     {
@@ -25,6 +26,11 @@ const routes = [
         path: '/error',
         name: 'Error',
         component: ErrorPage
+    },
+    {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: Dashboard
     }
 ]
 

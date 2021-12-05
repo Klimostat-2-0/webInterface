@@ -44,7 +44,7 @@ export default createStore({
               localStorage.setItem("username", data.user)
               localStorage.setItem("loggedIn", true)
               commit("auth_success", data.tokens.access.token, data.user)
-              router.push('Room')
+              router.push('Dashboard')
             }else {
               commit("wrong_user")
             }
@@ -62,7 +62,7 @@ export default createStore({
           router.push('Error')
         },
         redirectAlreadyLoggedIn({commit}){
-          router.push('Room')
+          router.push('Dashboard')
         }
     },
     modules: {

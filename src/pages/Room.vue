@@ -21,7 +21,9 @@
     ChartComponent
   },
   methods: {
-      
+      updateData(){
+        that.$refs.co2.updateData(Math.floor(Math.random()*1000));
+      }
   },
   data() {
     return {
@@ -30,7 +32,8 @@
       humidity: [],
       stationId: String,
       isFetching: true,
-      intervalls: []
+      intervalls: [],
+      lastTimeStamp: String
     }
   },
   async created(){
@@ -60,11 +63,7 @@
       console.log(err)
       this.$store.dispatch('redirectError')
     }
-
-    let that = this
-    this.intervalls.push(setInterval(function(){
-      //that.$refs.co2.updateData(Math.floor(Math.random()*1000));
-    }, 1000))
+    this.intervalls.push(setInterval(this.updateData(), 1000))
 },
   beforeUnmount() {
     for(const element of this.intervalls){

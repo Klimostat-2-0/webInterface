@@ -25,11 +25,13 @@ export default {
       } 
   },
   methods: {
-      updateData(newValue){
-        this.chart.data.labels.push("NotIndexed");
-        this.chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(newValue);
+      updateData(newData){
+        for (const element of newData) {
+            this.chart.data.labels.push(element[0]);
+            this.chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(element[1]);
         });
+        }
         this.chart.update();
       }
   },

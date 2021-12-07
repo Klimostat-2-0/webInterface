@@ -22,14 +22,12 @@
   },
   methods: {
       async updateData(){
-        console.log("updateWith code: " + this.lastTimeStamp)
         try {
           const that = this
           let getString = 'measurement?station=' 
           + this.stationId + "&sortBy=timestamp%3Adesc&limit=100&page=1&" + new URLSearchParams({
             fromTimestamp: that.lastTimeStamp,
           })
-          console.log(that.lastTimeStamp)
           const res = await fetch(process.env.VUE_APP_BASEURL + getString, {
             method: 'GET',
             headers: {
@@ -53,14 +51,14 @@
             this.lastTimeStamp = element.timestamp.toString()
           }
           if(updateCo2.length > 0) {
-            that.$refs.co2.updateData(updateCo2);
-            that.$refs.temp.updateData(updateTemp);
+            that.$refs.co2.updateData(updateCo2.reverse());
+            that.$refs.temp.updateData(updateTemp.reverse());
             that.$refs.hum.updateData(humidity);
           }
         } catch(err) {
           console.log(err)
           this.$store.dispatch('redirectError')
-        }
+        }s
       }
   },
   data() {
@@ -96,7 +94,6 @@
         this.temp.push([foramted, element.temperature])
         this.humidity.push([foramted, element.humidity])
         if (this.lastTimeStamp == "") {
-          console.log("!!!!!")
           this.lastTimeStamp = element.timestamp.toString()
         }
       }

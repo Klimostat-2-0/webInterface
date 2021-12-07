@@ -5,7 +5,7 @@
         </div>
         <router-link v-if="!this.$store.state.loggedIn" class="element linkHighlight" to="/" tag="div">Login</router-link>
         <router-link v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/Dashboard" tag="div">Dashboard</router-link>
-        <router-link v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/about" tag="div">Add Account</router-link>
+        <router-link v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/adduser" tag="div">Add Account</router-link>
         <router-link class="element linkHighlight" to="/about" tag="div">About</router-link>
         <router-link @click="logOut" v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/" tag="div">Logout</router-link>
     </div>

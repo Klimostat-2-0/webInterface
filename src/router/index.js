@@ -5,6 +5,7 @@ import Startpage from '../pages/Startpage'
 import Room from '../pages/Room'
 import ErrorPage from '../pages/ErrorPage'
 import Dashboard from '../pages/Dashboard'
+import AddAccount from '../pages/AddAccount'
 
 const routes = [
     {
@@ -31,6 +32,11 @@ const routes = [
         path: '/dashboard',
         name: 'Dashboard',
         component: Dashboard
+    },
+    {
+        path: '/adduser',
+        name: 'AddUser',
+        component: AddAccount
     }
 ]
 

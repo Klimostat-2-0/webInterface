@@ -3,7 +3,8 @@
   <p>This is an Overview of all Stations</p>
   <div id="flexbox" v-if="!isFetching">
     <dashboard-field v-for="station in stations" :key="station.id" 
-    :routeIdProp="station[3]" :stationIdProp='"Room" + station[2]' :co2Prop='station[4]'/>
+    :routeIdProp="station[3]" :stationIdProp='"Room" + station[2]' :co2Prop='station[4]' :nameProp='station[0]' 
+    :locationProp='station[1]'/>
   </div>
 </template>
 
@@ -59,7 +60,8 @@
       let index = 0
       for (const element of stationData.results) {
       this.$store.commit("updateDashboard", [index, await this.requestDataUpdate(element)])
-      this.stations.push([element.name, element.location, element.roomNr, element.id, index.toString()])
+      this.stations.push([element.name, element.location, element.roomNr, element.id, 
+      index.toString()])
       let that = this
       const constIndex = index
       this.intervalls.push(setInterval(async function(idx = constIndex){

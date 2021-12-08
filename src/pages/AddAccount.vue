@@ -3,12 +3,8 @@
   <p>Add or delete User Accounts here</p>
   <form @submit.prevent="onClick">
     <div>
-      <label>User: </label>
-      <input v-model="username" type="text" name="username" placeholder="Username" />
-    </div>
-    <div>
       <label>Email: </label>
-      <input v-model="username" type="text" name="username" placeholder="Username" />
+      <input v-model="email" type="email" name="username" placeholder="Email" />
     </div>
     <div>
       <label>Passwort: </label>
@@ -16,10 +12,10 @@
     </div>
     <div>
       <label>Repeat password: </label>
-      <input v-model="password" type="password" name="password" placeholder="Password" />
+      <input v-model="secondPassword" type="password" name="password" placeholder="Password" />
     </div>
-    <p class="error" v-if="this.$store.state.showLoginError != null">{{this.$store.state.showLoginError}}</p>
-    <input class="loginbutton" type="submit" value="Create" />
+    <p :style="{ color: msgColor}" class="userMsg" v-if="successMsg != null">{{successMsg}}</p>
+    <input class="createButton" type="submit" value="Create" />
   </form>
 </template>
 
@@ -28,13 +24,27 @@
 
   name: 'AddAccount',
   components: {
-
+    
   },
   methods: {
-
+    onClick(e) {
+      if (this.password == this.secondPassword) {
+        this.successMsg = "You Successfully created a new user"
+      } else {
+        this.msgColor = "red"
+        this.successMsg = "There was an error while creating the user"
+      }
+      
+    }
   },
   data() {
-    
+    return {
+      email: '',
+      password: '',
+      secondPassword: '',
+      successMsg: null,
+      msgColor: "green"
+    }
   },
 }
 </script>
@@ -47,7 +57,7 @@ div {
     margin-top: 10px;
     margin-bottom: 10px;
 }
-.loginbutton {
+.createButton {
   background-color: #1a2815;
   border: none;
   color: #dbff78;

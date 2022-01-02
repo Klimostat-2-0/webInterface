@@ -67,5 +67,6 @@ export default {
 .dashboardComponentLink {
     color: #1a2815;
     text-decoration: none; 
+    height: 400px;
 }
 </style>

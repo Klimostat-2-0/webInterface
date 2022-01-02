@@ -58,7 +58,7 @@
         } catch(err) {
           console.log(err)
           this.$store.dispatch('redirectError')
-        }s
+        }
       }
   },
   data() {

@@ -29,6 +29,7 @@
   methods: {
     onClick(e) {
       if (this.password == this.secondPassword) {
+        this.msgColor = "green"
         this.successMsg = "You Successfully created a new user"
       } else {
         this.msgColor = "red"

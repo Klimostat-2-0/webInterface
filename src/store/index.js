@@ -1,16 +1,19 @@
 import {createStore} from "vuex"
 import router from "../router"
+import dataService from "../services/dataService"
 
 export default createStore({
     state: {
         tokens: localStorage.getItem("tokens") || null,
+        tokenObj: localStorage.getItem("tokenObj") || null,
         showLoginError: null,
         loggedIn: localStorage.getItem("loggedIn") || false,
         dashboardValues: []
     },
     mutations: {
-      auth_success(state, token) {
-        state.tokens = token
+      auth_success(state, tokens) {
+        state.tokens = tokens.access.token
+        state.tokenObj = JSON.stringify(tokens)
         state.showLoginError = null
         state.loggedIn = true
       },
@@ -22,6 +25,7 @@ export default createStore({
       },
       logout(state) {
         state.tokens = null,
+        state.tokenObj = null,
         state.showLoginError = null,
         state.loggedIn = false
       },
@@ -31,6 +35,7 @@ export default createStore({
     },
     actions: {
         async login({commit}, user) {
+          dataService.logIn("Test111")
           try {
             let res = await fetch(process.env.VUE_APP_BASEURL + 'auth/login', {
               method: 'POST',
@@ -42,18 +47,21 @@ export default createStore({
             if (res.status == 200){
               let data = await res.json()
               localStorage.setItem("tokens", data.tokens.access.token)
+              localStorage.setItem("tokenObj", JSON.stringify(data.tokens))
               localStorage.setItem("loggedIn", true)
-              commit("auth_success", data.tokens.access.token)
+              commit("auth_success", data.tokens)
               router.push('Dashboard')
             }else {
               commit("wrong_user")
             }
           } catch(err) {
+            console.log(err)
             commit("server_offline")
           }
         },
         async logout({commit}){
           localStorage.removeItem("tokens")
+          localStorage.removeItem("tokenObj")
           localStorage.removeItem("loggedIn")
           commit("logout")
         },
@@ -70,6 +78,9 @@ export default createStore({
     getters: {
       getDashboardValues: state => {
         return state.dashboardValues
+      },
+      getTokenObj: state => {
+        return state.tokenObj
       }
     }
 }) 

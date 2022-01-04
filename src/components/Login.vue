@@ -29,6 +29,8 @@ export default {
     }
   },
   created() {
+    let tokens = JSON.parse(this.$store.getters.getTokenObj)
+    console.log(tokens)
     if(localStorage.getItem("loggedIn")) {
       this.$store.dispatch('redirectAlreadyLoggedIn')
     }

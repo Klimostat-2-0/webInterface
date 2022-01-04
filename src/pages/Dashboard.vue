@@ -10,6 +10,7 @@
 
 <script>
   import DashboardField from '../components/DashboardField'
+  import dataService from '../services/dataService'
   export default {
 
   name: 'Dashboard',
@@ -18,18 +19,19 @@
   },
   methods: {
     async requestDataUpdate(element) {
-      const res2 = await fetch(process.env.VUE_APP_BASEURL + 'measurement?station=' 
+      const res2 = await dataService.requestDataUpdate(element.id)
+      /*const res2 = await fetch(process.env.VUE_APP_BASEURL + 'measurement?station=' 
       + element.id + '&sortBy=timestamp%3Adesc&limit=1&page=1', {
         method: 'GET',
         headers: {
           'Authorization': 'Bearer '+ this.$store.state.tokens, 
           'Content-Type': 'application/x-www-form-urlencoded'
         }
-        })
+        })*/
       if(res2.status != 200) {
         this.$store.dispatch('redirectError')
       }
-      const co2Data = await res2.json()
+      const co2Data = res2.data
       let currentCO2 = "noValues"
       if(co2Data.results.length > 0) {
         currentCO2 = co2Data.results[0].co2.toString()

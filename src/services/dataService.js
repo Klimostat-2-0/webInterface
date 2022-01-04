@@ -1,33 +1,33 @@
 import axios from "axios";
 
 const axiosInt = function() {
-    const errorInterceptor = axios.interceptors.request.use(
-        function(request) {
-            console.log("intercepted the request")
-        }
-    )
-    
     const apiClient = axios.create({
         baseURL: process.env.VUE_APP_BASEURL,
         withCredentials: false,
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': localStorage.getItem('tokens') ? `Bearer ${localStorage.getItem('tokens')}` : ''
-        }
-    })
 
-    apiClient.interceptors.request.use(errorInterceptor)
+        }
+    });
+
+    apiClient.interceptors.request.use(function (config) {
+        const token = localStorage.getItem('tokens') ? `Bearer ${localStorage.getItem('tokens')}` : '';
+        config.headers.Authorization =  token;
+        return config;
+    });
     
-    return apiClient
+    return apiClient;
 }()
 
 export default {
     getApiClient() {
         return axiosInt
     },
-    logIn(cre) {
-        console.log("log in axios" + cre)
-        console.log(axiosInt.interceptors)
+    logIn(data) {
+        return axiosInt.post('auth/login', data)
+    },
+    requestDataUpdate(stationId) {
+        return axiosInt.get('measurement?station=' + stationId + '&sortBy=timestamp%3Adesc&limit=1&page=1')
     }
 }

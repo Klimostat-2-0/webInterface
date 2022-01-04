@@ -35,17 +35,10 @@ export default createStore({
     },
     actions: {
         async login({commit}, user) {
-          dataService.logIn("Test111")
           try {
-            let res = await fetch(process.env.VUE_APP_BASEURL + 'auth/login', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: user
-            })
+            let res = await dataService.logIn(user)
             if (res.status == 200){
-              let data = await res.json()
+              let data = res.data
               localStorage.setItem("tokens", data.tokens.access.token)
               localStorage.setItem("tokenObj", JSON.stringify(data.tokens))
               localStorage.setItem("loggedIn", true)

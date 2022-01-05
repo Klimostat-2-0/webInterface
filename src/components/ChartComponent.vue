@@ -55,10 +55,10 @@ export default {
             label: this.chartTitle,
             data: this.calcNewValue,
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)'
+                'rgb(255, 89, 89, 0.6)'
             ],
             borderColor: [
-                'rgba(255, 99, 132, 1)'
+                'rgb(255, 89, 89, 1)'
             ],
             borderWidth: 2
         }]
@@ -66,6 +66,24 @@ export default {
     options: {
         maintainAspectRatio: true,
         responsive: true,
+        scales: {
+        xAxes: [{
+            gridLines: {
+                display:false
+            }
+        }],
+        yAxes: [{
+            gridLines: {
+                display:true
+            }   
+        }]
+        },
+        elements: {
+            point:{
+                radius: 0
+            }
+        }
+            
     }
     });
 }

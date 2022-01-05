@@ -31,7 +31,6 @@ export default {
             if(element[1]>750) res = 1
             if(element[1]>900) res = 2
             this.chart.data.datasets[0].data[res]++
-            console.log("updated" + res)
         }
         this.chart.update();
       }

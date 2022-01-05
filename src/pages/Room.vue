@@ -1,8 +1,17 @@
 <template>
-  <h1>Room</h1>
+  <h1>Room {{roomName}}</h1>
+  <hr>
   <div>
     <h2>Overview</h2>
-    <round-chart-component :chartTitle='"overview"' :chartData="co2" v-if="!isFetching" ref="overview"/>
+      <h4>
+      {{locationName}}
+      <br>
+      CO2 Limit: {{co2_limit}}
+      <br>
+      <br>
+    </h4>
+    <round-chart-component :co2Limit='co2_limit' :co2Reset='co2_reset' 
+    :chartTitle='"overview"' :chartData="co2" v-if="!isFetching" ref="overview"/>
     <hr>
     <h2>CO2</h2>
     <chart-component :chartTitle='"ppm"' :chartData="co2" v-if="!isFetching" ref="co2"/>
@@ -67,17 +76,24 @@
       stationId: String,
       isFetching: true,
       intervalls: [],
-      lastTimeStamp: ""
+      lastTimeStamp: "",
+      stationName: "",
+      locationName: "",
+      roomName: "",
+      co2_limit: 1500,
+      co2_reset: 1100
     }
   },
   async created(){
     this.stationId = this.$route.params.id
     try {
       const res = await dataService.getCO2Data(this.stationId)
-      if(res.status != 200) {
+      const res2 = await dataService.getStationsById(this.stationId)
+      if(res.status != 200 || res2.status != 200) {
         this.$store.dispatch('redirectError')
       }
       const chartData = res.data
+      const stationData = res2.data
       for (const element of chartData.results) {
         let date = new Date(element.timestamp)
         let foramted = date.getHours() + ":" + date.getMinutes() + " " + (date.getMonth()+1) + "-" + date.getDate()
@@ -88,6 +104,11 @@
           this.lastTimeStamp = element.timestamp.toString()
         }
       }
+      this.stationName = stationData.name
+      this.locationName = stationData.location
+      this.roomName = stationData.roomNr
+      this.co2_limit = stationData.co2_limit
+      this.co2_reset = stationData.co2_reset
       this.isFetching = false
     } catch(err) {
       console.log(err)

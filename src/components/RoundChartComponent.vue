@@ -15,14 +15,22 @@ export default {
       },
       chartData: {
           type: Array
-      }
+      },
+      co2Limit: {
+          type: Number,
+          default: 1500
+      },
+      co2Reset: {
+          type: Number,
+          default: 1100
+      },
   },
   methods: {
       updateData(newData){
         for (const element of newData) {
             let res = 0
-            if(element[1]>750) res = 1
-            if(element[1]>900) res = 2
+            if(element[1]>this.co2Reset) res = 1
+            if(element[1]>this.co2Limit) res = 2
             this.chart.data.datasets[0].data[res]++
         }
         this.chart.update();
@@ -43,8 +51,8 @@ export default {
     calcNewValue: function () {
       let res = [0, 0, 0]
       this.chartData.map(element => element[1]).forEach((element) => {
-          if(element>900) res[2]++
-          else if(element<750) res[0]++
+          if(element>this.co2Limit) res[2]++
+          else if(element<this.co2Reset) res[0]++
           else res[1]++
       })
       return res

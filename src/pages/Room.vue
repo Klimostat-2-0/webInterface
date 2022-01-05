@@ -1,6 +1,9 @@
 <template>
   <h1>Room</h1>
   <div>
+    <h2>Overview</h2>
+    <round-chart-component :chartTitle='"overview"' :chartData="co2" v-if="!isFetching" ref="overview"/>
+    <hr>
     <h2>CO2</h2>
     <chart-component :chartTitle='"ppm"' :chartData="co2" v-if="!isFetching" ref="co2"/>
     <hr>
@@ -14,12 +17,14 @@
 
 <script>
   import ChartComponent from '../components/ChartComponent'
+  import RoundChartComponent from '../components/RoundChartComponent.vue'
   import dataService from '../services/dataService'
 
   export default {
   name: 'Room',
   components: {
-    ChartComponent
+    ChartComponent,
+    RoundChartComponent
   },
   methods: {
       async updateData(){

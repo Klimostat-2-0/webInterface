@@ -22,6 +22,7 @@
       const res2 = await dataService.requestDataUpdateDashboard(element.id)
       if(res2.status != 200) {
         this.$store.dispatch('redirectError')
+        return
       }
       const co2Data = res2.data
       let currentCO2 = "noValues"

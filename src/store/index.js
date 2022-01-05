@@ -63,6 +63,12 @@ export default createStore({
         },
         redirectAlreadyLoggedIn({commit}){
           router.push('/Dashboard')
+        },
+        updateTokenObj({commit}, tokenObj){
+          localStorage.setItem("tokens", tokenObj.tokens.access.token)
+          localStorage.setItem("tokenObj", JSON.stringify(tokenObj.tokens))
+          localStorage.setItem("loggedIn", true)
+          commit("auth_success", tokenObj.tokens)
         }
     },
     modules: {
@@ -74,6 +80,9 @@ export default createStore({
       },
       getTokenObj: state => {
         return state.tokenObj
+      },
+      getRefreshToken: state => {
+        return JSON.parse(state.tokenObj).refresh.token
       }
     }
 }) 

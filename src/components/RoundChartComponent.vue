@@ -27,10 +27,11 @@ export default {
   methods: {
       updateData(newData){
         for (const element of newData) {
-            this.chart.data.labels.push(element[0]);
-            this.chart.data.datasets.forEach((dataset) => {
-            dataset.data.push(element[1]);
-        });
+            let res = 0
+            if(element[1]>750) res = 1
+            if(element[1]>900) res = 2
+            this.chart.data.datasets[0].data[res]++
+            console.log("updated" + res)
         }
         this.chart.update();
       }
@@ -39,12 +40,13 @@ export default {
       return {
           values: [],
           xValues: [],
-          chart: Chart
+          chart: Chart,
+          textValues: ["Perfect", "OK", 'Critical']
       }
   },
   computed: {
     calcNewValueX: function () {
-      return ["Perfect", "OK", 'Critical']
+      return this.textValues
     },
     calcNewValue: function () {
       let res = [0, 0, 0]

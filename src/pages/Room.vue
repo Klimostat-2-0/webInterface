@@ -49,6 +49,7 @@
           }
           if(updateCo2.length > 0) {
             this.$refs.co2.updateData(updateCo2.reverse());
+            this.$refs.overview.updateData(updateCo2.reverse())
             this.$refs.temp.updateData(updateTemp.reverse());
             this.$refs.hum.updateData(humidity);
           }

@@ -19,15 +19,7 @@
   },
   methods: {
     async requestDataUpdate(element) {
-      const res2 = await dataService.requestDataUpdate(element.id)
-      /*const res2 = await fetch(process.env.VUE_APP_BASEURL + 'measurement?station=' 
-      + element.id + '&sortBy=timestamp%3Adesc&limit=1&page=1', {
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer '+ this.$store.state.tokens, 
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-        })*/
+      const res2 = await dataService.requestDataUpdateDashboard(element.id)
       if(res2.status != 200) {
         this.$store.dispatch('redirectError')
       }
@@ -48,17 +40,11 @@
   },
   async created(){
     try {
-      const res = await fetch(process.env.VUE_APP_BASEURL + 'station', {
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer '+ this.$store.state.tokens, 
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      })
+      const res = await dataService.getStations()
       if(res.status != 200) {
         this.$store.dispatch('redirectError')
       }
-      const stationData = await res.json()
+      const stationData = res.data
       let index = 0
       for (const element of stationData.results) {
       this.$store.commit("updateDashboard", [index, await this.requestDataUpdate(element)])

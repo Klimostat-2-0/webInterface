@@ -14,6 +14,7 @@
 
 <script>
   import ChartComponent from '../components/ChartComponent'
+  import dataService from '../services/dataService'
 
   export default {
   name: 'Room',
@@ -23,22 +24,11 @@
   methods: {
       async updateData(){
         try {
-          const that = this
-          let getString = 'measurement?station=' 
-          + this.stationId + "&sortBy=timestamp%3Adesc&limit=100&page=1&" + new URLSearchParams({
-            fromTimestamp: that.lastTimeStamp,
-          })
-          const res = await fetch(process.env.VUE_APP_BASEURL + getString, {
-            method: 'GET',
-            headers: {
-              'Authorization': 'Bearer '+ this.$store.state.tokens, 
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          })
+          const res = await dataService.updateCO2Data(this.stationId, this.lastTimeStamp)
           if(res.status != 200) {
             this.$store.dispatch('redirectError')
           }
-          const chartData = await res.json()
+          const chartData = res.data
           let updateCo2 = []
           let updateTemp = []
           let humidity = []
@@ -48,12 +38,14 @@
             updateCo2.push([foramted, element.co2])
             updateTemp.push([foramted, element.temperature])
             humidity.push([foramted, element.humidity])
-            this.lastTimeStamp = element.timestamp.toString()
+          }
+          if(chartData.results.length > 0) {
+            this .lastTimeStamp = chartData.results[0].timestamp.toString()
           }
           if(updateCo2.length > 0) {
-            that.$refs.co2.updateData(updateCo2.reverse());
-            that.$refs.temp.updateData(updateTemp.reverse());
-            that.$refs.hum.updateData(humidity);
+            this.$refs.co2.updateData(updateCo2.reverse());
+            this.$refs.temp.updateData(updateTemp.reverse());
+            this.$refs.hum.updateData(humidity);
           }
         } catch(err) {
           console.log(err)
@@ -75,18 +67,11 @@
   async created(){
     this.stationId = this.$route.params.id
     try {
-      const res = await fetch(process.env.VUE_APP_BASEURL + 'measurement?station=' 
-      + this.stationId + "&sortBy=timestamp%3Adesc&limit=100&page=1", {
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer '+ this.$store.state.tokens, 
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      })
+      const res = await dataService.getCO2Data(this.stationId)
       if(res.status != 200) {
         this.$store.dispatch('redirectError')
       }
-      const chartData = await res.json()
+      const chartData = res.data
       for (const element of chartData.results) {
         let date = new Date(element.timestamp)
         let foramted = date.getHours() + ":" + date.getMinutes() + " " + (date.getMonth()+1) + "-" + date.getDate()

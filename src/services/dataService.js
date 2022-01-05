@@ -27,7 +27,19 @@ export default {
     logIn(data) {
         return axiosInt.post('auth/login', data)
     },
-    requestDataUpdate(stationId) {
+    requestDataUpdateDashboard(stationId) {
         return axiosInt.get('measurement?station=' + stationId + '&sortBy=timestamp%3Adesc&limit=1&page=1')
+    },
+    getStations() {
+        return axiosInt.get('station/')
+    },
+    updateCO2Data(stationID, timestamp) {
+        return axiosInt.get('measurement?station=' + stationID + "&sortBy=timestamp%3Adesc&limit=100&page=1&"
+         + new URLSearchParams({
+          fromTimestamp: timestamp,
+        }))
+    },
+    getCO2Data(stationID) {
+        return axiosInt.get('measurement?station=' + stationID + "&sortBy=timestamp%3Adesc&limit=100&page=1")
     }
 }

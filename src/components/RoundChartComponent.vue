@@ -15,14 +15,7 @@ export default {
       },
       chartData: {
           type: Array
-      },
-      options: {
-          type: Object,
-          default: {
-              responsive: true,
-              maintainAspectRatio: false
-          }
-      } 
+      }
   },
   methods: {
       updateData(newData){

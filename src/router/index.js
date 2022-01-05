@@ -6,6 +6,7 @@ import Room from '../pages/Room'
 import ErrorPage from '../pages/ErrorPage'
 import Dashboard from '../pages/Dashboard'
 import AddAccount from '../pages/AddAccount'
+import store from "../store/index"
 
 const routes = [
     {
@@ -21,7 +22,10 @@ const routes = [
     {
         path: '/room/:id',
         name: 'Room',
-        component: Room
+        component: Room,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/error',
@@ -31,17 +35,31 @@ const routes = [
     {
         path: '/dashboard',
         name: 'Dashboard',
-        component: Dashboard
+        component: Dashboard,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/adduser',
         name: 'AddUser',
-        component: AddAccount
+        component: AddAccount,
+        meta: {
+            requiresAuth: true
+        }
     }
 ]
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL), routes
+})
+
+router.beforeEach((to, from, next) => {
+    if(to.matched.some(record => record.meta.requiresAuth) && !store.getters.getLogInInfo) {
+        next('/')
+    }else{
+        next()
+    }
 })
 
 export default router

@@ -83,6 +83,9 @@ export default createStore({
       },
       getRefreshToken: state => {
         return JSON.parse(state.tokenObj).refresh.token
+      },
+      getLogInInfo: state => {
+        return state.loggedIn
       }
     }
 }) 

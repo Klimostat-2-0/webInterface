@@ -73,6 +73,7 @@ export default {
     text-align: center;
     margin: 20px;
     background: chartreuse;
+    border-radius: 10px;
 }
 .dashboardComponentLink {
     color: #1a2815;

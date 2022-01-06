@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Chart from "chart.js"
+import Chart from 'chart.js/auto';
 
 export default {
   props: {
@@ -37,10 +37,10 @@ export default {
       }
   },
   data() {
+      this.chart = null
       return {
           values: [],
           xValues: [],
-          chart: Chart,
           textValues: ["Perfect", "OK", 'Critical']
       }
   },

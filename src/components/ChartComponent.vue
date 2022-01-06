@@ -5,7 +5,9 @@
 </template>
 
 <script>
-import Chart from "chart.js"
+import Chart from 'chart.js/auto';
+import annotationPlugin from 'chartjs-plugin-annotation';
+Chart.register(annotationPlugin);
 
 export default {
   props: {
@@ -29,10 +31,10 @@ export default {
       }
   },
   data() {
+      this.chart = null
       return {
           values: [],
           xValues: [],
-          chart: Chart
       }
   },
   computed: {
@@ -54,36 +56,53 @@ export default {
         datasets: [{
             label: this.chartTitle,
             data: this.calcNewValue,
-            backgroundColor: [
-                'rgb(255, 89, 89, 0.6)'
-            ],
-            borderColor: [
-                'rgb(255, 89, 89, 1)'
-            ],
+            borderColor: 'rgb(255, 89, 89, 1)',
+            backgroundColor: 'rgb(255, 89, 89, 0.65)',
             borderWidth: 2
         }]
     },
     options: {
+        plugins: {
+            autocolors: false,
+            annotation: {
+            annotations: {
+                line1: {
+                type: 'line',
+                yMin: 1500,
+                yMax: 1500,
+                borderColor: 'rgb(255, 99, 132)',
+                borderWidth: 4,
+                label: {
+                    enabled: true,
+                    content: "Max",
+                    backgroundColor: 'rgb(0,0,0,0)',
+                    borderColor: 'rgb(0,0,0,0)',
+                    color: 'rgb(0,0,0,1)'
+                }
+                }
+            }
+            }
+        },
         maintainAspectRatio: true,
         responsive: true,
+        fill: true,
         scales: {
-        xAxes: [{
-            gridLines: {
-                display:false
+            x: {
+                grid: {
+                    display:false
+                }
+            },
+            y: {
+                grid: {
+                    display:true
+                }   
             }
-        }],
-        yAxes: [{
-            gridLines: {
-                display:true
-            }   
-        }]
         },
         elements: {
             point:{
                 radius: 0
             }
         }
-            
     }
     });
 }

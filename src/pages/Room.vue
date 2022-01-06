@@ -97,7 +97,8 @@
         }
       },
       async changeInterval(){
-        console.log("New Interval will be: " + this.refreshInterval)
+        clearInterval(this.intervalls)
+        this.intervalls = setInterval(this.updateData, this.refreshInterval * 60000)
       },
       async updateData(){
         try {
@@ -187,12 +188,10 @@
       console.log(err)
       this.$store.dispatch('redirectError')
     }
-    this.intervalls.push(setInterval(this.updateData, 10000))
+    this.intervalls = setInterval(this.updateData, 60000)
 },
   beforeUnmount() {
-    for(const element of this.intervalls){
-      clearInterval(element)
-    }
+    clearInterval(this.intervalls)
   }
 }
 </script>

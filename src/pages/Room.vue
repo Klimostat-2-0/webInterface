@@ -14,13 +14,13 @@
     :chartTitle='"overview"' :chartData="co2" v-if="!isFetching" ref="overview"/>
     <hr>
     <h2>CO2</h2>
-    <chart-component :chartTitle='"ppm"' :chartData="co2" v-if="!isFetching" ref="co2"/>
+    <chart-component :options='this.co2ChartOptions' :chartTitle='"ppm"' :chartData="co2" v-if="!isFetching" ref="co2"/>
     <hr>
     <h2>Temperatur</h2>
-    <chart-component :chartTitle='"Grad"' :chartData="temp" v-if="!isFetching" ref="temp"/>
+    <chart-component :options='this.tempChartOptions' :chartTitle='"Grad"' :chartData="temp" v-if="!isFetching" ref="temp"/>
     <hr>
     <h2>Luftfeuchtigkeit</h2>
-    <chart-component :chartTitle='"Prozent"' :chartData="humidity" v-if="!isFetching" ref="hum"/>
+    <chart-component :options='this.humChartOptions' :chartTitle='"Prozent"' :chartData="humidity" v-if="!isFetching" ref="hum"/>
   </div>
 </template>
 
@@ -28,6 +28,7 @@
   import ChartComponent from '../components/ChartComponent'
   import RoundChartComponent from '../components/RoundChartComponent.vue'
   import dataService from '../services/dataService'
+  import chartStyle from '../chartStyles/chartStyles'
 
   export default {
   name: 'Room',
@@ -81,7 +82,10 @@
       locationName: "",
       roomName: "",
       co2_limit: 1500,
-      co2_reset: 1100
+      co2_reset: 1100,
+      co2ChartOptions: chartStyle.co2ChartOptions,
+      tempChartOptions: chartStyle.tempChartOptions,
+      humChartOptions: chartStyle.humChartOptions
     }
   },
   async created(){

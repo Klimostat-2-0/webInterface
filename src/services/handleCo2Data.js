@@ -31,7 +31,8 @@ function formatDate(dayIsImportant, date) {
 }
 
 function checkDayImportance(time){
-    if(time[0].getDate() != time[time.length-1].getDate() || time[0].getMonth() != time[time.length-1].getMonth()) return true
+    if(time[0].getDate() != time[time.length-1].getDate() || time[0].getMonth() != time[time.length-1].getMonth()
+    || !isCurrentDay(time[0])) {return true}
     return false
 }
 
@@ -52,6 +53,12 @@ function mapDataToTime(normTime, time, data) {
     }
     return result
 }
+function isCurrentDay(date){
+    let currentDay = new Date()
+    return date.getDate() == currentDay.getDate() &&
+            date.getMonth() == currentDay.getMonth() &&
+            date.getFullYear() == currentDay.getFullYear()
+  }
 
 export default {
     mapDataToTime, getValidTimeLine, checkDayImportance, formatDate

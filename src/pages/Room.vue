@@ -53,6 +53,7 @@
             const changedData = res.data
             this.co2_limit = changedData.co2_limit
             this.co2_reset = changedData.co2_reset
+            this.co2ChartOptions = chartStyle.co2ChartOptions(this.co2_limit)
             this.isFetching++
             this.errorMsg = null
           } catch(err) {

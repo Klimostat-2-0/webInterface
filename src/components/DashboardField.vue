@@ -26,13 +26,19 @@ export default {
       },routeIdProp: {
           type: String,
       },
+      co2LimitProp: {
+          type: Number,
+      },
+      co2ResetProp: {
+          type: Number,
+      },
 
   },
   computed: {
     calcColor: function () {
       if (this.$store.state.dashboardValues[this.co2] == "noValues") return "rgba(70, 70, 70, 0.5)"
-      if (this.$store.state.dashboardValues[this.co2] > 1500) return "rgba(255, 89, 89, 0.6)"
-      if (this.$store.state.dashboardValues[this.co2] > 600) return "rgba(250, 207, 90, 0.6)"
+      if (this.$store.state.dashboardValues[this.co2] > this.co2Limit) return "rgba(255, 89, 89, 0.6)"
+      if (this.$store.state.dashboardValues[this.co2] > this.co2Reset) return "rgba(250, 207, 90, 0.6)"
       return "rgb(73, 190, 182, 0.6)"
     }
   },
@@ -42,7 +48,9 @@ export default {
           stationID: String,
           routeId: String,
           name: String,
-          location: String
+          location: String,
+          co2Limit: Number,
+          co2Reset: Number
       }
   },
   async created() {
@@ -51,6 +59,8 @@ export default {
       this.routeId = this.routeIdProp
       this.name = this.nameProp
       this.location = this.locationProp
+      this.co2Limit = this.co2LimitProp
+      this.co2Reset = this.co2ResetProp
 }
 };
 </script>

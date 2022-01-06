@@ -83,9 +83,9 @@
       roomName: "",
       co2_limit: 1500,
       co2_reset: 1100,
-      co2ChartOptions: chartStyle.co2ChartOptions,
-      tempChartOptions: chartStyle.tempChartOptions,
-      humChartOptions: chartStyle.humChartOptions
+      co2ChartOptions: chartStyle.co2ChartOptions(1500),
+      tempChartOptions: chartStyle.tempChartOptions(),
+      humChartOptions: chartStyle.humChartOptions()
     }
   },
   async created(){
@@ -118,6 +118,7 @@
       console.log(err)
       this.$store.dispatch('redirectError')
     }
+    this.co2ChartOptions = chartStyle.co2ChartOptions(this.co2_limit)
     this.intervalls.push(setInterval(this.updateData, 10000))
 },
   beforeUnmount() {

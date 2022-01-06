@@ -1,13 +1,14 @@
-const co2ChartOptions = {
-    options: {
+function co2ChartOptions(co2LimitConst) {
+    return {
+        options: {
         plugins: {
             autocolors: false,
             annotation: {
             annotations: {
                 line1: {
                 type: 'line',
-                yMin: 900,
-                yMax: 900,
+                yMin: co2LimitConst,
+                yMax: co2LimitConst,
                 borderColor: 'rgb(0, 0, 0, 0.75)',
                 borderWidth: 3,
                 }
@@ -50,8 +51,10 @@ const co2ChartOptions = {
     color: 'rgb(255, 89, 89, 1)',
     backgroundColor: 'rgb(255, 89, 89, 0.65)'
 }
+}
 
-const tempChartOptions = {
+function tempChartOptions() {
+return {
     options:{
         maintainAspectRatio: true,
         responsive: true,
@@ -89,8 +92,10 @@ const tempChartOptions = {
     color: 'rgb(250, 207, 90, 1)',
     backgroundColor: 'rgb(250, 207, 90, 0.65)',
 }
+}
 
-const humChartOptions = {
+function humChartOptions() {
+return {
     options: {
         maintainAspectRatio: true,
         responsive: true,
@@ -127,6 +132,7 @@ const humChartOptions = {
     },
     color: 'rgb(73, 190, 182, 1)',
     backgroundColor: 'rgb(73, 190, 182, 0.65)',
+}
 }
 
 export default  {

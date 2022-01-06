@@ -59,7 +59,12 @@ function isCurrentDay(date){
             date.getMonth() == currentDay.getMonth() &&
             date.getFullYear() == currentDay.getFullYear()
   }
+function hoursAgoToTimestamp(hoursAgo){
+    let currentDay = new Date()
+    let millsInOneHour = 1000*60*60
+    return new Date(currentDay.getTime()-(millsInOneHour*hoursAgo)).toString()
+}
 
 export default {
-    mapDataToTime, getValidTimeLine, checkDayImportance, formatDate
+    mapDataToTime, getValidTimeLine, checkDayImportance, formatDate, hoursAgoToTimestamp
 }

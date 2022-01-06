@@ -16,11 +16,12 @@
       <label>Time Period: </label>
       <div class="formElement">
       <select v-model="timeScale" v-on:change="changeScale" name="times" id="times">
-        <option value="1">Last Hour</option>
-        <option value="6">Last 6 Hours</option>
-        <option value="12">Last 12 Hours </option>
-        <option value="24">Last Day</option>
-        <option value="3072">Last Half Year</option>
+        <option value=1>Last Hour</option>
+        <option value=2>Last 2 Hours</option>
+        <option value=6>Last 6 Hours</option>
+        <option value=12>Last 12 Hours </option>
+        <option value=24>Last Day</option>
+        <option value=48>Last 2 Days</option>
       </select>
       </div>
       <br>
@@ -76,7 +77,14 @@
         }
       },
       async changeScale(){
-        console.log("I was called: " + this.timeScale)
+        try {
+          const res = await dataService.updateCO2DataLongFormet(this.stationId, handleCo2Data.hoursAgoToTimestamp(this.timeScale))
+          this.loadOriginalData({"results": res})
+          this.isFetching++
+        } catch(err){
+          console.log(err)
+          this.$store.dispatch('redirectError')
+        }
       },
       async updateData(){
         try {
@@ -108,6 +116,15 @@
           console.log(err)
           this.$store.dispatch('redirectError')
         }
+      },
+      loadOriginalData(chartData) {
+        this.lastTimeStamp = chartData.results[0].timestamp.toString()
+        let timeArray =  chartData.results.map(e => new Date(e.timestamp))
+        let correctTimeline = handleCo2Data.getValidTimeLine(timeArray)
+        this.co2 = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.co2))
+        this.temp = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.temperature))
+        this.humidity = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.humidity))
+        this.dayImportance = handleCo2Data.checkDayImportance(timeArray)
       }
   },
   data() {
@@ -136,21 +153,14 @@
   async created(){
     this.stationId = this.$route.params.id
     try {
-      const res = await dataService.getCO2Data(this.stationId)
+      const res = await dataService.updateCO2DataLongFormet(this.stationId, handleCo2Data.hoursAgoToTimestamp(this.timeScale))
       const res2 = await dataService.getStationsById(this.stationId)
-      if(res.status != 200 || res2.status != 200) {
+      if(res2.status != 200) {
         this.$store.dispatch('redirectError')
       }
-      const chartData = res.data
+      const chartData = {"results": res}
       const stationData = res2.data
-      this.lastTimeStamp = chartData.results[0].timestamp.toString()
-      let timeArray =  chartData.results.map(e => new Date(e.timestamp))
-      let correctTimeline = handleCo2Data.getValidTimeLine(timeArray)
-      this.co2 = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.co2))
-      this.temp = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.temperature))
-      this.humidity = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.humidity))
-      this.dayImportance = handleCo2Data.checkDayImportance(timeArray)
-
+      this.loadOriginalData(chartData)
       this.stationName = stationData.name
       this.locationName = stationData.location
       this.roomName = stationData.roomNr

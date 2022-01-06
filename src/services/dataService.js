@@ -71,6 +71,20 @@ export default {
           fromTimestamp: timestamp,
         }))
     },
+    async updateCO2DataLongFormet(stationID, timestamp, page=1) {
+        const query = 'measurement?station=' + stationID + "&sortBy=timestamp%3Adesc&limit=100&page=" + page + "&"
+        const response = await axiosInt.get(query
+         + new URLSearchParams({
+          fromTimestamp: timestamp,
+        }))
+        const data = response.data
+
+        if (data.totalPages > page) {
+            return data.results.concat(await this.updateCO2DataLongFormet(stationID, timestamp, page+1)) 
+          } else {
+            return data.results
+        }
+    },
     getCO2Data(stationID) {
         return axiosInt.get('measurement?station=' + stationID + "&sortBy=timestamp%3Adesc&limit=100&page=1")
     },

@@ -6,10 +6,23 @@
       <h4>
       {{locationName}}
       <br>
-      CO2 Limit:
+      <label>CO2 Limit:</label>
+      <div class="formElement">
       <input onkeydown="return false" step="100" v-model="co2_limit" min="300" max="3000" type="number" name="co2Limit" />
       <input v-on:click="changeLimit" class="changeButton" type="button" value="ChangeLimit" />
       <p :style="{ color: 'red'}" class="userMsg" v-if="errorMsg != null">{{errorMsg}}</p>
+      </div>
+      <br>
+      <label>Time Period: </label>
+      <div class="formElement">
+      <select v-model="timeScale" v-on:change="changeScale" name="times" id="times">
+        <option value="1">Last Hour</option>
+        <option value="6">Last 6 Hours</option>
+        <option value="12">Last 12 Hours </option>
+        <option value="24">Last Day</option>
+        <option value="3072">Last Half Year</option>
+      </select>
+      </div>
       <br>
       <br>
     </h4>
@@ -62,6 +75,9 @@
         }
         }
       },
+      async changeScale(){
+        console.log("I was called: " + this.timeScale)
+      },
       async updateData(){
         try {
           const res = await dataService.updateCO2Data(this.stationId, this.lastTimeStamp)
@@ -113,7 +129,8 @@
       tempChartOptions: chartStyle.tempChartOptions(),
       humChartOptions: chartStyle.humChartOptions(),
       dayImportance: true,
-      errorMsg: null
+      errorMsg: null,
+      timeScale: 1
     }
   },
   async created(){
@@ -165,5 +182,17 @@
   display: inline-block;
   font-size: 16px;
   margin-left: 10px;
+}
+label {
+    display: inline-block;
+    width: 140px;
+    text-align: right;
+    margin-right: 20px;
+}
+.formElement {
+    display: inline-block;
+    width: 200px;
+    text-align: left;
+    margin: 5px
 }
 </style>

@@ -28,6 +28,7 @@
   import ChartComponent from '../components/ChartComponent'
   import RoundChartComponent from '../components/RoundChartComponent.vue'
   import dataService from '../services/dataService'
+  import handleCo2Data from '../services/handleCo2Data'
   import chartStyle from '../chartStyles/chartStyles'
 
   export default {
@@ -49,13 +50,13 @@
           let humidity = []
           for (const element of chartData.results) {
             let date = new Date(element.timestamp)
-            let foramted = date.getHours() + ":" + date.getMinutes() + " " + (date.getMonth()+1) + "-" + date.getDate()
+            let foramted = handleCo2Data.formatDate(this.dayImportance, date)
             updateCo2.push([foramted, element.co2])
             updateTemp.push([foramted, element.temperature])
             humidity.push([foramted, element.humidity])
           }
           if(chartData.results.length > 0) {
-            this .lastTimeStamp = chartData.results[0].timestamp.toString()
+            this.lastTimeStamp = chartData.results[0].timestamp.toString()
           }
           if(updateCo2.length > 0) {
             this.$refs.co2.updateData(updateCo2.reverse());
@@ -85,7 +86,8 @@
       co2_reset: 1100,
       co2ChartOptions: chartStyle.co2ChartOptions(1500),
       tempChartOptions: chartStyle.tempChartOptions(),
-      humChartOptions: chartStyle.humChartOptions()
+      humChartOptions: chartStyle.humChartOptions(),
+      dayImportance: true
     }
   },
   async created(){
@@ -98,27 +100,25 @@
       }
       const chartData = res.data
       const stationData = res2.data
-      for (const element of chartData.results) {
-        let date = new Date(element.timestamp)
-        let foramted = date.getHours() + ":" + date.getMinutes() + " " + (date.getMonth()+1) + "-" + date.getDate()
-        this.co2.push([foramted, element.co2])
-        this.temp.push([foramted, element.temperature])
-        this.humidity.push([foramted, element.humidity])
-        if (this.lastTimeStamp == "") {
-          this.lastTimeStamp = element.timestamp.toString()
-        }
-      }
+      this.lastTimeStamp = chartData.results[0].timestamp.toString()
+      let timeArray =  chartData.results.map(e => new Date(e.timestamp))
+      let correctTimeline = handleCo2Data.getValidTimeLine(timeArray)
+      this.co2 = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.co2))
+      this.temp = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.temperature))
+      this.humidity = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.humidity))
+      this.dayImportance = handleCo2Data.checkDayImportance(timeArray)
+
       this.stationName = stationData.name
       this.locationName = stationData.location
       this.roomName = stationData.roomNr
       this.co2_limit = stationData.co2_limit
       this.co2_reset = stationData.co2_reset
+      this.co2ChartOptions = chartStyle.co2ChartOptions(this.co2_limit)
       this.isFetching = false
     } catch(err) {
       console.log(err)
       this.$store.dispatch('redirectError')
     }
-    this.co2ChartOptions = chartStyle.co2ChartOptions(this.co2_limit)
     this.intervalls.push(setInterval(this.updateData, 10000))
 },
   beforeUnmount() {

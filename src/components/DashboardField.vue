@@ -30,10 +30,10 @@ export default {
   },
   computed: {
     calcColor: function () {
-      if (this.$store.state.dashboardValues[this.co2] == "noValues") return "#bbbbbb"
-      if (this.$store.state.dashboardValues[this.co2] > 1500) return "#ff9187"
-      if (this.$store.state.dashboardValues[this.co2] > 600) return "#fcffb3"
-      return "#bbffb3"
+      if (this.$store.state.dashboardValues[this.co2] == "noValues") return "rgba(70, 70, 70, 0.5)"
+      if (this.$store.state.dashboardValues[this.co2] > 1500) return "rgba(255, 89, 89, 0.6)"
+      if (this.$store.state.dashboardValues[this.co2] > 600) return "rgba(250, 207, 90, 0.6)"
+      return "rgb(73, 190, 182, 0.6)"
     }
   },
   data() {

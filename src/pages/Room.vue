@@ -25,6 +25,16 @@
       </select>
       </div>
       <br>
+      <label>Refresh interval: </label>
+      <div class="formElement">
+      <select v-model="refreshInterval" v-on:change="changeInterval" name="refreshIntervalls" id="refreshIntervalls">
+        <option value=1>live</option>
+        <option value=5>5min</option>
+        <option value=10>10min</option>
+        <option value=15>15min</option>
+      </select>
+      </div>
+      <br>
       <br>
     </h4>
     <round-chart-component :co2Limit='co2_limit' :co2Reset='co2_reset' 
@@ -85,6 +95,9 @@
           console.log(err)
           this.$store.dispatch('redirectError')
         }
+      },
+      async changeInterval(){
+        console.log("New Interval will be: " + this.refreshInterval)
       },
       async updateData(){
         try {
@@ -147,7 +160,8 @@
       humChartOptions: chartStyle.humChartOptions(),
       dayImportance: true,
       errorMsg: null,
-      timeScale: 1
+      timeScale: 1,
+      refreshInterval: 1
     }
   },
   async created(){

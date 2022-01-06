@@ -6,21 +6,24 @@
       <h4>
       {{locationName}}
       <br>
-      CO2 Limit: {{co2_limit}}
+      CO2 Limit:
+      <input onkeydown="return false" step="100" v-model="co2_limit" min="300" max="3000" type="number" name="co2Limit" />
+      <input v-on:click="changeLimit" class="changeButton" type="button" value="ChangeLimit" />
+      <p :style="{ color: 'red'}" class="userMsg" v-if="errorMsg != null">{{errorMsg}}</p>
       <br>
       <br>
     </h4>
     <round-chart-component :co2Limit='co2_limit' :co2Reset='co2_reset' 
-    :chartTitle='"overview"' :chartData="co2" v-if="!isFetching" ref="overview"/>
+    :chartTitle='"overview"' :chartData="co2" :key='isFetching' ref="overview"/>
     <hr>
     <h2>CO2</h2>
-    <chart-component :options='this.co2ChartOptions' :chartTitle='"ppm"' :chartData="co2" v-if="!isFetching" ref="co2"/>
+    <chart-component :options='this.co2ChartOptions' :chartTitle='"ppm"' :chartData="co2" :key='isFetching' ref="co2"/>
     <hr>
     <h2>Temperatur</h2>
-    <chart-component :options='this.tempChartOptions' :chartTitle='"Grad"' :chartData="temp" v-if="!isFetching" ref="temp"/>
+    <chart-component :options='this.tempChartOptions' :chartTitle='"Grad"' :chartData="temp" :key='isFetching' ref="temp"/>
     <hr>
     <h2>Luftfeuchtigkeit</h2>
-    <chart-component :options='this.humChartOptions' :chartTitle='"Prozent"' :chartData="humidity" v-if="!isFetching" ref="hum"/>
+    <chart-component :options='this.humChartOptions' :chartTitle='"Prozent"' :chartData="humidity" :key='isFetching' ref="hum"/>
   </div>
 </template>
 
@@ -38,6 +41,26 @@
     RoundChartComponent
   },
   methods: {
+      async changeLimit() {
+        if(this.co2_limit != this.old_co2_limit){
+          this.old_co2_limit = this.co2_limit
+          try {
+            const res = await dataService.setNewLimit(this.stationId, this.co2_limit, parseInt(this.co2_limit*0.7))
+            if(res.status != 200) {
+              this.errorMsg = "Couldn't update the limit"
+              return
+            }
+            const changedData = res.data
+            this.co2_limit = changedData.co2_limit
+            this.co2_reset = changedData.co2_reset
+            this.isFetching++
+            this.errorMsg = null
+          } catch(err) {
+            console.log(err)
+            this.errorMsg = "Couldn't update the limit"
+        }
+        }
+      },
       async updateData(){
         try {
           const res = await dataService.updateCO2Data(this.stationId, this.lastTimeStamp)
@@ -76,18 +99,20 @@
       temp: [],
       humidity: [],
       stationId: String,
-      isFetching: true,
+      isFetching: 0,
       intervalls: [],
       lastTimeStamp: "",
       stationName: "",
       locationName: "",
       roomName: "",
       co2_limit: 1500,
+      old_co2_limit: 1500,
       co2_reset: 1100,
       co2ChartOptions: chartStyle.co2ChartOptions(1500),
       tempChartOptions: chartStyle.tempChartOptions(),
       humChartOptions: chartStyle.humChartOptions(),
-      dayImportance: true
+      dayImportance: true,
+      errorMsg: null
     }
   },
   async created(){
@@ -112,9 +137,10 @@
       this.locationName = stationData.location
       this.roomName = stationData.roomNr
       this.co2_limit = stationData.co2_limit
+      this.old_co2_limit = stationData.co2_limit
       this.co2_reset = stationData.co2_reset
       this.co2ChartOptions = chartStyle.co2ChartOptions(this.co2_limit)
-      this.isFetching = false
+      this.isFetching++
     } catch(err) {
       console.log(err)
       this.$store.dispatch('redirectError')
@@ -130,5 +156,13 @@
 </script>
 
 <style scoped>
-
+.changeButton {
+  background-color: #1a2815;
+  border: none;
+  color: #dbff78;
+  padding: 5px 5px;
+  display: inline-block;
+  font-size: 16px;
+  margin-left: 10px;
+}
 </style>

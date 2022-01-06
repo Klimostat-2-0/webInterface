@@ -73,5 +73,8 @@ export default {
     },
     getCO2Data(stationID) {
         return axiosInt.get('measurement?station=' + stationID + "&sortBy=timestamp%3Adesc&limit=100&page=1")
+    },
+    setNewLimit(stationID, limit, reset) {
+        return axiosInt.patch('station/' + stationID, {"co2_limit": limit, "co2_reset": reset})
     }
 }

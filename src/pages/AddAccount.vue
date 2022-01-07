@@ -35,7 +35,7 @@
     <input class="createButton" type="submit" value="Create" />
   </form>
   <hr>
-  <h1>Delete User</h1>
+  <h1>All Users</h1>
   <div id="flexbox" v-if="!isFetching">
     <user :key="user.id" v-for="user in users" :username="user.name" :email="user.email" :role="user.role" :userId="user.id"/>
   </div>

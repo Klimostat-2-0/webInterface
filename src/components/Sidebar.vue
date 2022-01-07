@@ -14,7 +14,7 @@
         </router-link>
         <router-link v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/adduser" tag="div">
         <i class="icon" :class="'fas fa-user-alt'" />
-        Add Account
+        Edit Users
         </router-link>
         <router-link class="element linkHighlight" to="/about" tag="div">
         <i class="icon" :class="'fas fa-info'" />

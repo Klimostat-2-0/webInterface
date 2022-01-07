@@ -49,5 +49,11 @@ export default ({
     margin-left: auto;
     margin-right: 20px;
     font-size: 20px;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.icon:hover{
+    background-color: rgba(100,100,100,0.5);
 }
 </style>

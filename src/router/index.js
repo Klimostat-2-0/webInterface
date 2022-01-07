@@ -6,6 +6,7 @@ import Room from '../pages/Room'
 import ErrorPage from '../pages/ErrorPage'
 import Dashboard from '../pages/Dashboard'
 import AddAccount from '../pages/AddAccount'
+import Compare from '../pages/Compare.vue'
 import store from "../store/index"
 
 const routes = [
@@ -24,7 +25,8 @@ const routes = [
         name: 'Room',
         component: Room,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            requiresAdminAuth: false
         }
     },
     {
@@ -37,7 +39,8 @@ const routes = [
         name: 'Dashboard',
         component: Dashboard,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            requiresAdminAuth: false
         }
     },
     {
@@ -45,8 +48,22 @@ const routes = [
         name: 'AddUser',
         component: AddAccount,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            requiresAdminAuth: true
         }
+    },{
+        path: '/compare',
+        name: 'Compare',
+        component: Compare,
+        meta: {
+            requiresAuth: true,
+            requiresAdminAuth: false
+        }
+    },
+    {
+        path: "/:pathMatch(.*)*",
+        name: 'default',
+        component: Startpage
     }
 ]
 
@@ -57,6 +74,8 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     if(to.matched.some(record => record.meta.requiresAuth) && !store.getters.getLogInInfo) {
         next('/')
+    } else if(to.matched.some(record => record.meta.requiresAdminAuth) && !store.getters.getAdminAccess){
+        next('/dashboard')
     }else{
         next()
     }

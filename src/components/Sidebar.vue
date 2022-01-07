@@ -12,6 +12,10 @@
         <i class="icon" :class="'fas fa-columns'" />
         Dashboard
         </router-link>
+        <router-link v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/compare" tag="div">
+        <i class="icon" :class="'fas fa-exchange-alt'" />
+        Compare
+        </router-link>
         <router-link v-if="this.$store.getters.getAdminAccess" class="element linkHighlight" to="/adduser" tag="div">
         <i class="icon" :class="'fas fa-user-alt'" />
         Edit Users

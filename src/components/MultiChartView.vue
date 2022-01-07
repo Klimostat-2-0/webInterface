@@ -74,10 +74,9 @@
         }
       },
       loadOriginalData(chartData) {
-        console.log(chartData)
-        this.co2.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.results.map(e => e.co2)))
-        this.temp.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.results.map(e => e.temperature)))
-        this.humidity.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.results.map(e => e.humidity)))
+        this.co2.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.results.map(e => e.co2)).reverse())
+        this.temp.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.results.map(e => e.temperature)).reverse())
+        this.humidity.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.results.map(e => e.humidity)).reverse())
       }
   },
   data() {
@@ -123,13 +122,13 @@
             this.loadOriginalData(chartData)
             this.stationNames.push(station.name)
             this.co2ChartOptions = chartStyle.co2ChartOptions(0)
-            this.isFetching++
         } catch(err) {
             console.log(err)
             this.$store.dispatch('redirectError')
         }
         //this.intervalls = setInterval(this.updateData, 60000)
     }
+    this.isFetching++
 },
   beforeUnmount() {
     clearInterval(this.intervalls)

@@ -60,6 +60,7 @@ export default {
     },
     options: this.options.options
     });
+    console.log("Recived: " + this.chartData)
     for(let i = 0; i < this.chartData.length; i++){
         this.chart.data.datasets.push({
             label: this.chartTitle[i],
@@ -69,6 +70,7 @@ export default {
             borderWidth: 2
         })
     }
+    this.chart.update()
 }
 };
 </script>

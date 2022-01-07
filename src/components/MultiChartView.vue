@@ -1,15 +1,19 @@
 <template>
   <div>
+    <h2>Overview</h2>
+    <round-chart-component :chartTitle='stationNames' :chartData="pieChartValues" :uniqueId="'overviewChart'"
+     :key='isFetching' ref="overview"/>
+    <hr>
     <h2>CO2</h2>
-    <chart-component :options='this.co2ChartOptions' :chartTitle='stationNames' :chartLabel="correctTimeArray"
+    <chart-component :options='this.co2ChartOptions' :chartTitle='stationNames' :chartLabel="displayXNames"
      :chartData="co2" :key='isFetching' :uniqueId="'co2Chart'" ref="co2"/>
     <hr>
     <h2>Temperatur</h2>
-    <chart-component :options='this.tempChartOptions' :chartTitle='stationNames' :chartLabel="correctTimeArray"
+    <chart-component :options='this.tempChartOptions' :chartTitle='stationNames' :chartLabel="displayXNames"
      :chartData="temp" :key='isFetching' :uniqueId="'tempChart'" ref="temp"/>
     <hr>
     <h2>Luftfeuchtigkeit</h2>
-    <chart-component :options='this.humChartOptions' :chartTitle='stationNames' :chartLabel="correctTimeArray"
+    <chart-component :options='this.humChartOptions' :chartTitle='stationNames' :chartLabel="displayXNames"
      :chartData="humidity" :key='isFetching' :uniqueId="'humChart'" ref="hum"/>
   </div>
 </template>
@@ -28,55 +32,12 @@
     RoundChartComponent
   },
   methods: {
-      async changeScale(){
-        try {
-          const res = await dataService.updateCO2DataLongFormet(this.stationId, handleCo2Data.hoursAgoToTimestamp(this.timeScale))
-          this.loadOriginalData({"results": res})
-          this.isFetching++
-        } catch(err){
-          console.log(err)
-          this.$store.dispatch('redirectError')
-        }
-      },
-      async changeInterval(){
-        clearInterval(this.intervalls)
-        this.intervalls = setInterval(this.updateData, this.refreshInterval * 60000)
-      },
-      async updateData(){
-        try {
-          const res = await dataService.updateCO2Data(this.stationId, this.lastTimeStamp)
-          if(res.status != 200) {
-            this.$store.dispatch('redirectError')
-          }
-          const chartData = res.data
-          let updateCo2 = []
-          let updateTemp = []
-          let humidity = []
-          for (const element of chartData.results) {
-            let date = new Date(element.timestamp)
-            let foramted = handleCo2Data.formatDate(this.dayImportance, date)
-            updateCo2.push([foramted, element.co2])
-            updateTemp.push([foramted, element.temperature])
-            humidity.push([foramted, element.humidity])
-          }
-          if(chartData.results.length > 0) {
-            this.lastTimeStamp = chartData.results[0].timestamp.toString()
-          }
-          if(updateCo2.length > 0) {
-            this.$refs.co2.updateData(updateCo2.reverse());
-            this.$refs.overview.updateData(updateCo2.reverse())
-            this.$refs.temp.updateData(updateTemp.reverse());
-            this.$refs.hum.updateData(humidity);
-          }
-        } catch(err) {
-          console.log(err)
-          this.$store.dispatch('redirectError')
-        }
-      },
-      loadOriginalData(chartData) {
-        this.co2.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.results.map(e => e.co2)).reverse())
-        this.temp.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.results.map(e => e.temperature)).reverse())
-        this.humidity.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.results.map(e => e.humidity)).reverse())
+      loadOriginalData(chartData, co2Limit=1500, co2Reset=1100) {
+        let co2Array = handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.map(e => e.co2).reverse())
+        this.pieChartValues.push(handleCo2Data.analyseCo2(co2Array, co2Limit, co2Reset))
+        this.co2.push(co2Array)
+        this.temp.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.map(e => e.temperature).reverse()))
+        this.humidity.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.map(e => e.humidity).reverse()))
       }
   },
   data() {
@@ -94,7 +55,9 @@
       dayImportance: true,
       timeScale: 1,
       refreshInterval: 1,
-      stationNames: []
+      stationNames: [],
+      displayXNames: [],
+      pieChartValues: []
     }
   },
   props: {
@@ -103,22 +66,21 @@
       }
   },
   async created(){
-    const fromTime = handleCo2Data.hoursAgoToTimestamp(this.timeScale)
-    let newestTimestamp = null;
+    const currentDate = new Date()
+    const fromTime = handleCo2Data.hoursAgoToTimestamp(this.timeScale, currentDate)
     for(const station of this.stationObj){
         try {
             let res = await dataService.updateCO2DataLongFormet(station.id, fromTime)
-            if(res.length<=0) res = [handleCo2Data.generateEmptyRequestData(fromTime, station.id)]
-            let chartData = {"results": res}
-            if (newestTimestamp==null){
-                this.timeArray = chartData.results.map(e => new Date(e.timestamp))
-                this.correctTimeArray = handleCo2Data.getValidTimeLine(this.timeArray)
-                this.lastTimeStamp = chartData.results[0].timestamp.toString()
-                this.dayImportance = handleCo2Data.checkDayImportance(this.timeArray)  
-                newestTimestamp = this.lastTimeStamp
-            } else {
-                chartData = {"results": handleCo2Data.filterNewData(chartData.results, newestTimestamp)}
+            if(res.length<=1) continue
+            let chartData = res
+            if (this.correctTimeArray==null){
+                this.correctTimeArray = handleCo2Data.getAbsoluteTimeline(new Date(fromTime), currentDate)
+                this.displayXNames = this.correctTimeArray.map(i => handleCo2Data.formatDate(this.dayImportance, i))
+                this.lastTimeStamp = chartData[0].timestamp.toString()
+                this.dayImportance = handleCo2Data.checkDayImportance(this.correctTimeArray)  
             }
+            chartData = handleCo2Data.filterNewData(chartData, currentDate)
+            this.timeArray = chartData.map(e => new Date(e.timestamp)).reverse()
             this.loadOriginalData(chartData)
             this.stationNames.push(station.name)
             this.co2ChartOptions = chartStyle.co2ChartOptions(0)

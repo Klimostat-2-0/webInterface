@@ -22,7 +22,7 @@
       <input v-on:click="loadComparisonData" class="loadButton" type="button" value="Load"/>
   </div>
   <hr>
-  <div v-if="this.dataLoaded">
+  <div v-if="this.dataLoaded" :key="isFetching">
     <multi-chart-view :stationObj="staionsForComparission"/>
   </div>
 </template>
@@ -32,7 +32,6 @@
   import RoundChartComponent from '../components/RoundChartComponent.vue'
   import dataService from '../services/dataService'
   import MultiChartView from '../components/MultiChartView.vue'
-  import handleCo2Data from '../services/handleCo2Data'
   import chartStyle from '../chartStyles/chartStyles'
 
   export default {

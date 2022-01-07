@@ -1,6 +1,6 @@
 <template>
     <div id="chartContainer">
-        <canvas v-bind:id="chartTitle"></canvas>
+        <canvas v-bind:id="uniqueId"></canvas>
     </div>
 </template>
 
@@ -10,20 +10,14 @@ import Chart from 'chart.js/auto';
 export default {
   props: {
       chartTitle: {
-          type: String,
-          default: "Title"
+          type: Array
       },
       chartData: {
           type: Array
       },
-      co2Limit: {
-          type: Number,
-          default: 1500
-      },
-      co2Reset: {
-          type: Number,
-          default: 1100
-      },
+      uniqueId: {
+          type: String,
+      }
   },
   methods: {
       updateData(newData){
@@ -39,45 +33,31 @@ export default {
   data() {
       this.chart = null
       return {
-          values: [],
-          xValues: [],
           textValues: ["Perfect", "OK", 'Critical']
       }
   },
-  computed: {
-    calcNewValueX: function () {
-      return this.textValues
-    },
-    calcNewValue: function () {
-      let res = [0, 0, 0]
-      this.chartData.map(element => element[1]).forEach((element) => {
-          if(element>this.co2Limit) res[2]++
-          else if(element<this.co2Reset) res[0]++
-          else res[1]++
-      })
-      return res
-    }
-  },
-  async mounted() {
-      const chartElement  = document.getElementById(this.chartTitle);
-      this.xValues = this.calcNewValueX
-      this.values = this.calcNewValue
-      this.chart = new Chart(chartElement , {
-      type: 'doughnut',
-      data: {
-        labels: this.calcNewValueX,
-        datasets: [{
-            label: this.chartTitle,
-            data: this.calcNewValue,
+  mounted() {
+    const chartElement  = document.getElementById(this.uniqueId);
+    this.chart = new Chart(chartElement , {
+        type: 'doughnut',
+        data: {
+            labels: this.textValues,
+            datasets: []
+        }
+    });
+    for(let i = 0; i < this.chartData.length; i++){
+        this.chart.data.datasets.push({
+            label: this.chartTitle[i],
+            data: this.chartData[i],
             backgroundColor: [
             'rgb(73, 190, 182)',
             'rgb(250, 207, 90)',
             'rgb(255, 89, 89)'
             ],
-        }]
+        })
     }
-    });
-}
+    this.chart.update()
+  }
 };
 </script>
 

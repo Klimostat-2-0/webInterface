@@ -17,6 +17,20 @@ function getValidTimeLine(data) {
       return result
 }
 
+function getAbsoluteTimeline(start, end) {
+    let date = roundDate(start)
+    let result = [date]
+    let endDate = roundDate(end)
+    if(start.getTime() > end.getTime()){
+        return
+    }
+    for(let i = 0; ; i++){
+        if(date >= endDate) return result
+        date = roundDate(new Date(date.getTime() + 60000))
+        result.push(date)
+    }
+}
+
 function roundDate (date) {
     let interval = 60000
     return new Date(Math.round(date.getTime() / interval) * interval);
@@ -38,18 +52,12 @@ function checkDayImportance(time){
 
 function mapDataToTime(normTime, time, data) {
     let result = []
-    let timelineCounter = 0;
+    if(time.length != data.length) return
+    let dataPointer = 0;
     let dayImportance = checkDayImportance(time)
-    for(let i = 0; i < data.length; i++){
-        if (normTime.length > timelineCounter) {
-            if(typeof normTime[timelineCounter] == 'object' && normTime[timelineCounter].getTime() == roundDate(time[i]).getTime()){
-                result.push([formatDate(dayImportance, normTime[timelineCounter]), data[i]])
-            }else{
-                result.push([normTime[timelineCounter], data[i]])
-                i--
-            }
-        }
-        timelineCounter++
+    for(let i = 0; i < normTime.length; i++) {
+        result.push([formatDate(dayImportance, normTime[i]), data[dataPointer]])
+        if (normTime[i].getTime() >= roundDate(time[dataPointer]).getTime() && dataPointer < data.length-1) dataPointer++
     }
     return result
 }
@@ -59,28 +67,26 @@ function isCurrentDay(date){
             date.getMonth() == currentDay.getMonth() &&
             date.getFullYear() == currentDay.getFullYear()
   }
-function hoursAgoToTimestamp(hoursAgo){
-    let currentDay = new Date()
+function hoursAgoToTimestamp(hoursAgo, currentDate=new Date()){
     let millsInOneHour = 1000*60*60
-    return new Date(currentDay.getTime()-(millsInOneHour*hoursAgo)).toString()
+    return new Date(currentDate.getTime()-(millsInOneHour*hoursAgo)).toString()
 }
 
 function filterNewData(data, newest){
-    const newestAllowedDate = roundDate(new Date(newest)).getTime()
+    const newestAllowedDate = roundDate(newest).getTime()
     return data.filter(d => roundDate(new Date(d.timestamp)).getTime() <= newestAllowedDate)
 }
 
-function generateEmptyRequestData(timestamp, station){
-    return {
-        "timestamp": timestamp,
-        "temperature": 20,
-        "humidity": 20,
-        "co2": 200,
-        "station": station,
-        "id": "61d7eb4db1e5a37311406e53"
-    }
+function analyseCo2(data, co2Limit, co2Reset){
+    let res = [0, 0, 0]
+    data.map(element => element[1]).forEach((element) => {
+          if(element>co2Limit) res[2]++
+          else if(element<co2Reset) res[0]++
+          else res[1]++
+      })
+      return res
 }
 
 export default {
-    mapDataToTime, getValidTimeLine, checkDayImportance, formatDate, hoursAgoToTimestamp, filterNewData, generateEmptyRequestData
+    mapDataToTime, getValidTimeLine, checkDayImportance, formatDate, hoursAgoToTimestamp, filterNewData, analyseCo2, getAbsoluteTimeline
 }

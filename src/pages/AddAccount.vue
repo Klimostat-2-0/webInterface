@@ -37,7 +37,7 @@
   <hr>
   <h1>All Users</h1>
   <div id="flexbox" v-if="!isFetching">
-    <user :key="user.id" v-for="user in users" :username="user.name" :email="user.email" :role="user.role" :userId="user.id"/>
+    <user @delete-user="deleteUser" :key="user.id" v-for="user in users" :username="user.name" :email="user.email" :role="user.role" :userId="user.id"/>
   </div>
 </template>
 
@@ -51,6 +51,19 @@ import User from '../components/User'
     User
   },
   methods: {
+    async deleteUser(id) {
+      try{
+        const res = await dataService.deleteUser(id)
+        if(res.status != 200 && res.status != 204 ) {
+          this.$store.dispatch('redirectError')
+          return
+        }
+        this.users = this.users.filter((user) => user.id != id)
+      } catch{
+        console.log(err)
+        this.$store.dispatch('redirectError')
+      }
+    },
     async onClick(e) {
       if (this.password == this.secondPassword && this.password.length >= 8 && /\d/.test(this.password) && /\w/.test(this.password)) {
         try{
@@ -61,12 +74,13 @@ import User from '../components/User'
           this.password = ''
           this.secondPassword = ''
           this.isAdmin = false
-          if(res.status != 200) {
+          if(res.status != 201) {
             this.msgColor = "red"
             this.successMsg = "There was an error while creating the user"
           } else {
             this.msgColor = "green"
             this.successMsg = "You Successfully created a new user"
+            this.users.push(res.data)
           }
         } catch(err){
           this.msgColor = "red"

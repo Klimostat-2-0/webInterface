@@ -4,15 +4,22 @@
     <div>
     Email: {{email}}
     <br>
-    Role {{role}}
+    Role: {{role}}
     </div>
-    <i class="icon" :class="'fas fa-trash-alt'" />
+    <div class="icon" v-on:click="deleteUser">
+        <i :class="'fas fa-trash-alt'" />
+    </div>
 </div>
 </template>
 
 <script>
 
 export default ({
+    methods: {
+        deleteUser(){
+            this.$emit('delete-user', this.userId)
+        }
+    },
     props: {
       username: {
           type: String,

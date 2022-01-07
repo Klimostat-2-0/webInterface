@@ -96,5 +96,8 @@ export default {
     },
     getAllUsers() {
         return axiosInt.get('users')
+    },
+    deleteUser(id) {
+        return axiosInt.delete('users/' + id)
     }
 }

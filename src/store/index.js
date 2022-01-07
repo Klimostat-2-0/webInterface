@@ -6,14 +6,16 @@ export default createStore({
     state: {
         tokens: localStorage.getItem("tokens") || null,
         tokenObj: localStorage.getItem("tokenObj") || null,
+        isAdmin: localStorage.getItem("isAdmin") == 'true' || false,
         showLoginError: null,
-        loggedIn: localStorage.getItem("loggedIn") || false,
+        loggedIn: localStorage.getItem("loggedIn") == 'true' || false,
         dashboardValues: []
     },
     mutations: {
-      auth_success(state, tokens) {
-        state.tokens = tokens.access.token
-        state.tokenObj = JSON.stringify(tokens)
+      auth_success(state, data) {
+        state.tokens = data[0].access.token
+        state.tokenObj = JSON.stringify(data[0])
+        state.isAdmin = data[1]
         state.showLoginError = null
         state.loggedIn = true
       },
@@ -27,7 +29,8 @@ export default createStore({
         state.tokens = null,
         state.tokenObj = null,
         state.showLoginError = null,
-        state.loggedIn = false
+        state.loggedIn = false,
+        state.isAdmin = false
       },
       updateDashboard(state, data) {
         state.dashboardValues[data[0]] = data[1]
@@ -42,7 +45,8 @@ export default createStore({
               localStorage.setItem("tokens", data.tokens.access.token)
               localStorage.setItem("tokenObj", JSON.stringify(data.tokens))
               localStorage.setItem("loggedIn", true)
-              commit("auth_success", data.tokens)
+              localStorage.setItem("isAdmin", data.user.role=='admin')
+              commit("auth_success", [data.tokens, (data.user.role=='admin')])
               router.push('Dashboard')
             }else {
               commit("wrong_user")
@@ -56,6 +60,7 @@ export default createStore({
           localStorage.removeItem("tokens")
           localStorage.removeItem("tokenObj")
           localStorage.removeItem("loggedIn")
+          localStorage.removeItem("isAdmin")
           commit("logout")
         },
         redirectError({commit}){
@@ -68,7 +73,7 @@ export default createStore({
           localStorage.setItem("tokens", tokenObj.tokens.access.token)
           localStorage.setItem("tokenObj", JSON.stringify(tokenObj.tokens))
           localStorage.setItem("loggedIn", true)
-          commit("auth_success", tokenObj.tokens)
+          commit("auth_success", [tokenObj.tokens, localStorage.getItem('isAdmin')])
         }
     },
     modules: {
@@ -86,6 +91,13 @@ export default createStore({
       },
       getLogInInfo: state => {
         return state.loggedIn
+      },
+      getAdminAccess: state => {
+        if(state.loggedIn && state.isAdmin) {
+          return true
+        } else {
+          return false
+        }
       }
     }
 }) 

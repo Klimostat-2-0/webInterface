@@ -8,8 +8,9 @@
       <br>
       <label>CO2 Limit:</label>
       <div class="formElement">
-      <input onkeydown="return false" step="100" v-model="co2_limit" min="300" max="3000" type="number" name="co2Limit" />
-      <input v-on:click="changeLimit" class="changeButton" type="button" value="ChangeLimit" />
+      <input onkeydown="return false" step="100" v-model="co2_limit" min="300" max="3000" type="number" name="co2Limit" 
+      :readonly="!this.$store.getters.getAdminAccess"/>
+      <input v-on:click="changeLimit" class="changeButton" type="button" value="ChangeLimit" v-if="this.$store.getters.getAdminAccess"/>
       <p :style="{ color: 'red'}" class="userMsg" v-if="errorMsg != null">{{errorMsg}}</p>
       </div>
       <br>

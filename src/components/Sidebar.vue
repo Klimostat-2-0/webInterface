@@ -12,7 +12,7 @@
         <i class="icon" :class="'fas fa-columns'" />
         Dashboard
         </router-link>
-        <router-link v-if="this.$store.state.loggedIn" class="element linkHighlight" to="/adduser" tag="div">
+        <router-link v-if="this.$store.getters.getAdminAccess" class="element linkHighlight" to="/adduser" tag="div">
         <i class="icon" :class="'fas fa-user-alt'" />
         Edit Users
         </router-link>
@@ -32,6 +32,13 @@ export default {
     methods: {
         logOut(e) {
             this.$store.dispatch('logout')
+        }
+    },
+    computed: {
+        checkAdminRights: function() {
+            let allowed = (this.$store.state.loggedIn && this.$store.state.isAdmin)
+            console.log("Perm: " + allowed)
+            return allowed
         }
     }
 }

@@ -90,5 +90,11 @@ export default {
     },
     setNewLimit(stationID, limit, reset) {
         return axiosInt.patch('station/' + stationID, {"co2_limit": limit, "co2_reset": reset})
+    },
+    createUser(username, email, password, role) {
+        return axiosInt.post('users', {"name": username, "email": email, "password": password, "role": role})
+    },
+    getAllUsers() {
+        return axiosInt.get('users')
     }
 }

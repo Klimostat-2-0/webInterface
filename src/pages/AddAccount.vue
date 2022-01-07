@@ -1,52 +1,111 @@
 <template>
   <h1>Add User</h1>
-  <p>Add or delete User Accounts here</p>
   <form @submit.prevent="onClick">
     <div>
+      <label>Username: </label>
+      <div class="formElement">
+        <input v-model="username" type="text" name="username" placeholder="Username" required/>
+      </div>
+    </div>
+    <div>
       <label>Email: </label>
-      <input v-model="email" type="email" name="username" placeholder="Email" />
+      <div class="formElement">
+        <input v-model="email" type="email" name="email" placeholder="Email" required/>
+      </div>
     </div>
     <div>
       <label>Passwort: </label>
-      <input v-model="password" type="password" name="password" placeholder="Password" />
+      <div class="formElement">
+        <input v-model="password" type="password" name="password" placeholder="Password" required/>
+      </div>
     </div>
     <div>
       <label>Repeat password: </label>
-      <input v-model="secondPassword" type="password" name="password" placeholder="Password" />
+      <div class="formElement">
+        <input v-model="secondPassword" type="password" name="password" placeholder="Password" required/>
+      </div>
+    </div>
+    <div>
+      <label>Is Admin: </label>
+      <div class="formElement">
+        <input v-model="isAdmin" type="checkbox" name="isAdmin" placeholder="isAdmin"/>
+      </div>
     </div>
     <p :style="{ color: msgColor}" class="userMsg" v-if="successMsg != null">{{successMsg}}</p>
     <input class="createButton" type="submit" value="Create" />
   </form>
+  <hr>
+  <h1>Delete User</h1>
+  <div id="flexbox" v-if="!isFetching">
+    <user :key="user.id" v-for="user in users" :username="user.name" :email="user.email" :role="user.role" :userId="user.id"/>
+  </div>
 </template>
 
 <script>
+import dataService from '../services/dataService'
+import User from '../components/User'
   export default {
 
   name: 'AddAccount',
   components: {
-    
+    User
   },
   methods: {
-    onClick(e) {
-      if (this.password == this.secondPassword) {
-        this.msgColor = "green"
-        this.successMsg = "You Successfully created a new user"
+    async onClick(e) {
+      if (this.password == this.secondPassword && this.password.length >= 8 && /\d/.test(this.password) && /\w/.test(this.password)) {
+        try{
+          let role = this.isAdmin ? 'admin' : "user"
+          const res = await dataService.createUser(this.username, this.email, this.password, role)
+          this.username = ''
+          this.email = ''
+          this.password = ''
+          this.secondPassword = ''
+          this.isAdmin = false
+          if(res.status != 200) {
+            this.msgColor = "red"
+            this.successMsg = "There was an error while creating the user"
+          } else {
+            this.msgColor = "green"
+            this.successMsg = "You Successfully created a new user"
+          }
+        } catch(err){
+          this.msgColor = "red"
+          this.successMsg = "There was an error while creating the user"
+        }
       } else {
         this.msgColor = "red"
-        this.successMsg = "There was an error while creating the user"
+        this.successMsg = "The password has to be at least 8 characters long and contain numbers and letters"
       }
-      
+      e.target.reset()
+      setTimeout(() => this.successMsg = null, 5000)
     }
   },
   data() {
     return {
+      username: '',
       email: '',
       password: '',
       secondPassword: '',
+      isAdmin: false,
       successMsg: null,
-      msgColor: "green"
+      msgColor: "green",
+      users: [],
+      isFetching: true
     }
   },
+  async created() {
+    try{
+      const res = await dataService.getAllUsers()
+      if(res.status != 200){
+        this.$store.dispatch('redirectError')
+      }
+      this.users = res.data.results
+      this.isFetching = false
+    } catch(err){
+      console.log(err)
+      this.$store.dispatch('redirectError')
+    }
+  }
 }
 </script>
 
@@ -76,5 +135,16 @@ label {
 .error {
   font-size: 14px;
   color: red;
+}
+.formElement {
+  display: inline-block;
+  width: 200px;
+  text-align: left;
+  margin: 0%;
+}
+#flexbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

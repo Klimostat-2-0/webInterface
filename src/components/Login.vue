@@ -20,6 +20,7 @@ export default {
   methods: {
     onClick(e) {
       this.$store.dispatch('login', JSON.stringify({"email": this.username, "password": this.password}))
+      e.target.reset()
     }
   },
   data() {

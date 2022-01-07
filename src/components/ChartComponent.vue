@@ -1,6 +1,6 @@
 <template>
     <div id="chartContainer">
-        <canvas v-bind:id="chartTitle"></canvas>
+        <canvas v-bind:id="uniqueId"></canvas>
     </div>
 </template>
 
@@ -12,8 +12,10 @@ Chart.register(annotationPlugin);
 export default {
   props: {
       chartTitle: {
-          type: String,
-          default: "Title"
+          type: Array,
+      },
+      chartLabels: {
+          type: Array
       },
       chartData: {
           type: Array
@@ -28,6 +30,9 @@ export default {
             color: 'rgb(255, 89, 89, 1)',
             backgroundColor: 'rgb(255, 89, 89, 0.65)'
           }
+      },
+      uniqueId: {
+          type: String,
       }
   },
   methods: {
@@ -43,37 +48,27 @@ export default {
   },
   data() {
       this.chart = null
-      return {
-          values: [],
-          xValues: [],
-      }
-  },
-  computed: {
-    calcNewValueX: function () {
-      return this.chartData.map(element => element[0]).reverse()
-    },
-    calcNewValue: function () {
-      return this.chartData.map(element => element[1]).reverse()
-    }
+      return {}
   },
   async mounted() {
-      const chartElement  = document.getElementById(this.chartTitle);
-      this.xValues = this.calcNewValueX
-      this.values = this.calcNewValue
+      const chartElement  = document.getElementById(this.uniqueId);
       this.chart = new Chart(chartElement , {
       type: 'line',
       data: {
-        labels: this.calcNewValueX,
-        datasets: [{
-            label: this.chartTitle,
-            data: this.calcNewValue,
-            borderColor: this.options.color,
-            backgroundColor: this.options.backgroundColor,
-            borderWidth: 2
-        }]
+        labels: this.chartLabels,
+        datasets: []
     },
     options: this.options.options
     });
+    for(let i = 0; i < this.chartData.length; i++){
+        this.chart.data.datasets.push({
+            label: this.chartTitle[i],
+            data: this.chartData[i],
+            borderColor: this.options.color,
+            backgroundColor: this.options.backgroundColor,
+            borderWidth: 2
+        })
+    }
 }
 };
 </script>

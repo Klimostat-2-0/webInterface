@@ -7,14 +7,14 @@
       <label>Station1</label>
       <div class="formElement">
       <select v-model="station1" name="station1" id="station1">
-        <option v-for="station in stations" :key="station.id" :value="station.id">{{station.name}}</option>
+        <option v-for="station in stations" :key="station.id" :value="JSON.stringify(station)">{{station.name}}</option>
       </select>
       </div>
       <br>
       <label>Station2</label>
       <div class="formElement">
       <select v-model="station2" name="station2" id="station2">
-        <option v-for="station in stations" :key="station.id" :value="station.id">{{station.name}}</option>
+        <option v-for="station in stations" :key="station.id" :value="JSON.stringify(station)">{{station.name}}</option>
       </select>
       </div>
       <br>
@@ -23,14 +23,7 @@
   </div>
   <hr>
   <div v-if="this.dataLoaded">
-    <h2>CO2</h2>
-    <chart-component :options='this.co2ChartOptions' :chartTitle='"ppm"' :chartData="co2" :key='isFetching' ref="co2"/>
-    <hr>
-    <h2>Temperatur</h2>
-    <chart-component :options='this.tempChartOptions' :chartTitle='"Grad"' :chartData="temp" :key='isFetching' ref="temp"/>
-    <hr>
-    <h2>Luftfeuchtigkeit</h2>
-    <chart-component :options='this.humChartOptions' :chartTitle='"Prozent"' :chartData="humidity" :key='isFetching' ref="hum"/>
+    <multi-chart-view :stationObj="staionsForComparission"/>
   </div>
 </template>
 
@@ -38,6 +31,7 @@
   import ChartComponent from '../components/ChartComponent'
   import RoundChartComponent from '../components/RoundChartComponent.vue'
   import dataService from '../services/dataService'
+  import MultiChartView from '../components/MultiChartView.vue'
   import handleCo2Data from '../services/handleCo2Data'
   import chartStyle from '../chartStyles/chartStyles'
 
@@ -45,13 +39,16 @@
   name: 'Compare',
   components: {
     ChartComponent,
-    RoundChartComponent
+    RoundChartComponent,
+    MultiChartView
   },
   methods: {
       loadComparisonData(){
           if(this.station1 != '' && this.station2 != ''){
-            console.log(this.station1)
-            console.log(this.station2)
+            this.staionsForComparission.push(JSON.parse(this.station1))
+            this.staionsForComparission.push(JSON.parse(this.station2))
+            this.dataLoaded = true
+            this.isFetching++
           }
       }
   },
@@ -64,7 +61,8 @@
       stations: [],
       station1: '',
       station2: '',
-      dataLoaded: false
+      dataLoaded: false,
+      staionsForComparission: []
     }
   },
   async created(){

@@ -70,6 +70,17 @@ function filterNewData(data, newest){
     return data.filter(d => roundDate(new Date(d.timestamp)).getTime() <= newestAllowedDate)
 }
 
+function generateEmptyRequestData(timestamp, station){
+    return {
+        "timestamp": timestamp,
+        "temperature": 20,
+        "humidity": 20,
+        "co2": 200,
+        "station": station,
+        "id": "61d7eb4db1e5a37311406e53"
+    }
+}
+
 export default {
-    mapDataToTime, getValidTimeLine, checkDayImportance, formatDate, hoursAgoToTimestamp, filterNewData
+    mapDataToTime, getValidTimeLine, checkDayImportance, formatDate, hoursAgoToTimestamp, filterNewData, generateEmptyRequestData
 }

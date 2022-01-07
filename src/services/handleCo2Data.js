@@ -65,6 +65,11 @@ function hoursAgoToTimestamp(hoursAgo){
     return new Date(currentDay.getTime()-(millsInOneHour*hoursAgo)).toString()
 }
 
+function filterNewData(data, newest){
+    const newestAllowedDate = roundDate(new Date(newest)).getTime()
+    return data.filter(d => roundDate(new Date(d.timestamp)).getTime() <= newestAllowedDate)
+}
+
 export default {
-    mapDataToTime, getValidTimeLine, checkDayImportance, formatDate, hoursAgoToTimestamp
+    mapDataToTime, getValidTimeLine, checkDayImportance, formatDate, hoursAgoToTimestamp, filterNewData
 }

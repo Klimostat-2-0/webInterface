@@ -2,7 +2,27 @@
   <h1>Compare</h1>
   <p>On this page you can compare the data of two stations.</p>
   <hr>
-  <div>
+  <h2>Select you station</h2>
+  <div :key="this.isFetching">
+      <label>Station1</label>
+      <div class="formElement">
+      <select v-model="station1" name="station1" id="station1">
+        <option v-for="station in stations" :key="station.id" :value="station.id">{{station.name}}</option>
+      </select>
+      </div>
+      <br>
+      <label>Station2</label>
+      <div class="formElement">
+      <select v-model="station2" name="station2" id="station2">
+        <option v-for="station in stations" :key="station.id" :value="station.id">{{station.name}}</option>
+      </select>
+      </div>
+      <br>
+      <br>
+      <input v-on:click="loadComparisonData" class="loadButton" type="button" value="Load"/>
+  </div>
+  <hr>
+  <div v-if="this.dataLoaded">
     <h2>CO2</h2>
     <chart-component :options='this.co2ChartOptions' :chartTitle='"ppm"' :chartData="co2" :key='isFetching' ref="co2"/>
     <hr>
@@ -22,44 +42,45 @@
   import chartStyle from '../chartStyles/chartStyles'
 
   export default {
-  name: 'Room',
+  name: 'Compare',
   components: {
     ChartComponent,
     RoundChartComponent
   },
   methods: {
-      loadOriginalData(chartData) {
-        this.lastTimeStamp = chartData.results[0].timestamp.toString()
-        let timeArray =  chartData.results.map(e => new Date(e.timestamp))
-        let correctTimeline = handleCo2Data.getValidTimeLine(timeArray)
-        this.co2 = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.co2))
-        this.temp = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.temperature))
-        this.humidity = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.humidity))
-        this.dayImportance = handleCo2Data.checkDayImportance(timeArray)
+      loadComparisonData(){
+          if(this.station1 != '' && this.station2 != ''){
+            console.log(this.station1)
+            console.log(this.station2)
+          }
       }
   },
   data() {
     return {
-      co2: [],
-      temp: [],
-      humidity: [],
-      stationId: String,
       isFetching: 0,
-      lastTimeStamp: "",
-      stationName: "",
-      locationName: "",
-      roomName: "",
-      co2_limit: 1500,
-      old_co2_limit: 1500,
-      co2_reset: 1100,
       co2ChartOptions: chartStyle.co2ChartOptions(1500),
       tempChartOptions: chartStyle.tempChartOptions(),
       humChartOptions: chartStyle.humChartOptions(),
-      dayImportance: true,
-      timeScale: 1,
+      stations: [],
+      station1: '',
+      station2: '',
+      dataLoaded: false
     }
   },
-  created(){   
+  async created(){
+      try {
+      const res = await dataService.getStations()
+      if(res.status != 200) {
+        this.$store.dispatch('redirectError')
+        return
+      }
+      const stations = res.data
+      this.stations = stations.results
+      this.isFetching++
+    } catch(err) {
+      console.log(err)
+      this.$store.dispatch('redirectError')
+    } 
   },
   beforeUnmount() {
   }
@@ -67,15 +88,6 @@
 </script>
 
 <style scoped>
-.changeButton {
-  background-color: #1a2815;
-  border: none;
-  color: #dbff78;
-  padding: 5px 5px;
-  display: inline-block;
-  font-size: 16px;
-  margin-left: 10px;
-}
 label {
     display: inline-block;
     width: 140px;
@@ -87,5 +99,15 @@ label {
     width: 200px;
     text-align: left;
     margin: 5px
+}
+.loadButton {
+  background-color: #1a2815;
+  border: none;
+  color: #dbff78;
+  padding: 5px;
+  width: 80px;
+  display: inline-block;
+  font-size: 16px;
+  margin-left: 10px;
 }
 </style>

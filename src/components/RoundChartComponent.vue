@@ -21,12 +21,11 @@ export default {
   },
   methods: {
       updateData(newData){
-        for (const element of newData) {
-            let res = 0
-            if(element[1]>this.co2Reset) res = 1
-            if(element[1]>this.co2Limit) res = 2
-            this.chart.data.datasets[0].data[res]++
-        }
+          for(let i = 0; i < newData.length; i++){
+              for(let j = 0; j < newData[i].length; j++){
+                  this.chart.data.datasets[i].data[j] += newData[i][j]
+              }
+          }
         this.chart.update();
       }
   },

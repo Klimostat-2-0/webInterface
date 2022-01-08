@@ -19,7 +19,7 @@ function getValidTimeLine(data) {
 
 function getAbsoluteTimeline(start, end) {
     let date = roundDate(start)
-    let result = [date]
+    let result = []
     let endDate = roundDate(end)
     if(start.getTime() > end.getTime()){
         return
@@ -53,11 +53,9 @@ function checkDayImportance(time){
 function mapDataToTime(normTime, time, data) {
     let result = []
     if(time.length != data.length) return
-    let dataPointer = 0;
     let dayImportance = checkDayImportance(time)
-    for(let i = 0; i < normTime.length; i++) {
-        result.push([formatDate(dayImportance, normTime[i]), data[dataPointer]])
-        if (normTime[i].getTime() >= roundDate(time[dataPointer]).getTime() && dataPointer < data.length-1) dataPointer++
+    for(let i = 0; i < time.length; i++) {
+        result.push([formatDate(dayImportance, time[i]), data[i]])
     }
     return result
 }
@@ -69,12 +67,13 @@ function isCurrentDay(date){
   }
 function hoursAgoToTimestamp(hoursAgo, currentDate=new Date()){
     let millsInOneHour = 1000*60*60
-    return new Date(currentDate.getTime()-(millsInOneHour*hoursAgo)).toString()
+    return roundDate(new Date(currentDate.getTime()-(millsInOneHour*hoursAgo))).toString()
 }
 
-function filterNewData(data, newest){
-    const newestAllowedDate = roundDate(newest).getTime()
-    return data.filter(d => roundDate(new Date(d.timestamp)).getTime() <= newestAllowedDate)
+function filterOldData(data, oldest){
+    const oldestAllowedDate = roundDate(oldest).getTime()
+    console.log(new Date(oldestAllowedDate))
+    return data.filter(d => roundDate(new Date(d.timestamp)).getTime() > oldestAllowedDate)
 }
 
 function analyseCo2(data, co2Limit, co2Reset){
@@ -88,5 +87,5 @@ function analyseCo2(data, co2Limit, co2Reset){
 }
 
 export default {
-    mapDataToTime, getValidTimeLine, checkDayImportance, formatDate, hoursAgoToTimestamp, filterNewData, analyseCo2, getAbsoluteTimeline
+    mapDataToTime, getValidTimeLine, checkDayImportance, formatDate, hoursAgoToTimestamp, filterOldData, analyseCo2, getAbsoluteTimeline
 }

@@ -36,12 +36,10 @@ export default {
       }
   },
   methods: {
-      updateData(newData){
-        for (const element of newData) {
-            this.chart.data.labels.push(element[0]);
-            this.chart.data.datasets.forEach((dataset) => {
-            dataset.data.push(element[1]);
-        });
+      updateData(labels, newData){
+        this.chart.data.labels.push(labels);
+        for(let i = 0; i < newData.length; i++){
+            this.chart.data.datasets[i].data.push(newData[i])
         }
         this.chart.update();
       }

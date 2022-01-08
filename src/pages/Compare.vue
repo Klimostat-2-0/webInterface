@@ -44,8 +44,7 @@
   methods: {
       loadComparisonData(){
           if(this.station1 != '' && this.station2 != ''){
-            this.staionsForComparission.push(JSON.parse(this.station1))
-            this.staionsForComparission.push(JSON.parse(this.station2))
+            this.staionsForComparission=[JSON.parse(this.station1), JSON.parse(this.station2)]
             this.dataLoaded = true
             this.isFetching++
           }

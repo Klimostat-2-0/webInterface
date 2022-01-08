@@ -72,7 +72,6 @@ function hoursAgoToTimestamp(hoursAgo, currentDate=new Date()){
 
 function filterOldData(data, oldest){
     const oldestAllowedDate = roundDate(oldest).getTime()
-    console.log(new Date(oldestAllowedDate))
     return data.filter(d => roundDate(new Date(d.timestamp)).getTime() > oldestAllowedDate)
 }
 

@@ -20,13 +20,13 @@ export default {
       }
   },
   methods: {
-      updateData(newData){
+      updateData(newData){ 
           for(let i = 0; i < newData.length; i++){
               for(let j = 0; j < newData[i].length; j++){
                   this.chart.data.datasets[i].data[j] += newData[i][j]
               }
           }
-        this.chart.update();
+          this.chart.update();
       }
   },
   data() {

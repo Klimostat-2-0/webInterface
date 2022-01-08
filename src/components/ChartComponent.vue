@@ -7,6 +7,7 @@
 <script>
 import Chart from 'chart.js/auto';
 import annotationPlugin from 'chartjs-plugin-annotation';
+
 Chart.register(annotationPlugin);
 
 export default {
@@ -36,35 +37,62 @@ export default {
       }
   },
   methods: {
-      updateData(labels, newData){
-        this.chart.data.labels.push(labels);
+    updateData(labels, newData){
+        console.log("Recived update")
+        if(newData.length != this.chart.data.datasets.length) return
+        for(let i = 0; i < labels.length; i++){
+            this.chart.data.labels.push(labels[i]);
+        }
         for(let i = 0; i < newData.length; i++){
-            this.chart.data.datasets[i].data.push(newData[i])
+            let formatedData = this.parseChartData(newData[i])
+            for(let j = 0; j < formatedData.length; j++){
+                this.chart.data.datasets[i].data.push(formatedData[j])
+
+            }
         }
         this.chart.update();
+        console.log("Finished update")
+      },
+      parseChartData(data) {
+          let res = []
+          for(let i = 0; i<data.length; i++){
+              let d = data[i]
+              res.push({x: d[0], y:d[1]})
+          }
+          return res
+      },
+      extractData(data) {
+          let res = []
+          for(let i = 0; i < data.length; i++){
+              res.push(data[i])
+          }
+          return res
       }
   },
   data() {
       this.chart = null
-      return {}
+      return {
+          helper: []
+      }
   },
   async mounted() {
       const chartElement  = document.getElementById(this.uniqueId);
       this.chart = new Chart(chartElement , {
       type: 'line',
       data: {
-        labels: this.chartLabels,
+        labels: this.extractData(this.chartLabels),
         datasets: []
     },
     options: this.options.options
     });
     for(let i = 0; i < this.chartData.length; i++){
+        let formatedChartData = this.parseChartData(this.chartData[i])
         this.chart.data.datasets.push({
             label: this.chartTitle[i],
-            data: this.chartData[i],
+            data: this.extractData(formatedChartData),
             borderColor: this.options.color,
             backgroundColor: this.options.backgroundColor,
-            borderWidth: 2
+            borderWidth: 2,
         })
     }
     this.chart.update()

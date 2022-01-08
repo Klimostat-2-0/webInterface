@@ -35,7 +35,6 @@
       async updateData(){
         const currentDate = new Date()
         const fromTime = this.lastTimeStamp
-        this.lastTimeStamp = []
         let updatingCorrectTime = handleCo2Data.getAbsoluteTimeline(this.displayXNamesLastUpdate, currentDate)
         let updatingDisplayNames = updatingCorrectTime.map(i => handleCo2Data.formatDate(this.dayImportance, i))
         this.displayXNamesLastUpdate = currentDate
@@ -46,9 +45,15 @@
         for(let i = 0; i < this.stationObj.length; i++){
             try {
                 let res = await dataService.updateCO2DataLongFormet(this.stationObj[i].id, fromTime[i])
-                if(res.length<=0) continue
+                if(res.length<=0){
+                  updatePieChart.push([])
+                  updatingCo2.push([])
+                  updatingTemp.push([])
+                  updatingHum.push([])
+                  continue
+                } 
                 let chartData = res
-                this.lastTimeStamp.push(chartData[0].timestamp.toString())
+                this.lastTimeStamp[i] = chartData[0].timestamp.toString()
                 let currentTimeArray = chartData.map(e => new Date(e.timestamp)).reverse()
                 let co2Array = handleCo2Data.mapDataToTime(updatingCorrectTime, currentTimeArray, chartData.map(e => e.co2).reverse())
                 updatePieChart.push(handleCo2Data.analyseCo2(co2Array, this.stationObj[i].co2_limit, this.stationObj[i].co2_reset))
@@ -60,17 +65,10 @@
                 this.$store.dispatch('redirectError')
             }
         }
-        console.log(updatingDisplayNames)
-        console.log(updatingCo2)
-        console.log(updatingTemp)
-        console.log(updatingHum)
-        console.log(updatePieChart)
-        if(updatingCo2.length > 0) {
-            this.$refs.overview.updateData(updatePieChart)
-            /*this.$refs.co2.updateData(updatingDisplayNames, updatingCo2);
-            this.$refs.temp.updateData(updatingDisplayNames, updatingTemp);
-            this.$refs.hum.updateData(updatingDisplayNames, updatingHum);*/
-          }
+        this.$refs.overview.updateData(updatePieChart)
+        this.$refs.co2.updateData(updatingDisplayNames, updatingCo2);
+        //this.$refs.temp.updateData(updatingDisplayNames, updatingTemp);
+        //this.$refs.hum.updateData(updatingDisplayNames, updatingHum);
       },
       loadOriginalData(chartData, co2Limit=1500, co2Reset=1100) {
         let co2Array = handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.map(e => e.co2).reverse())
@@ -129,8 +127,6 @@
             this.$store.dispatch('redirectError')
         }
     }
-    console.log(this.co2)
-    console.log(this.displayXNames)
     this.intervalls = setInterval(this.updateData, 60000)
     this.isFetching++
 },

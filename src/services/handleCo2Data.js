@@ -33,7 +33,7 @@ function getAbsoluteTimeline(start, end) {
 
 function roundDate (date) {
     let interval = 60000
-    return new Date(Math.round(date.getTime() / interval) * interval);
+    return new Date(Math.floor(date.getTime() / interval) * interval);
 };
 
 function formatDate(dayIsImportant, date) {
@@ -86,5 +86,6 @@ function analyseCo2(data, co2Limit, co2Reset){
 }
 
 export default {
-    mapDataToTime, getValidTimeLine, checkDayImportance, formatDate, hoursAgoToTimestamp, filterOldData, analyseCo2, getAbsoluteTimeline
+    mapDataToTime, getValidTimeLine, checkDayImportance, formatDate, 
+    hoursAgoToTimestamp, filterOldData, analyseCo2, getAbsoluteTimeline, roundDate
 }

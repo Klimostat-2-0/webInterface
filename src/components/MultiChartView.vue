@@ -80,6 +80,8 @@
       async setupData() {
         const currentDate = new Date()
         const fromTime = handleCo2Data.hoursAgoToTimestamp(this.range, currentDate)
+        console.log(currentDate)
+        console.log(handleCo2Data.roundDate(currentDate))
         this.correctTimeArray = handleCo2Data.getAbsoluteTimeline(new Date(fromTime), currentDate)
         this.dayImportance = handleCo2Data.checkDayImportance(this.correctTimeArray)  
         this.displayXNames = this.correctTimeArray.map(i => handleCo2Data.formatDate(this.dayImportance, i))

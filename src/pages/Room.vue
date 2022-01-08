@@ -38,32 +38,20 @@
       <br>
       <br>
     </h4>
-    <round-chart-component :co2Limit='co2_limit' :co2Reset='co2_reset' 
-    :chartTitle='"overview"' :chartData="co2" :key='isFetching' ref="overview"/>
-    <hr>
-    <h2>CO2</h2>
-    <chart-component :options='this.co2ChartOptions' :chartTitle='"ppm"' :chartData="co2" :key='isFetching' ref="co2"/>
-    <hr>
-    <h2>Temperatur</h2>
-    <chart-component :options='this.tempChartOptions' :chartTitle='"Grad"' :chartData="temp" :key='isFetching' ref="temp"/>
-    <hr>
-    <h2>Luftfeuchtigkeit</h2>
-    <chart-component :options='this.humChartOptions' :chartTitle='"Prozent"' :chartData="humidity" :key='isFetching' ref="hum"/>
+    <div :key="isFetching">
+      <multi-chart-view :stationObj="station" :range="timeScale" ref="charts"/>
+  </div>
   </div>
 </template>
 
 <script>
-  import ChartComponent from '../components/ChartComponent'
-  import RoundChartComponent from '../components/RoundChartComponent.vue'
   import dataService from '../services/dataService'
-  import handleCo2Data from '../services/handleCo2Data'
-  import chartStyle from '../chartStyles/chartStyles'
+  import MultiChartView from '../components/MultiChartView.vue'
 
   export default {
   name: 'Room',
   components: {
-    ChartComponent,
-    RoundChartComponent
+    MultiChartView
   },
   methods: {
       async changeLimit() {
@@ -75,10 +63,14 @@
               this.errorMsg = "Couldn't update the limit"
               return
             }
-            const changedData = res.data
+            const res2 = await dataService.getStationsById(this.stationId)
+            if(res2.status != 200) {
+              this.$store.dispatch('redirectError')
+            }
+            const changedData = res2.data
             this.co2_limit = changedData.co2_limit
             this.co2_reset = changedData.co2_reset
-            this.co2ChartOptions = chartStyle.co2ChartOptions(this.co2_limit)
+            this.station = [changedData]
             this.isFetching++
             this.errorMsg = null
           } catch(err) {
@@ -88,112 +80,49 @@
         }
       },
       async changeScale(){
-        try {
-          const res = await dataService.updateCO2DataLongFormet(this.stationId, handleCo2Data.hoursAgoToTimestamp(this.timeScale))
-          this.loadOriginalData({"results": res})
-          this.isFetching++
-        } catch(err){
-          console.log(err)
-          this.$store.dispatch('redirectError')
-        }
+        this.isFetching++
       },
       async changeInterval(){
-        clearInterval(this.intervalls)
-        this.intervalls = setInterval(this.updateData, this.refreshInterval * 60000)
-      },
-      async updateData(){
-        try {
-          const res = await dataService.updateCO2Data(this.stationId, this.lastTimeStamp)
-          if(res.status != 200) {
-            this.$store.dispatch('redirectError')
-          }
-          const chartData = res.data
-          let updateCo2 = []
-          let updateTemp = []
-          let humidity = []
-          for (const element of chartData.results) {
-            let date = new Date(element.timestamp)
-            let foramted = handleCo2Data.formatDate(this.dayImportance, date)
-            updateCo2.push([foramted, element.co2])
-            updateTemp.push([foramted, element.temperature])
-            humidity.push([foramted, element.humidity])
-          }
-          if(chartData.results.length > 0) {
-            this.lastTimeStamp = chartData.results[0].timestamp.toString()
-          }
-          if(updateCo2.length > 0) {
-            this.$refs.co2.updateData(updateCo2.reverse());
-            this.$refs.overview.updateData(updateCo2.reverse())
-            this.$refs.temp.updateData(updateTemp.reverse());
-            this.$refs.hum.updateData(humidity);
-          }
-        } catch(err) {
-          console.log(err)
-          this.$store.dispatch('redirectError')
-        }
-      },
-      loadOriginalData(chartData) {
-        this.lastTimeStamp = chartData.results[0].timestamp.toString()
-        let timeArray =  chartData.results.map(e => new Date(e.timestamp))
-        let correctTimeline = handleCo2Data.getValidTimeLine(timeArray)
-        this.co2 = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.co2))
-        this.temp = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.temperature))
-        this.humidity = handleCo2Data.mapDataToTime(correctTimeline, timeArray, chartData.results.map(e => e.humidity))
-        this.dayImportance = handleCo2Data.checkDayImportance(timeArray)
+        this.$refs.charts.changeInterval(this.refreshInterval)
       }
   },
   data() {
     return {
-      co2: [],
-      temp: [],
-      humidity: [],
       stationId: String,
       isFetching: 0,
-      intervalls: [],
-      lastTimeStamp: "",
       stationName: "",
       locationName: "",
       roomName: "",
       co2_limit: 1500,
       old_co2_limit: 1500,
       co2_reset: 1100,
-      co2ChartOptions: chartStyle.co2ChartOptions(1500),
-      tempChartOptions: chartStyle.tempChartOptions(),
-      humChartOptions: chartStyle.humChartOptions(),
-      dayImportance: true,
       errorMsg: null,
       timeScale: 1,
-      refreshInterval: 1
+      refreshInterval: 1,
+      station: []
     }
   },
   async created(){
     this.stationId = this.$route.params.id
     try {
-      const res = await dataService.updateCO2DataLongFormet(this.stationId, handleCo2Data.hoursAgoToTimestamp(this.timeScale))
-      const res2 = await dataService.getStationsById(this.stationId)
-      if(res2.status != 200) {
+      const res = await dataService.getStationsById(this.stationId)
+      if(res.status != 200) {
         this.$store.dispatch('redirectError')
       }
-      const chartData = {"results": res}
-      const stationData = res2.data
-      this.loadOriginalData(chartData)
+      const stationData = res.data
       this.stationName = stationData.name
       this.locationName = stationData.location
       this.roomName = stationData.roomNr
       this.co2_limit = stationData.co2_limit
       this.old_co2_limit = stationData.co2_limit
       this.co2_reset = stationData.co2_reset
-      this.co2ChartOptions = chartStyle.co2ChartOptions(this.co2_limit)
+      this.station = [stationData]
       this.isFetching++
     } catch(err) {
       console.log(err)
       this.$store.dispatch('redirectError')
     }
-    this.intervalls = setInterval(this.updateData, 60000)
-},
-  beforeUnmount() {
-    clearInterval(this.intervalls)
-  }
+}
 }
 </script>
 

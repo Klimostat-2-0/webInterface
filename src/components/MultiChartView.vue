@@ -76,6 +76,36 @@
         this.co2.push(co2Array)
         this.temp.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.map(e => e.temperature).reverse()))
         this.humidity.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.map(e => e.humidity).reverse()))
+      },
+      async setupData() {
+        const currentDate = new Date()
+        const fromTime = handleCo2Data.hoursAgoToTimestamp(this.range, currentDate)
+        this.correctTimeArray = handleCo2Data.getAbsoluteTimeline(new Date(fromTime), currentDate)
+        this.dayImportance = handleCo2Data.checkDayImportance(this.correctTimeArray)  
+        this.displayXNames = this.correctTimeArray.map(i => handleCo2Data.formatDate(this.dayImportance, i))
+        this.displayXNamesLastUpdate = currentDate
+        for(const station of this.stationObj){
+            try {
+                let res = await dataService.updateCO2DataLongFormet(station.id, fromTime)
+                if(res.length<=1) continue
+                this.nextStationObj.push(station)
+                let chartData = res
+                chartData = handleCo2Data.filterOldData(chartData, new Date(fromTime))
+                this.lastTimeStamp.push(chartData[0].timestamp.toString())
+                this.timeArray = chartData.map(e => new Date(e.timestamp)).reverse()
+                this.loadOriginalData(chartData, station.co2_limit, station.co2_reset)
+                this.stationNames.push(station.name)
+                this.co2ChartOptions = chartStyle.co2ChartOptions(station.co2_limit)
+            } catch(err) {
+                console.log(err)
+                this.$store.dispatch('redirectError')
+            }
+        }
+      },
+      async changeInterval(newIntervall){
+        this.refreshInterval = newIntervall
+        clearInterval(this.intervalls)
+        this.intervalls = setInterval(this.updateData, this.refreshInterval * 60000)
       }
   },
   data() {
@@ -91,44 +121,26 @@
       tempChartOptions: chartStyle.tempChartOptions(),
       humChartOptions: chartStyle.humChartOptions(),
       dayImportance: true,
-      timeScale: 1,
       refreshInterval: 1,
       stationNames: [],
       displayXNames: [],
       pieChartValues: [],
       displayXNamesLastUpdate: [],
-      nextStationObj: []
+      nextStationObj: [],
+      intervalls: null
     }
   },
   props: {
       stationObj: {
           type: Array
+      },
+      range: {
+          type: Number,
+          default: 1
       }
   },
   async created(){
-    const currentDate = new Date()
-    const fromTime = handleCo2Data.hoursAgoToTimestamp(this.timeScale, currentDate)
-    this.correctTimeArray = handleCo2Data.getAbsoluteTimeline(new Date(fromTime), currentDate)
-    this.dayImportance = handleCo2Data.checkDayImportance(this.correctTimeArray)  
-    this.displayXNames = this.correctTimeArray.map(i => handleCo2Data.formatDate(this.dayImportance, i))
-    this.displayXNamesLastUpdate = currentDate
-    for(const station of this.stationObj){
-        try {
-            let res = await dataService.updateCO2DataLongFormet(station.id, fromTime)
-            if(res.length<=1) continue
-            this.nextStationObj.push(station)
-            let chartData = res
-            chartData = handleCo2Data.filterOldData(chartData, new Date(fromTime))
-            this.lastTimeStamp.push(chartData[0].timestamp.toString())
-            this.timeArray = chartData.map(e => new Date(e.timestamp)).reverse()
-            this.loadOriginalData(chartData, station.co2_limit, station.co2_reset)
-            this.stationNames.push(station.name)
-            this.co2ChartOptions = chartStyle.co2ChartOptions(station.co2_limit)
-        } catch(err) {
-            console.log(err)
-            this.$store.dispatch('redirectError')
-        }
-    }
+    await this.setupData()
     this.intervalls = setInterval(this.updateData, 60000)
     this.isFetching++
 },

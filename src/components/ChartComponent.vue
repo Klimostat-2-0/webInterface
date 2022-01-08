@@ -38,7 +38,6 @@ export default {
   },
   methods: {
     updateData(labels, newData){
-        console.log("Recived update")
         if(newData.length != this.chart.data.datasets.length) return
         for(let i = 0; i < labels.length; i++){
             this.chart.data.labels.push(labels[i]);
@@ -51,7 +50,6 @@ export default {
             }
         }
         this.chart.update();
-        console.log("Finished update")
       },
       parseChartData(data) {
           let res = []

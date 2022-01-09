@@ -99,5 +99,17 @@ export default {
     },
     deleteUser(id) {
         return axiosInt.delete('users/' + id)
+    },
+    async sendMail(token) {
+        const axiosIntForVerification = axios.create({
+                baseURL: process.env.VUE_APP_BASEURL,
+                withCredentials: false,
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+        return axiosIntForVerification.post('auth/send-verification-email')
     }
 }

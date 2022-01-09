@@ -69,20 +69,21 @@ import User from '../components/User'
         try{
           let role = this.isAdmin ? 'admin' : "user"
           const res = await dataService.createUser(this.username, this.email, this.password, role)
-          this.username = ''
-          this.email = ''
-          this.password = ''
-          this.secondPassword = ''
           this.isAdmin = false
           if(res.status != 201) {
             this.msgColor = "red"
             this.successMsg = "There was an error while creating the user"
           } else {
+            const res2 = await dataService.logIn({'email': this.email, 'password': this.password})
+            let token = res2.data.tokens.access.token
+            console.log(token)
+            dataService.sendMail(token)
             this.msgColor = "green"
             this.successMsg = "You Successfully created a new user"
             this.users.push(res.data)
           }
         } catch(err){
+          console.log(err)
           this.msgColor = "red"
           this.successMsg = "There was an error while creating the user"
         }
@@ -91,6 +92,10 @@ import User from '../components/User'
         this.successMsg = "The password has to be at least 8 characters long and contain numbers and letters"
       }
       e.target.reset()
+      this.username = ''
+      this.email = ''
+      this.password = ''
+      this.secondPassword = ''
       setTimeout(() => this.successMsg = null, 5000)
     }
   },

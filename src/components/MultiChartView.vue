@@ -136,7 +136,7 @@
   },
   async created(){
     await this.setupData()
-    this.intervalls = setInterval(this.updateData, 6000)
+    this.intervalls = setInterval(this.updateData, 60000)
     this.isFetching++
 },
   beforeUnmount() {

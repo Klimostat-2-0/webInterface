@@ -33,7 +33,7 @@
   },
   methods: {
       async updateData(){
-        const currentDate = new Date()
+        const currentDate = handleCo2Data.roundDate(new Date())
         const fromTime = this.lastTimeStamp
         let updatingCorrectTime = handleCo2Data.getAbsoluteTimeline(this.displayXNamesLastUpdate, currentDate)
         let updatingDisplayNames = updatingCorrectTime.map(i => handleCo2Data.formatDate(this.dayImportance, i))
@@ -70,30 +70,28 @@
         this.$refs.temp.updateData(updatingDisplayNames, updatingTemp);
         this.$refs.hum.updateData(updatingDisplayNames, updatingHum);
       },
-      loadOriginalData(chartData, co2Limit=1500, co2Reset=1100) {
-        let co2Array = handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.map(e => e.co2).reverse())
-        this.pieChartValues.push(handleCo2Data.analyseCo2(co2Array, co2Limit, co2Reset))
-        this.co2.push(co2Array)
-        this.temp.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.map(e => e.temperature).reverse()))
-        this.humidity.push(handleCo2Data.mapDataToTime(this.correctTimeArray, this.timeArray, chartData.map(e => e.humidity).reverse()))
-      },
       async setupData() {
-        const currentDate = new Date()
+        const currentDate = handleCo2Data.roundDate(new Date())
         const fromTime = handleCo2Data.hoursAgoToTimestamp(this.range, currentDate)
-        this.correctTimeArray = handleCo2Data.getAbsoluteTimeline(new Date(fromTime), currentDate)
+        let timeArray = null
+        let co2Array = null
+        this.correctTimeArray = handleCo2Data.getAbsoluteTimeline(fromTime, currentDate)
         this.dayImportance = handleCo2Data.checkDayImportance(this.correctTimeArray)  
         this.displayXNames = this.correctTimeArray.map(i => handleCo2Data.formatDate(this.dayImportance, i))
         this.displayXNamesLastUpdate = currentDate
         for(const station of this.stationObj){
             try {
-                let res = await dataService.updateCO2DataLongFormet(station.id, fromTime)
+                let res = await dataService.updateCO2DataLongFormet(station.id, handleCo2Data.addMinutes(1, fromTime))
                 if(res.length<=1) continue
                 this.nextStationObj.push(station)
                 let chartData = res
-                chartData = handleCo2Data.filterOldData(chartData, new Date(fromTime))
                 this.lastTimeStamp.push(chartData[0].timestamp.toString())
-                this.timeArray = chartData.map(e => new Date(e.timestamp)).reverse()
-                this.loadOriginalData(chartData, station.co2_limit, station.co2_reset)
+                timeArray = chartData.map(e => new Date(e.timestamp)).reverse()
+                co2Array = handleCo2Data.mapDataToTime(this.correctTimeArray, timeArray, chartData.map(e => e.co2).reverse())
+                this.pieChartValues.push(handleCo2Data.analyseCo2(co2Array, station.co2_limit, station.co2_reset))
+                this.co2.push(co2Array)
+                this.temp.push(handleCo2Data.mapDataToTime(this.correctTimeArray, timeArray, chartData.map(e => e.temperature).reverse()))
+                this.humidity.push(handleCo2Data.mapDataToTime(this.correctTimeArray, timeArray, chartData.map(e => e.humidity).reverse()))
                 this.stationNames.push(station.name)
                 this.co2ChartOptions = chartStyle.co2ChartOptions(station.co2_limit)
             } catch(err) {
@@ -103,9 +101,8 @@
         }
       },
       async changeInterval(newIntervall){
-        this.refreshInterval = newIntervall
         clearInterval(this.intervalls)
-        this.intervalls = setInterval(this.updateData, this.refreshInterval * 60000)
+        this.intervalls = setInterval(this.updateData, newIntervall * 60000)
       }
   },
   data() {
@@ -113,7 +110,8 @@
       co2: [],
       temp: [],
       humidity: [],
-      timeArray: null,
+      displayXNames: [],
+      pieChartValues: [],
       correctTimeArray: null,
       isFetching: 0,
       lastTimeStamp: [],
@@ -121,10 +119,7 @@
       tempChartOptions: chartStyle.tempChartOptions(),
       humChartOptions: chartStyle.humChartOptions(),
       dayImportance: true,
-      refreshInterval: 1,
       stationNames: [],
-      displayXNames: [],
-      pieChartValues: [],
       displayXNamesLastUpdate: [],
       nextStationObj: [],
       intervalls: null
@@ -141,7 +136,7 @@
   },
   async created(){
     await this.setupData()
-    this.intervalls = setInterval(this.updateData, 60000)
+    this.intervalls = setInterval(this.updateData, 6000)
     this.isFetching++
 },
   beforeUnmount() {

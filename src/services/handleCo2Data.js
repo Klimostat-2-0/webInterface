@@ -1,22 +1,3 @@
-function getValidTimeLine(data) {
-    let date
-    let result = []
-    if(data.length > 0) {
-        date = roundDate(data[0])
-        result.push(date)
-    }
-    for (const element of data.slice(1)) {
-        if(Math.abs(element.getTime()-date.getTime()) > 100000 ){
-            for(let i = 0; i < parseInt((Math.abs(element.getTime()-date.getTime())/60000)); i++) {
-                result.push("No values")
-            }
-        }
-         date = roundDate(element)
-         result.push(date)
-      }
-      return result
-}
-
 function getAbsoluteTimeline(start, end) {
     let date = roundDate(start)
     let result = []
@@ -64,15 +45,16 @@ function isCurrentDay(date){
     return date.getDate() == currentDay.getDate() &&
             date.getMonth() == currentDay.getMonth() &&
             date.getFullYear() == currentDay.getFullYear()
-  }
-function hoursAgoToTimestamp(hoursAgo, currentDate=new Date()){
-    let millsInOneHour = 1000*60*60
-    return roundDate(new Date(currentDate.getTime()-(millsInOneHour*hoursAgo))).toString()
 }
 
-function filterOldData(data, oldest){
-    const oldestAllowedDate = roundDate(oldest).getTime()
-    return data.filter(d => roundDate(new Date(d.timestamp)).getTime() > oldestAllowedDate)
+function hoursAgoToTimestamp(hoursAgo, currentDate=new Date()){
+    let millsInOneHour = 1000*60*60
+    return roundDate(new Date(currentDate.getTime()-(millsInOneHour*hoursAgo)))
+}
+
+function addMinutes(minutes, currentDate){
+    let millsInOneMin = 1000*60
+    return roundDate(new Date(currentDate.getTime()+(millsInOneMin*minutes))).toString()
 }
 
 function analyseCo2(data, co2Limit, co2Reset){
@@ -86,6 +68,6 @@ function analyseCo2(data, co2Limit, co2Reset){
 }
 
 export default {
-    mapDataToTime, getValidTimeLine, checkDayImportance, formatDate, 
-    hoursAgoToTimestamp, filterOldData, analyseCo2, getAbsoluteTimeline, roundDate
+    mapDataToTime, checkDayImportance, formatDate, addMinutes,
+    hoursAgoToTimestamp, analyseCo2, getAbsoluteTimeline, roundDate
 }

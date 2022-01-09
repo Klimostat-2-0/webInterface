@@ -9,6 +9,7 @@ import AddAccount from '../pages/AddAccount'
 import Compare from '../pages/Compare.vue'
 import VerifyEmail from '../pages/VerifyEmail'
 import ForgotPassword from '../pages/ForgotPassword'
+import ResetPassword from '../pages/ResetPassword'
 import store from "../store/index"
 
 const routes = [
@@ -66,6 +67,15 @@ const routes = [
         path: "/auth/verify-email",
         name: 'verifyEmail',
         component: VerifyEmail,
+        meta: {
+            requiresAuth: false,
+            requiresAdminAuth: false
+        }
+    },
+    {
+        path: "/auth/reset-password",
+        name: 'ResetPassword',
+        component: ResetPassword,
         meta: {
             requiresAuth: false,
             requiresAdminAuth: false

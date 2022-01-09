@@ -6,7 +6,7 @@
       <input v-model="email" type="email" name="email" placeholder="example@gmail.com" />
     </div>
     <p class="error" v-if="error != null" :style="{ color: msgColor}">{{this.error}}</p>
-    <input class="resetButton" type="submit" value="Reset Password" />
+    <input class="resetButton" type="submit" value="Send Reset Link" />
   </form>
 </template>
 
@@ -18,10 +18,10 @@ export default {
   methods: {
     async onClick(e) {
       try {
-        const res = await dataService.resetPassword(this.email)
+        const res = await dataService.forgotPassword(this.email)
         if(res.status != 204){
           this.msgColor = "red"
-          this.error = "Sorry but we couldn't reset your password"
+          this.error = "Sorry but we couldn't send you an email"
         } else {
           this.msgColor = "green"
           this.error = "We sent you an email with a link to reset your password"
@@ -29,7 +29,7 @@ export default {
       }catch(err){
         console.log(err)
         this.msgColor = "red"
-        this.error = "Sorry but we couldn't reset your password"
+        this.error = "Sorry but we couldn't send you an email"
       }
       e.target.reset()
     }

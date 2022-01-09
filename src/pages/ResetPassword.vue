@@ -79,7 +79,7 @@ div {
 }
 label {
     display: inline-block;
-    width: 140px;
+    width: 180px;
     text-align: right;
     margin-right: 20px;
 }

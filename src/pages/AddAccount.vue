@@ -25,12 +25,6 @@
         <input v-model="secondPassword" type="password" name="password" placeholder="Password" required/>
       </div>
     </div>
-    <div>
-      <label>Is Admin: </label>
-      <div class="formElement">
-        <input v-model="isAdmin" type="checkbox" name="isAdmin" placeholder="isAdmin"/>
-      </div>
-    </div>
     <p :style="{ color: msgColor}" class="userMsg" v-if="successMsg != null">{{successMsg}}</p>
     <input class="createButton" type="submit" value="Create" />
   </form>
@@ -67,20 +61,14 @@ import User from '../components/User'
     async onClick(e) {
       if (this.password == this.secondPassword && this.password.length >= 8 && /\d/.test(this.password) && /\w/.test(this.password)) {
         try{
-          let role = this.isAdmin ? 'admin' : "user"
-          const res = await dataService.createUser(this.username, this.email, this.password, role)
-          this.isAdmin = false
+          const res = await dataService.createUser(this.username, this.email, this.password)
           if(res.status != 201) {
             this.msgColor = "red"
             this.successMsg = "There was an error while creating the user"
           } else {
-            const res2 = await dataService.logIn({'email': this.email, 'password': this.password})
-            let token = res2.data.tokens.access.token
-            console.log(token)
-            dataService.sendMail(token)
             this.msgColor = "green"
             this.successMsg = "You Successfully created a new user"
-            this.users.push(res.data)
+            this.users.push(res.data.user)
           }
         } catch(err){
           console.log(err)
@@ -96,7 +84,7 @@ import User from '../components/User'
       this.email = ''
       this.password = ''
       this.secondPassword = ''
-      setTimeout(() => this.successMsg = null, 5000)
+      setTimeout(() => this.successMsg = null, 7000)
     }
   },
   data() {
@@ -105,7 +93,6 @@ import User from '../components/User'
       email: '',
       password: '',
       secondPassword: '',
-      isAdmin: false,
       successMsg: null,
       msgColor: "green",
       users: [],

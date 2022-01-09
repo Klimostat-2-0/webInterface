@@ -16,6 +16,7 @@
     }
   },
   async created(){
+    console.log(this.$store.getters.getAdminAccess)
     try{
       const token = new URLSearchParams(window.location.search).get('token')
       const res = await dataService.verifyEmail(token)

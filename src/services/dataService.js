@@ -35,7 +35,7 @@ const axiosInt = function() {
                     store.dispatch('updateTokenObj', newTokenObj);
                     return axiosInt(requestConf);
                 } catch (_error) {
-                    return Promise.reject(_error);
+                    return err;
                 }
             }
         }
@@ -72,7 +72,7 @@ export default {
         }))
     },
     async updateCO2DataLongFormet(stationID, timestamp, page=1) {
-        const query = 'measurement?station=' + stationID + "&sortBy=timestamp%3Adesc&limit=100&page=" + page + "&"
+        const query = 'measurement?station=' + stationID + "&sortBy=timestamp%3Adesc&limit=2147483647&page=" + page + "&"
         const response = await axiosInt.get(query
          + new URLSearchParams({
           fromTimestamp: timestamp,
@@ -91,26 +91,14 @@ export default {
     setNewLimit(stationID, limit, reset) {
         return axiosInt.patch('station/' + stationID, {"co2_limit": limit, "co2_reset": reset})
     },
-    createUser(username, email, password, role) {
-        return axiosInt.post('users', {"name": username, "email": email, "password": password, "role": role})
+    createUser(username, email, password) {
+        return axiosInt.post('auth/register', {"name": username, "email": email, "password": password})
     },
     getAllUsers() {
         return axiosInt.get('users')
     },
     deleteUser(id) {
         return axiosInt.delete('users/' + id)
-    },
-    async sendMail(token) {
-        const axiosIntForVerification = axios.create({
-                baseURL: process.env.VUE_APP_BASEURL,
-                withCredentials: false,
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-        return axiosIntForVerification.post('auth/send-verification-email')
     },
     verifyEmail(token) {
         return axiosInt.post('auth/verify-email?token=' + token)

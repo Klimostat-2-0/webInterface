@@ -25,6 +25,12 @@ export default createStore({
       wrong_user(state) {
         state.showLoginError = "You have entered a wrong username or password"
       },
+      verify_email(state) {
+        state.showLoginError = "Please verify your email address!"
+      },
+      setCustomErrorMessage(state, data) {
+        state.showLoginError = data
+      },
       logout(state) {
         state.tokens = null,
         state.tokenObj = null,
@@ -49,7 +55,7 @@ export default createStore({
               commit("auth_success", [data.tokens, (data.user.role=='admin')])
               router.push('Dashboard')
             }else {
-              commit("wrong_user")
+              commit("setCustomErrorMessage", res.response.data.message)
             }
           } catch(err) {
             console.log(err)
@@ -73,7 +79,7 @@ export default createStore({
           localStorage.setItem("tokens", tokenObj.tokens.access.token)
           localStorage.setItem("tokenObj", JSON.stringify(tokenObj.tokens))
           localStorage.setItem("loggedIn", true)
-          commit("auth_success", [tokenObj.tokens, localStorage.getItem('isAdmin')])
+          commit("auth_success", [tokenObj.tokens, (localStorage.getItem("isAdmin") == 'true')])
         }
     },
     modules: {

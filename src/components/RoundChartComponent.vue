@@ -17,6 +17,14 @@ export default {
       },
       uniqueId: {
           type: String,
+      },
+      co2Limit: {
+          type: Number,
+          default: 1500
+      },
+      co2Reset: {
+          type: Number,
+          default: 1100
       }
   },
   methods: {
@@ -32,7 +40,7 @@ export default {
   data() {
       this.chart = null
       return {
-          textValues: ["Perfect", "OK", 'Critical']
+          textValues: ["<"+this.co2Reset+"ppm", this.co2Reset + "ppm - " + this.co2Limit + "ppm", ">" + this.co2Limit + "ppm"]
       }
   },
   mounted() {

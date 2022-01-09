@@ -9,6 +9,9 @@
       <label>Passwort: </label>
       <input v-model="password" type="password" name="password" placeholder="Password" />
     </div>
+    <div>
+    <router-link to="/forgotPassword">I forgot my password</router-link>
+    </div>
     <p class="error" v-if="this.$store.state.showLoginError != null">{{this.$store.state.showLoginError}}</p>
     <input class="loginbutton" type="submit" value="Login" />
   </form>
@@ -63,5 +66,8 @@ label {
 .error {
   font-size: 14px;
   color: red;
+}
+a {
+  color:#1a2815
 }
 </style>

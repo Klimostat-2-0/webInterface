@@ -115,4 +115,7 @@ export default {
     verifyEmail(token) {
         return axiosInt.post('auth/verify-email?token=' + token)
     },
+    resetPassword(email) {
+        return axiosInt.post('auth/forgot-password', {"email": email})
+    },
 }

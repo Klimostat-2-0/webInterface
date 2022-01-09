@@ -111,5 +111,8 @@ export default {
                 }
             });
         return axiosIntForVerification.post('auth/send-verification-email')
-    }
+    },
+    verifyEmail(token) {
+        return axiosInt.post('auth/verify-email?token=' + token)
+    },
 }

@@ -135,8 +135,25 @@ return {
 }
 }
 
+const roundChartLabelsPerDataset = 3
+
+const roundChartColors = [
+    [
+        'rgb(73, 190, 182)',
+        'rgb(250, 207, 90)',
+        'rgb(255, 89, 89)'
+    ],
+    [
+        'rgb(23, 140, 132)',
+        'rgb(200, 157, 40)',
+        'rgb(205, 39, 39)'
+    ]
+]
+
 export default  {
     co2ChartOptions,
     tempChartOptions,
-    humChartOptions
+    humChartOptions,
+    roundChartLabelsPerDataset,
+    roundChartColors
 }

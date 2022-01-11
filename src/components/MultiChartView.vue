@@ -5,7 +5,7 @@
       Looking at Data from <b>{{displayFrom}}</b> to <b>{{displayTo}}</b>
     </p>
     <round-chart-component :chartTitle='stationNames' :chartData="pieChartValues" :uniqueId="'overviewChart'"
-     :key='isFetching' ref="overview"/>
+     :key='isFetching' :co2Limit="stationLimits" :co2Reset="stationResets" ref="overview"/>
     <hr>
     <h2>CO2</h2>
     <chart-component :options='this.co2ChartOptions' :chartTitle='stationNames' :chartLabels="displayXNames"
@@ -104,6 +104,8 @@
                 this.temp.push(handleCo2Data.mapDataToTime(this.correctTimeArray, timeArray, chartData.map(e => e.temperature).reverse()))
                 this.humidity.push(handleCo2Data.mapDataToTime(this.correctTimeArray, timeArray, chartData.map(e => e.humidity).reverse()))
                 this.stationNames.push(station.name)
+                this.stationResets.push(station.co2_reset)
+                this.stationLimits.push(station.co2_limit)
                 this.co2ChartOptions = chartStyle.co2ChartOptions(station.co2_limit)
             } catch(err) {
                 console.log(err)
@@ -131,6 +133,8 @@
       humChartOptions: chartStyle.humChartOptions(),
       dayImportance: true,
       stationNames: [],
+      stationLimits: [],
+      stationResets: [],
       displayXNamesLastUpdate: [],
       nextStationObj: [],
       intervalls: null,

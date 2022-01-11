@@ -10,10 +10,19 @@
       <div class="formElement">
       <input onkeydown="return false" step="100" v-model="co2_limit" min="300" max="3000" type="number" name="co2Limit" 
       :readonly="!this.$store.getters.getAdminAccess"/>
-      <input v-on:click="changeLimit" class="changeButton" type="button" value="ChangeLimit" v-if="this.$store.getters.getAdminAccess"/>
-      <p :style="{ color: 'red'}" class="userMsg" v-if="errorMsg != null">{{errorMsg}}</p>
       </div>
       <br>
+      <label>CO2 Reset:</label>
+      <div class="formElement">
+      <input onkeydown="return false" step="100" v-model="co2_reset" min="200" max="2900" type="number" name="co2Limit" 
+      :readonly="!this.$store.getters.getAdminAccess"/>
+      <p :style="{ color: 'red'}" class="userMsg" v-if="errorMsg != null">{{errorMsg}}</p>
+      </div>
+      <div v-if="this.$store.getters.getAdminAccess">
+        <input v-on:click="changeLimit" class="changeButton" type="button" value="Change" />
+        <br>
+        <br>
+      </div>
       <label>Time Period: </label>
       <div class="formElement">
       <select v-model="timeScale" v-on:change="changeScale" name="times" id="times">
@@ -55,12 +64,13 @@
   },
   methods: {
       async changeLimit() {
-        if(this.co2_limit != this.old_co2_limit){
+        if(this.co2_limit != this.old_co2_limit || this.co2_reset != this.old_co2_reset){
           this.old_co2_limit = this.co2_limit
+          this.old_co2_reset = this.co2_reset
           try {
-            const res = await dataService.setNewLimit(this.stationId, this.co2_limit, parseInt(this.co2_limit*0.7))
+            const res = await dataService.setNewLimit(this.stationId, this.co2_limit, this.co2_reset)
             if(res.status != 200) {
-              this.errorMsg = "Couldn't update the limit"
+              this.errorMsg = "Couldn't update the limits"
               return
             }
             const res2 = await dataService.getStationsById(this.stationId)
@@ -96,6 +106,7 @@
       co2_limit: 1500,
       old_co2_limit: 1500,
       co2_reset: 1100,
+      old_co2_reset: 1100,
       errorMsg: null,
       timeScale: 1,
       refreshInterval: 1,
@@ -116,6 +127,7 @@
       this.co2_limit = stationData.co2_limit
       this.old_co2_limit = stationData.co2_limit
       this.co2_reset = stationData.co2_reset
+      this.old_co2_reset = stationData.co2_reset
       this.station = [stationData]
       this.isFetching++
     } catch(err) {

@@ -95,6 +95,8 @@
         }
       },
       async changeScale(){
+        this.indexBack = Math.floor((this.indexBack*this.previousTimeScale)/this.timeScale)
+        this.previousTimeScale = this.timeScale
         this.isFetching++
       },
       async changeInterval(){
@@ -122,6 +124,7 @@
       old_co2_reset: 1100,
       errorMsg: null,
       timeScale: 1,
+      previousTimeScale: 1,
       refreshInterval: 1,
       station: [],
       indexBack: 0

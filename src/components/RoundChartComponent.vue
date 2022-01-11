@@ -20,11 +20,11 @@ export default {
           type: String,
       },
       co2Limit: {
-          type: Number,
+          type: Array,
           default: 1500
       },
       co2Reset: {
-          type: Number,
+          type: Array,
           default: 1100
       }
   },

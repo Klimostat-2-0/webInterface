@@ -1,6 +1,9 @@
 function co2ChartOptions(co2LimitConst) {
     return {
         options: {
+        interaction: {
+            intersect: false
+        },
         plugins: {
             autocolors: false,
             annotation: {
@@ -56,6 +59,9 @@ function co2ChartOptions(co2LimitConst) {
 function tempChartOptions() {
 return {
     options:{
+        interaction: {
+            intersect: false
+        },
         maintainAspectRatio: true,
         responsive: true,
         fill: true,
@@ -97,6 +103,9 @@ return {
 function humChartOptions() {
 return {
     options: {
+        interaction: {
+            intersect: false
+        },
         maintainAspectRatio: true,
         responsive: true,
         fill: true,

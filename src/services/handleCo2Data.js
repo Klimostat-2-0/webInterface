@@ -19,7 +19,7 @@ function roundDate (date) {
 
 function formatDate(dayIsImportant, date) {
     if(dayIsImportant) {
-        return date.getHours() + ":" + date.getMinutes() + " " + (date.getMonth()+1) + "." + date.getDate()
+        return date.getHours() + ":" + date.getMinutes() + " " + date.getDate() + "." + (date.getMonth()+1)
     } else {
         return date.getHours() + ":" + date.getMinutes()
     }

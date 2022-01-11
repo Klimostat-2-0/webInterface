@@ -1,6 +1,9 @@
 <template>
   <div>
     <h2>Overview</h2>
+    <p>
+      Looking at Data from <b>{{displayFrom}}</b> to <b>{{displayTo}}</b>
+    </p>
     <round-chart-component :chartTitle='stationNames' :chartData="pieChartValues" :uniqueId="'overviewChart'"
      :key='isFetching' ref="overview"/>
     <hr>
@@ -71,7 +74,7 @@
         this.$refs.hum.updateData(updatingDisplayNames, updatingHum);
       },
       async setupData() {
-        const currentDate = handleCo2Data.roundDate(new Date())
+        const currentDate = handleCo2Data.hoursAgoToTimestamp(this.range*this.indexBack, currentDate)
         const fromTime = handleCo2Data.hoursAgoToTimestamp(this.range, currentDate)
         let timeArray = null
         let co2Array = null
@@ -79,9 +82,17 @@
         this.dayImportance = handleCo2Data.checkDayImportance(this.correctTimeArray)  
         this.displayXNames = this.correctTimeArray.map(i => handleCo2Data.formatDate(this.dayImportance, i))
         this.displayXNamesLastUpdate = currentDate
+        this.displayFrom = handleCo2Data.formatDate(this.dayImportance, fromTime)
+        if(this.indexBack > 0) this.displayTo = handleCo2Data.formatDate(this.dayImportance, currentDate)
         for(const station of this.stationObj){
             try {
-                let res = await dataService.updateCO2DataLongFormet(station.id, handleCo2Data.addMinutes(1, fromTime))
+                let res = null
+                if(this.indexBack==0){
+                  res = await dataService.updateCO2DataLongFormet(station.id, handleCo2Data.addMinutes(1, fromTime))
+                } else {
+                  res = await dataService.updateCO2DataHistorical(station.id, handleCo2Data.addMinutes(1, fromTime),
+                  currentDate)
+                }
                 if(res.length<=1) continue
                 this.nextStationObj.push(station)
                 let chartData = res
@@ -122,7 +133,9 @@
       stationNames: [],
       displayXNamesLastUpdate: [],
       nextStationObj: [],
-      intervalls: null
+      intervalls: null,
+      displayFrom: "notSelected",
+      displayTo: "Now"
     }
   },
   props: {
@@ -132,11 +145,15 @@
       range: {
           type: Number,
           default: 1
+      },
+      indexBack: {
+        type: Number,
+        default: 0
       }
   },
   async created(){
     await this.setupData()
-    this.intervalls = setInterval(this.updateData, 60000)
+    if(this.indexBack == 0) this.intervalls = setInterval(this.updateData, 60000)
     this.isFetching++
 },
   beforeUnmount() {

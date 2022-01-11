@@ -45,10 +45,15 @@
       </select>
       </div>
       <br>
+      <div class="formElement">
+        <input v-on:click="previousData" class="changeButton" type="button" value="Previous" />
+        <input v-on:click="nextData" class="changeButton" type="button" value="Next" />
+      </div>
+      <br>
       <br>
     </h4>
     <div :key="isFetching">
-      <multi-chart-view :stationObj="station" :range="timeScale" ref="charts"/>
+      <multi-chart-view :stationObj="station" :range="timeScale" :indexBack="indexBack" ref="charts"/>
   </div>
   </div>
 </template>
@@ -94,6 +99,14 @@
       },
       async changeInterval(){
         this.$refs.charts.changeInterval(this.refreshInterval)
+      },
+      async previousData(){
+        this.indexBack++
+        this.isFetching++
+      },
+      async nextData(){
+        if(this.indexBack>0) this.indexBack--
+        this.isFetching++
       }
   },
   data() {
@@ -110,7 +123,8 @@
       errorMsg: null,
       timeScale: 1,
       refreshInterval: 1,
-      station: []
+      station: [],
+      indexBack: 0
     }
   },
   async created(){

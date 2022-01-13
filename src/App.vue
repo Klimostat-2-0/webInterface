@@ -1,18 +1,14 @@
 <template>
-  <Sidebarnew />
+  <MainComponent />
 </template>
 
 <script>
-  import Footer from './components/Footer.vue'
-  import Sidebar from './components/Sidebar.vue'
-  import Sidebarnew from './components/Sidebarnew.vue'
+  import MainComponent from './components/MainComponent.vue'
 
 export default {
   name: 'App',
   components: {
-    Footer,
-    Sidebar,
-    Sidebarnew
+    MainComponent
   },
   data() {
     return {

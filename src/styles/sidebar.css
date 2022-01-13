@@ -144,6 +144,11 @@ left: 0;
 text-align: center;
 }
 
+#content .contentOffset {
+    margin-top: 2%;
+    margin-bottom: 100px;
+}
+
 @media (min-width: 768px) {
     #sidebar {
     margin-left: 0;

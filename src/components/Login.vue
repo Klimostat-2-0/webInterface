@@ -1,20 +1,23 @@
 <template>
-  <h1>Login</h1>
-  <form @submit.prevent="onClick">
-    <div>
-      <label>Email: </label>
-      <input v-model="username" type="text" name="username" placeholder="Username" />
+<div id="wrapLogin">
+  <h1 class="mb-5">Welcome to Klimostat 2.0</h1>
+  <form id="login-form" class="needs-validation" @submit.prevent="onClick">
+    <img src="../assets/logo.svg" alt="Logo" class="mb-4">
+    <div class="form-floating mb-4">
+      <input v-model="username" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+      <label for="floatingInput">Email address</label>
     </div>
-    <div>
-      <label>Passwort: </label>
-      <input v-model="password" type="password" name="password" placeholder="Password" />
-    </div>
-    <div>
-    <router-link to="/forgotPassword">I forgot my password</router-link>
+    <div class="form-floating mb-4">
+      <input v-model="password" type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+      <label for="floatingPassword">Password</label>
     </div>
     <p class="error" v-if="this.$store.state.showLoginError != null">{{this.$store.state.showLoginError}}</p>
-    <input class="btn btn-primary" type="submit" value="Login" />
+    <input class="custom-btn w-100 mb-4" type="submit" value="Login" />
+    <div>
+    <router-link id="forgotPasswordLink" to="/forgotPassword">Forgot password?</router-link>
+    </div>
   </form>
+</div>
 </template>
 
 <script>
@@ -40,33 +43,5 @@ export default {
 </script>
 
 <style scoped>
-h1{
-    margin-bottom: 50px;
-}
-div {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-.loginbutton {
-  background-color: #1a2815;
-  border: none;
-  color: #dbff78;
-  padding: 5px 20px;
-  display: inline-block;
-  font-size: 16px;
-  margin-top: 30px;
-}
-label {
-    display: inline-block;
-    width: 140px;
-    text-align: right;
-    margin-right: 20px;
-}
-.error {
-  font-size: 14px;
-  color: red;
-}
-a {
-  color:#1a2815
-}
+@import "../styles/login.css";
 </style>

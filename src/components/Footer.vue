@@ -1,6 +1,11 @@
 <template>
-    <footer>
-        <p>Copyright &copy; 2021</p>
+    <footer class="container-fluid">
+        <div class="row">
+            <div class="col">Klimostat 2.0</div>
+            <div class="col">Copyright &copy; 2021</div>
+            <a class="col" href="https://klimostat.at/login.html">Our Website</a>
+        </div>
+        <p></p>
     </footer>
 </template>
 
@@ -11,10 +16,12 @@ export default {
 </script>
 
 <style scoped>
+@import "../styles/main.css";
+
 footer {
-    margin-top: 20px;
+    padding-top: 10px;
     text-align: center;
-    background: #1a2815;
+    background: var(--footer-color);
     
     position:fixed;
     bottom:0;
@@ -23,7 +30,8 @@ footer {
     width:100%;
     height:50px;  
 }
-*{
-    color: white;
+a {
+    color: #2c3e50;
+    text-decoration: none;
 }
 </style>

@@ -1,11 +1,14 @@
 <template>
+<router-link class="dashboardComponentLink" v-bind:id="stationID" :to="`/room/${routeId}`" tag="span">
 <div :style="{'background-color': calcColor}" class="dashboardComponent">
-    <router-link class="dashboardComponentLink" v-bind:id="stationID" :to="`/room/${routeId}`" tag="div">
+    
         <h2>{{name}}</h2>
         <h3>{{stationID}} / {{location}}</h3>
+        <br>
         <p>Current CO2 Level: {{ this.$store.state.dashboardValues[co2] }}</p>
-    </router-link>
+    
 </div>
+</router-link>
 </template>
 
 <script>
@@ -66,18 +69,5 @@ export default {
 </script>
 
 <style scoped>
-.dashboardComponent {
-    padding: 5%;
-    width: 18%;
-    border: 2px solid #2c3e50;
-    text-align: center;
-    margin: 20px;
-    background: chartreuse;
-    border-radius: 10px;
-}
-.dashboardComponentLink {
-    color: #1a2815;
-    text-decoration: none; 
-    height: 400px;
-}
+    @import "../styles/DashboardField.css";
 </style>

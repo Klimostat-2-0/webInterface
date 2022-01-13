@@ -13,7 +13,7 @@
     <router-link to="/forgotPassword">I forgot my password</router-link>
     </div>
     <p class="error" v-if="this.$store.state.showLoginError != null">{{this.$store.state.showLoginError}}</p>
-    <input class="loginbutton" type="submit" value="Login" />
+    <input class="btn btn-primary" type="submit" value="Login" />
   </form>
 </template>
 

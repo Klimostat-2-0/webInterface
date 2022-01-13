@@ -1,21 +1,18 @@
 <template>
-  <Sidebar />
-  <div id="mainview">
-    <router-view>
-    </router-view>
-  </div>
-  <Footer />
+  <Sidebarnew />
 </template>
 
 <script>
   import Footer from './components/Footer.vue'
   import Sidebar from './components/Sidebar.vue'
+  import Sidebarnew from './components/Sidebarnew.vue'
 
 export default {
   name: 'App',
   components: {
     Footer,
-    Sidebar
+    Sidebar,
+    Sidebarnew
   },
   data() {
     return {

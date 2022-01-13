@@ -41,7 +41,6 @@ export default {
     computed: {
         checkAdminRights: function() {
             let allowed = (this.$store.state.loggedIn && this.$store.state.isAdmin)
-            console.log("Perm: " + allowed)
             return allowed
         }
     }

@@ -4,6 +4,8 @@ import router from './router'
 import store from "./store"
 
 import '@fortawesome/fontawesome-free/js/all'
+import "bootstrap/dist/css/bootstrap.css"
+import "bootstrap/dist/js/bootstrap.js"
 
 const app = createApp(App)
 app.use(router)

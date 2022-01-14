@@ -1,9 +1,10 @@
 <template>
   <h1>Request Password Reset</h1>
-  <form @submit.prevent="onClick">
-    <div>
-      <label>Enter your email: </label>
-      <input v-model="email" type="email" name="email" placeholder="example@gmail.com" />
+  <form class="box-form" @submit.prevent="onClick">
+
+    <div class="form-floating mb-4">
+      <input v-model="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+      <label for="floatingInput">Enter your email:</label>
     </div>
     <p class="error" v-if="error != null" :style="{ color: msgColor}">{{this.error}}</p>
     <input class="resetButton" type="submit" value="Send Reset Link" />
@@ -62,12 +63,6 @@ div {
   display: inline-block;
   font-size: 16px;
   margin-top: 30px;
-}
-label {
-    display: inline-block;
-    width: 140px;
-    text-align: right;
-    margin-right: 20px;
 }
 .error {
   font-size: 14px;

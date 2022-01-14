@@ -1,7 +1,7 @@
 <template>
 <div id="wrapLogin">
   <h1 class="mb-5">Welcome to Klimostat 2.0</h1>
-  <form id="login-form" class="needs-validation" @submit.prevent="onClick">
+  <form id="login-form" @submit.prevent="onClick">
     <img src="../assets/logo.svg" alt="Logo" class="mb-4">
     <div class="form-floating mb-4">
       <input v-model="username" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>

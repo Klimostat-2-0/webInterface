@@ -7,7 +7,7 @@
       <label for="floatingInput">Enter your email:</label>
     </div>
     <p class="error" v-if="error != null" :style="{ color: msgColor}">{{this.error}}</p>
-    <input class="resetButton" type="submit" value="Send Reset Link" />
+    <input class="custom-btn w-100" type="submit" value="Send Reset Link" />
   </form>
 </template>
 
@@ -48,27 +48,6 @@ export default {
 </script>
 
 <style scoped>
-h1{
-    margin-bottom: 50px;
-}
-div {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-.resetButton {
-  background-color: #1a2815;
-  border: none;
-  color: #dbff78;
-  padding: 5px 20px;
-  display: inline-block;
-  font-size: 16px;
-  margin-top: 30px;
-}
-.error {
-  font-size: 14px;
-  color: red;
-}
-a {
-  color:#1a2815
-}
+@import "../styles/forms.css";
+
 </style>

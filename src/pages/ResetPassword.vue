@@ -1,16 +1,18 @@
 <template>
   <h1>Reset Password</h1>
   <form class="box-form" @submit.prevent="onClick">
-    <div>
-      <label>Enter new password: </label>
-      <input v-model="password" type="password" name="passwd" placeholder="new password" />
+    <div class="form-floating mb-4">
+      <input v-model="password" type="password" name="passwd" class="form-control" id="floatingInput"
+       placeholder="new password" />
+      <label for="floatingInput">Enter new password: </label>
     </div>
-    <div>
-      <label>Repeat new password: </label>
-      <input v-model="repeatPassword" type="password" name="passwd" placeholder="repeat password" />
+    <div class="form-floating mb-4">
+      <input v-model="repeatPassword" type="password" class="form-control" id="floatingInputTwo" 
+      name="passwd" placeholder="repeat password" />
+      <label for="floatingInputTwo">Repeat new password: </label>
     </div>
     <p class="error" v-if="error != null" :style="{ color: msgColor}">{{this.error}}</p>
-    <input class="resetButton" type="submit" value="Reset Password" />
+    <input class="custom-btn w-100" type="submit" value="Reset Password" />
   </form>
 </template>
 

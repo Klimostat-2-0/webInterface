@@ -100,8 +100,17 @@ export default {
 
 <style scoped>
 #chartContainer {
-    width: 70%;
     display: inline-block;
     text-align: center;
+}
+@media (min-width: 768px) {
+    #chartContainer {
+        width: 80%;
+    }
+}
+@media (max-width: 767px) {
+    #chartContainer {
+        width: 100%;
+    }
 }
 </style>

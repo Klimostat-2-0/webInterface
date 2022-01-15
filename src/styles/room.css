@@ -12,3 +12,26 @@ label {
     text-align: left;
     margin: 5px
 }
+
+.shadow-box {
+    display: inline-block;
+    box-shadow: 0px 10px 35px rgb(0 0 0 / 10%);
+    padding: 40px;
+    width: 90%;
+    border-radius: var(--border-radius);
+}
+
+.modified-btn {
+    margin: 10px;
+}
+
+@media (min-width: 768px) {
+    .modified-btn {
+      width: 180px;
+    }
+}
+@media (max-width: 767px) {
+    .modified-btn {
+      width: 100px;
+    }
+}

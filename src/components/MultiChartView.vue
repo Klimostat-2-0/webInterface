@@ -1,28 +1,33 @@
 <template>
   <div>
-    <h2>Overview</h2>
-    <p>
-      Looking at Data from <b>{{displayFrom}}</b> to <b>{{displayTo}}</b>
-    </p>
-    <div>
-      <input v-on:click="previousData" class="custom-btn modified-btn" type="button" value="Previous" />
-      <input v-on:click="nextData" class="custom-btn modified-btn" type="button" value="Next" />
+    <div class="shadow-box">
+      <h2>Overview</h2>
+      <p>
+        Looking at Data from <b>{{displayFrom}}</b> to <b>{{displayTo}}</b>
+      </p>
+      <div>
+        <input v-on:click="previousData" class="custom-btn modified-btn" type="button" value="Previous" />
+        <input v-on:click="nextData" class="custom-btn modified-btn" type="button" value="Next" />
+      </div>
+      <br>
+      <round-chart-component :chartTitle='stationNames' :chartData="pieChartValues" :uniqueId="'overviewChart'"
+      :key='isFetching' :co2Limit="stationLimits" :co2Reset="stationResets" ref="overview"/>
     </div>
-    <br>
-    <round-chart-component :chartTitle='stationNames' :chartData="pieChartValues" :uniqueId="'overviewChart'"
-     :key='isFetching' :co2Limit="stationLimits" :co2Reset="stationResets" ref="overview"/>
-    <hr>
-    <h2>CO2</h2>
-    <chart-component :options='this.co2ChartOptions' :chartTitle='stationNames' :chartLabels="displayXNames"
-     :chartData="co2" :key='isFetching' :uniqueId="'co2Chart'" ref="co2"/>
-    <hr>
-    <h2>Temperatur</h2>
-    <chart-component :options='this.tempChartOptions' :chartTitle='stationNames' :chartLabels="displayXNames"
-     :chartData="temp" :key='isFetching' :uniqueId="'tempChart'" ref="temp"/>
-    <hr>
-    <h2>Luftfeuchtigkeit</h2>
-    <chart-component :options='this.humChartOptions' :chartTitle='stationNames' :chartLabels="displayXNames"
-     :chartData="humidity" :key='isFetching' :uniqueId="'humChart'" ref="hum"/>
+    <div class="shadow-box">
+      <h2>CO2</h2>
+      <chart-component :options='this.co2ChartOptions' :chartTitle='stationNames' :chartLabels="displayXNames"
+      :chartData="co2" :key='isFetching' :uniqueId="'co2Chart'" ref="co2"/>
+    </div>
+    <div class="shadow-box">
+      <h2>Temperatur</h2>
+      <chart-component :options='this.tempChartOptions' :chartTitle='stationNames' :chartLabels="displayXNames"
+      :chartData="temp" :key='isFetching' :uniqueId="'tempChart'" ref="temp"/>
+    </div>
+    <div class="shadow-box">
+      <h2>Luftfeuchtigkeit</h2>
+      <chart-component :options='this.humChartOptions' :chartTitle='stationNames' :chartLabels="displayXNames"
+      :chartData="humidity" :key='isFetching' :uniqueId="'humChart'" ref="hum"/>
+    </div>
   </div>
 </template>
 
@@ -178,17 +183,5 @@
 </script>
 
 <style scoped>
-.modified-btn {
-  margin: 10px;
-}
-@media (min-width: 768px) {
-    .modified-btn {
-      width: 150px;
-    }
-}
-@media (max-width: 767px) {
-    .modified-btn {
-      width: 100px;
-    }
-}
+
 </style>

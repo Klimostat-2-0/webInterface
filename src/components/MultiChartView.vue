@@ -4,6 +4,11 @@
     <p>
       Looking at Data from <b>{{displayFrom}}</b> to <b>{{displayTo}}</b>
     </p>
+    <div>
+      <input v-on:click="previousData" class="custom-btn modified-btn" type="button" value="Previous" />
+      <input v-on:click="nextData" class="custom-btn modified-btn" type="button" value="Next" />
+    </div>
+    <br>
     <round-chart-component :chartTitle='stationNames' :chartData="pieChartValues" :uniqueId="'overviewChart'"
      :key='isFetching' :co2Limit="stationLimits" :co2Reset="stationResets" ref="overview"/>
     <hr>
@@ -35,6 +40,12 @@
     RoundChartComponent
   },
   methods: {
+      async previousData(){
+        this.$emit('previousData', this.userId)
+      },
+      async nextData(){
+        this.$emit('nextData', this.userId)
+      },
       async updateData(){
         const currentDate = handleCo2Data.roundDate(new Date())
         const fromTime = this.lastTimeStamp
@@ -167,25 +178,17 @@
 </script>
 
 <style scoped>
-.changeButton {
-  background-color: #1a2815;
-  border: none;
-  color: #dbff78;
-  padding: 5px 5px;
-  display: inline-block;
-  font-size: 16px;
-  margin-left: 10px;
+.modified-btn {
+  margin: 10px;
 }
-label {
-    display: inline-block;
-    width: 140px;
-    text-align: right;
-    margin-right: 20px;
+@media (min-width: 768px) {
+    .modified-btn {
+      width: 150px;
+    }
 }
-.formElement {
-    display: inline-block;
-    width: 200px;
-    text-align: left;
-    margin: 5px
+@media (max-width: 767px) {
+    .modified-btn {
+      width: 100px;
+    }
 }
 </style>

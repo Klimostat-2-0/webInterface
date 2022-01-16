@@ -11,6 +11,7 @@ import DataHistory from '../pages/ExportData'
 import VerifyEmail from '../pages/VerifyEmail'
 import ForgotPassword from '../pages/ForgotPassword'
 import ResetPassword from '../pages/ResetPassword'
+import EditUser from '../pages/EditUser'
 import store from "../store/index"
 
 const routes = [
@@ -31,6 +32,15 @@ const routes = [
         meta: {
             requiresAuth: true,
             requiresAdminAuth: false
+        }
+    },
+    {
+        path: '/user/:id',
+        name: 'useredit',
+        component: EditUser,
+        meta: {
+            requiresAuth: true,
+            requiresAdminAuth: true
         }
     },
     {

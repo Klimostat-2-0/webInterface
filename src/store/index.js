@@ -78,6 +78,9 @@ export default createStore({
         redirectLogin({commit}){
           router.push('/Login')
         },
+        redirectUserEdit({commit}, id){
+          router.push('/user/' + id)
+        },
         updateTokenObj({commit}, tokenObj){
           localStorage.setItem("tokens", tokenObj.tokens.access.token)
           localStorage.setItem("tokenObj", JSON.stringify(tokenObj.tokens))

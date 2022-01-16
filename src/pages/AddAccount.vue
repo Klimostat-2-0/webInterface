@@ -26,7 +26,7 @@
   <div class="shadow-box">
   <h1>All Users</h1>
     <div id="flexbox" v-if="!isFetching">
-      <user @delete-user="deleteUser" :key="user.id" v-for="user in users" :username="user.name" :email="user.email" :role="user.role" :userId="user.id"/>
+      <user @delete-user="deleteUser" @edit-user="editUser" :key="user.id" v-for="user in users" :username="user.name" :email="user.email" :role="user.role" :userId="user.id"/>
     </div>
   </div>
 </div>
@@ -54,6 +54,9 @@ import User from '../components/User'
         console.log(err)
         this.$store.dispatch('redirectError')
       }
+    },
+    async editUser(id) {
+      this.$store.dispatch('redirectUserEdit', id)
     },
     async onClick(e) {
       if (this.password == this.secondPassword && this.password.length >= 8 && /\d/.test(this.password) && /\w/.test(this.password)) {
@@ -113,5 +116,5 @@ import User from '../components/User'
 </script>
 
 <style scoped>
-@import "../styles/userEdit.css";
+@import "../styles/addUser.css";
 </style>

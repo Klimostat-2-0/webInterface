@@ -37,6 +37,8 @@ const axiosInt = function() {
                 } catch (_error) {
                     return err;
                 }
+            } else if(err.response.status===401 && requestConf._retry) {
+                store.dispatch('redirectError');
             }
         }
         return err;

@@ -1,0 +1,41 @@
+@import "../styles/main.css";
+
+#user-detail-wrapper {
+    text-align: center;
+}
+
+#user-detail-wrapper  h1{
+    margin-bottom: 50px;
+}
+
+#user-detail-wrapper  #edit-user-form {
+    display: inline-block;
+}
+
+#user-detail-wrapper  .error {
+    font-size: 14px;
+    color: red;
+}
+
+#user-detail-wrapper  #flexbox {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+@media (min-width: 768px) {
+    #user-detail-wrapper  #edit-user-form  {
+        width: 40%;
+    }
+    #user-detail-wrapper  #edit-user-form  .custom-btn {
+        width: 30%;
+    }
+}
+@media (max-width: 767px) {
+    #user-detail-wrapper  #edit-user-form  {
+        width: 90%;
+    }
+    #user-detail-wrapper  #edit-user-form  .custom-btn {
+        width: 60%;
+    }
+}

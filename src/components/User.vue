@@ -11,7 +11,7 @@
             Role: {{role}}
             </div>
             <div class="col-md-2">
-                <div class="edit-icon user-list-icon" v-on:click="none">
+                <div class="edit-icon user-list-icon" v-on:click="editUser">
                     <i :class="'fas fa-user-edit'" />
                 </div>
                 <div class="icon user-list-icon" v-on:click="deleteUser">
@@ -29,6 +29,9 @@ export default ({
     methods: {
         deleteUser(){
             this.$emit('delete-user', this.userId)
+        },
+        editUser(){
+            this.$emit('edit-user', this.userId)
         }
     },
     props: {

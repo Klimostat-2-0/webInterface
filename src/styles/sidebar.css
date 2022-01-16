@@ -47,19 +47,19 @@ box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
 left: 0;
 }
 #dismiss {
-width: 35px;
-height: 35px;
-line-height: 35px;
-text-align: center;
-background: var(--sidebar-main-color);
-position: absolute;
-top: 10px;
-right: 10px;
-cursor: pointer;
--webkit-transition: all 0.3s;
--o-transition: all 0.3s;
-transition: all 0.3s;
-border-radius: var(--border-radius);
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    background: var(--sidebar-main-color);
+    cursor: pointer;
+    position: absolute;
+    top: 14px;
+    right: 10px;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+    border-radius: var(--border-radius);
 }
 #dismiss.rotated {
     transform: rotate(180deg);
@@ -69,17 +69,25 @@ background: #fff;
 color: var(--sidebar-main-color);
 }
 #sidebar .sidebar-header {
-padding: 20px;
+padding: 15px;
 background: var(--sidebar-second-color);
 }
 
+#sidebar .sidebar-header h3{
+    margin: 0px;
+    display: inline;
+}
+
 #sidebar.hide ul.components {
-padding: 20px;
-text-align: left;
+    text-align: left;
+}
+
+#sidebar ul.components {
+    padding: 10px 20px 20px 20px;
 }
 
 #sidebar.show ul.components {
-    padding: 20px 5px;
+    padding: 10px 5px 20px 5px;
     text-align: right;
 }
     
@@ -146,8 +154,9 @@ text-align: center;
 
 #content .contentOffset {
     margin-top: 2%;
-    margin-bottom: 100px;
+    margin-bottom: 70px;
 }
+
 
 @media (min-width: 768px) {
     #sidebar {
@@ -171,6 +180,12 @@ text-align: center;
     #content.collapsed{
     padding-left: 70px;
     }
+    #content.extended .custom-footer .footer-indent{
+        padding-left: 270px;
+    }
+    #content.collapsed .custom-footer .footer-indent{
+        padding-left: 70px;
+    }
 }
 @media (max-width: 767px) {
     .show
@@ -181,4 +196,28 @@ text-align: center;
     {
     margin-left: 250px!important;
     }
+}
+
+
+/* ---------------------------------------------------
+FOOTER STYLE
+----------------------------------------------------- */
+
+.custom-footer {
+    padding-top: 10px;
+    text-align: center;
+    background: var(--footer-color);
+    position: fixed;
+    left:0;
+    bottom:0;
+    height:50px;
+}
+
+#content .custom-footer .footer-indent {
+    transition: all 0.3s;
+}
+
+.custom-footer a {
+    color: #2c3e50;
+    text-decoration: none;
 }

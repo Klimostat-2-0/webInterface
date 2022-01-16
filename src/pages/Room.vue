@@ -7,13 +7,13 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col">
-            <label>CO2 Limit:</label>
+            <label class="room-label">CO2 Limit:</label>
             <div class="formElement">
             <input class="form-control" onkeydown="return false" step="100" v-model="co2_limit" min="300" max="3000" type="number" name="co2Limit" 
             :readonly="!this.$store.getters.getAdminAccess"/>
             </div>
             <br>
-            <label>CO2 Reset:</label>
+            <label class="room-label">CO2 Reset:</label>
             <div class="formElement">
             <input class="form-control" onkeydown="return false" step="100" v-model="co2_reset" min="200" max="2900" type="number" name="co2Limit" 
             :readonly="!this.$store.getters.getAdminAccess"/>
@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="col">
-            <label>Time Period: </label>
+            <label class="room-label">Time Period: </label>
             <div class="formElement">
             <select class="form-select" v-model="timeScale" v-on:change="changeScale" name="times" id="times">
               <option value=1>Last Hour</option>
@@ -36,7 +36,7 @@
             </select>
             </div>
             <br>
-            <label>Refresh interval: </label>
+            <label class="room-label">Refresh interval: </label>
             <div class="formElement">
             <select class="form-select" v-model="refreshInterval" v-on:change="changeInterval" name="refreshIntervalls" id="refreshIntervalls">
               <option value=1>live</option>

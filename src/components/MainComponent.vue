@@ -1,11 +1,11 @@
 <template>
 <div class="wrapper">
   <nav id="sidebar" v-bind:class = "(toggle)?'show':'hide'">
-      <div id="dismiss" v-bind:class = "(toggle)?'rotated':''" @click='toggle = !toggle'>
-          <i class="fas fa-arrow-left"></i>
-      </div>
       <div class="sidebar-header">
           <h3>Klimostat</h3>
+          <div id="dismiss" v-bind:class = "(toggle)?'rotated':''" @click='toggle = !toggle'>
+            <i class="fas fa-arrow-left"></i>
+          </div>
       </div>
       <ul class="list-unstyled components">
           <li v-if="!this.$store.state.loggedIn" >
@@ -55,22 +55,29 @@
               </button>
           </div>
       </nav>
-      <div v-bind:class = "(toggle)?'contentOffset':''">
+
+      <div class="contentOffset">
         <router-view>
         </router-view>
       </div>
-      <Footer />
+
+      <footer class="container-fluid custom-footer">
+        <div class="row footer-indent">
+            <div class="col">Klimostat 2.0</div>
+            <div class="col">Copyright &copy; 2021</div>
+            <a class="col" href="https://klimostat.at/login.html">Our Website</a>
+        </div>
+        <p></p>
+    </footer>
   </div>
 </div>
 
 </template>
 <script>
-import Footer from './Footer.vue'
 
 export default {
   name: 'MainComponent',
   components: {
-    Footer
   },
   data(){
   return {

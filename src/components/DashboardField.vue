@@ -3,9 +3,9 @@
 <div :style="{'background-color': calcColor}" class="dashboardComponent">
     
         <h2>{{name}}</h2>
-        <h3>{{stationID}} / {{location}}</h3>
+        <h3>{{stationID}} <br> {{location}}</h3>
         <br>
-        <p>Current CO2 Level: {{ this.$store.state.dashboardValues[co2] }}</p>
+        <p id="co2-level">CO2: {{ this.$store.state.dashboardValues[co2] }}</p>
     
 </div>
 </router-link>

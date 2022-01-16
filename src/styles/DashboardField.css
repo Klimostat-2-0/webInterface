@@ -19,6 +19,10 @@
     color: #1a2815;
 }
 
+#co2-level {
+    color: black;
+}
+
 @media (min-width: 768px) {
     .dashboardComponentLink {
         width: 27%;

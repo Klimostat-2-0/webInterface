@@ -1,32 +1,24 @@
 <template>
   <h1>Add User</h1>
   <form @submit.prevent="onClick">
-    <div>
-      <label>Username: </label>
-      <div class="formElement">
-        <input v-model="username" type="text" name="username" placeholder="Username" required/>
-      </div>
+    <div class="form-floating mb-3">
+      <input class="form-control" v-model="username" type="text" name="username" placeholder="Username" required/>
+      <label class="form-floating mb-4">Username: </label>
     </div>
-    <div>
-      <label>Email: </label>
-      <div class="formElement">
-        <input v-model="email" type="email" name="email" placeholder="Email" required/>
-      </div>
+    <div class="form-floating mb-3">
+      <input class="form-control" v-model="email" type="email" name="email" placeholder="Email" required/>
+      <label class="form-floating mb-4">Email: </label>
     </div>
-    <div>
-      <label>Passwort: </label>
-      <div class="formElement">
-        <input v-model="password" type="password" name="password" placeholder="Password" required/>
-      </div>
+    <div class="form-floating mb-3">
+      <input class="form-control" v-model="password" type="password" name="password" placeholder="Password" required/>
+      <label class="form-floating mb-4">Passwort: </label>
     </div>
-    <div>
-      <label>Repeat password: </label>
-      <div class="formElement">
-        <input v-model="secondPassword" type="password" name="password" placeholder="Password" required/>
-      </div>
+    <div class="form-floating mb-3">
+      <input class="form-control" v-model="secondPassword" type="password" name="password" placeholder="Password" required/>
+      <label class="form-floating mb-4">Repeat password: </label>
     </div>
     <p :style="{ color: msgColor}" class="userMsg" v-if="successMsg != null">{{successMsg}}</p>
-    <input class="createButton" type="submit" value="Create" />
+    <input class="custom-btn w-25" type="submit" value="Create" />
   </form>
   <hr>
   <h1>All Users</h1>
@@ -131,12 +123,6 @@ div {
   display: inline-block;
   font-size: 16px;
   margin-top: 30px;
-}
-label {
-    display: inline-block;
-    width: 140px;
-    text-align: right;
-    margin-right: 20px;
 }
 .error {
   font-size: 14px;

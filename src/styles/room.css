@@ -1,6 +1,6 @@
 @import "../styles/main.css";
 
-label {
+.room-label {
     display: inline-block;
     width: 140px;
     text-align: right;

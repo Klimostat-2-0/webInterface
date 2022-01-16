@@ -124,4 +124,10 @@ export default {
     resetPassword(token, password) {
         return axiosInt.post('auth/reset-password?token=' + token, {"password": password})
     },
+    downloadMeasurements() {
+        return axiosInt.get('export/json/measurements')
+    },
+    downloadStations() {
+        return axiosInt.get('export/json/stations')
+    }
 }

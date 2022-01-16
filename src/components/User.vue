@@ -28,7 +28,10 @@
 export default ({
     methods: {
         deleteUser(){
-            this.$emit('delete-user', this.userId)
+            if (confirm("Are you sure?")) {
+                this.$emit('delete-user', this.userId)
+            }
+            
         },
         editUser(){
             this.$emit('edit-user', this.userId)

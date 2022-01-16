@@ -26,6 +26,12 @@
               <span class="sidebar-text">Compare</span>
               </router-link>
           </li>
+          <li v-if="this.$store.state.loggedIn">
+              <router-link class="sidebarelement" to="/history" tag="div">
+              <i class="icon" :class="'fas fa-history'" />
+              <span class="sidebar-text">History</span>
+              </router-link>
+          </li>
           <li v-if="this.$store.getters.getAdminAccess">
               <router-link class="sidebarelement" to="/adduser" tag="div">
               <i class="icon" :class="'fas fa-user-alt'" />

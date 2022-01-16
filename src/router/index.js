@@ -7,6 +7,7 @@ import ErrorPage from '../pages/ErrorPage'
 import Dashboard from '../pages/Dashboard'
 import AddAccount from '../pages/AddAccount'
 import Compare from '../pages/Compare.vue'
+import DataHistory from '../pages/ExportData'
 import VerifyEmail from '../pages/VerifyEmail'
 import ForgotPassword from '../pages/ForgotPassword'
 import ResetPassword from '../pages/ResetPassword'
@@ -54,10 +55,20 @@ const routes = [
             requiresAuth: true,
             requiresAdminAuth: true
         }
-    },{
+    },
+    {
         path: '/compare',
         name: 'Compare',
         component: Compare,
+        meta: {
+            requiresAuth: true,
+            requiresAdminAuth: false
+        }
+    },
+    {
+        path: '/history',
+        name: 'History',
+        component: DataHistory,
         meta: {
             requiresAuth: true,
             requiresAdminAuth: false

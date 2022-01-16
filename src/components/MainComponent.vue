@@ -38,6 +38,12 @@
               <span class="sidebar-text">Edit Users</span>
               </router-link>
           </li>
+          <li v-if="this.$store.getters.getAdminAccess">
+              <router-link class="sidebarelement" to="/addstation" tag="div">
+              <i class="icon" :class="'fas fa-box'" />
+              <span class="sidebar-text">Edit Stations</span>
+              </router-link>
+          </li>
           <li>
               <router-link class="sidebarelement" to="/about" tag="div">
               <i class="icon" :class="'fas fa-info'" />

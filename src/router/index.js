@@ -12,6 +12,7 @@ import VerifyEmail from '../pages/VerifyEmail'
 import ForgotPassword from '../pages/ForgotPassword'
 import ResetPassword from '../pages/ResetPassword'
 import EditUser from '../pages/EditUser'
+import AddStation from '../pages/AddStation'
 import store from "../store/index"
 
 const routes = [
@@ -61,6 +62,15 @@ const routes = [
         path: '/adduser',
         name: 'AddUser',
         component: AddAccount,
+        meta: {
+            requiresAuth: true,
+            requiresAdminAuth: true
+        }
+    },
+    {
+        path: '/addstation',
+        name: 'AddStation',
+        component: AddStation,
         meta: {
             requiresAuth: true,
             requiresAdminAuth: true

@@ -39,6 +39,8 @@ export default {
         } else {
           this.msgColor = "green"
           this.error = "We updated your password"
+          await new Promise(resolve => setTimeout(resolve, 1000))
+          this.$store.dispatch("redirectLogin")
         }
       }catch(err){
         console.log(err)

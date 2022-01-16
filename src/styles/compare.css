@@ -1,0 +1,24 @@
+@import "./main.css";
+.compare-options label {
+    display: inline-block;
+    width: 100px;
+    text-align: left;
+    margin-right: 20px;
+}
+.compare-options .formElement {
+    display: inline-block;
+    width: 300px;
+    text-align: left;
+    margin: 5px
+}
+
+@media (min-width: 768px) {
+    .compare-options .formElement {
+        width: 300px;
+    }
+}
+@media (max-width: 767px) {
+    .compare-options .formElement {
+        width: 250px;
+    }
+}

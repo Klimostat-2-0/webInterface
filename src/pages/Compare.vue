@@ -1,27 +1,39 @@
 <template>
+  <div class="shadow-box compare-options">
   <h1>Compare</h1>
-  <p>On this page you can compare the data of two stations.</p>
-  <hr>
-  <h2>Select you station</h2>
-  <div :key="this.isFetching">
-      <label>Station1</label>
-      <div class="formElement">
-      <select v-model="station1" name="station1" id="station1">
-        <option v-for="station in stations" :key="station.id" :value="JSON.stringify(station)">{{station.name}}</option>
-      </select>
+    <p>On this page you can compare the data of two stations.</p>
+    <h2>Select you station</h2>
+    <div :key="this.isFetching">
+      <div class="formElement m-2">
+        <label class="room-label">Station1:</label>
+        <select class="form-select" v-model="station1" name="station1" id="station1">
+          <option v-for="station in stations" :key="station.id" :value="JSON.stringify(station)">{{station.name}}</option>
+        </select>
       </div>
       <br>
-      <label>Station2</label>
-      <div class="formElement">
-      <select v-model="station2" name="station2" id="station2">
-        <option v-for="station in stations" :key="station.id" :value="JSON.stringify(station)">{{station.name}}</option>
-      </select>
+      <div class="formElement m-2">
+        <label class="room-label">Station2:</label>
+        <select class="form-select" v-model="station2" name="station2" id="station2">
+          <option v-for="station in stations" :key="station.id" :value="JSON.stringify(station)">{{station.name}}</option>
+        </select>
       </div>
       <br>
+      <div class="formElement m-2">
+        <label class="room-label">Time Period: </label>
+        <select class="form-select" v-model="timeScale" v-on:change="changeScale" name="times" id="times">
+          <option value=1>Last Hour</option>
+          <option value=2>Last 2 Hours</option>
+          <option value=6>Last 6 Hours</option>
+          <option value=12>Last 12 Hours </option>
+          <option value=24>Last Day</option>
+          <option value=48>Last 2 Days</option>
+        </select>
+      </div>
       <br>
-      <input v-on:click="loadComparisonData" class="loadButton" type="button" value="Load"/>
+      <input v-on:click="loadComparisonData" class="custom-btn w-25 m-4" type="button" value="Load"/>
+    </div>
   </div>
-  <hr>
+  
   <div v-if="this.dataLoaded" :key="isFetching">
     <multi-chart-view :stationObj="staionsForComparission"/>
   </div>
@@ -84,26 +96,5 @@
 </script>
 
 <style scoped>
-label {
-    display: inline-block;
-    width: 140px;
-    text-align: right;
-    margin-right: 20px;
-}
-.formElement {
-    display: inline-block;
-    width: 200px;
-    text-align: left;
-    margin: 5px
-}
-.loadButton {
-  background-color: #1a2815;
-  border: none;
-  color: #dbff78;
-  padding: 5px;
-  width: 80px;
-  display: inline-block;
-  font-size: 16px;
-  margin-left: 10px;
-}
+@import "../styles/compare.css";
 </style>

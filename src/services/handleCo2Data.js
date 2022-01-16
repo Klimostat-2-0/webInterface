@@ -31,10 +31,9 @@ function checkDayImportance(time){
     return false
 }
 
-function mapDataToTime(normTime, time, data) {
+function mapDataToTime(dayImportance, time, data) {
     let result = []
     if(time.length != data.length) return
-    let dayImportance = checkDayImportance(time)
     for(let i = 0; i < time.length; i++) {
         result.push([formatDate(dayImportance, time[i]), data[i]])
     }

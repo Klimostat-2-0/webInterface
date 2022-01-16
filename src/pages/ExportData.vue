@@ -41,7 +41,7 @@
           let blob = new Blob([JSON.stringify(res)], {
               type: "text/plain;charset=utf-8"
           });
-          saveAs(blob, "measurements.txt")
+          saveAs(blob, "measurements.json")
           this.mButtonText = "Download now"
           this.mDownloadActive = false
       },
@@ -52,7 +52,7 @@
           let blob = new Blob([JSON.stringify(res)], {
               type: "text/plain;charset=utf-8"
           });
-          saveAs(blob, "stations.txt")
+          saveAs(blob, "stations.json")
           this.sButtonText = "Download now"
           this.sDownloadActive = false
       }

@@ -19,17 +19,22 @@
   },
   methods: {
     async requestDataUpdate(element) {
-      const res2 = await dataService.requestDataUpdateDashboard(element.id)
-      if(res2.status != 200) {
+      try{
+        const res2 = await dataService.requestDataUpdateDashboard(element.id)
+        if(res2.status != 200) {
+          this.$store.dispatch('redirectError')
+          return
+        }
+        const co2Data = res2.data
+        let currentCO2 = "noValues"
+        if(co2Data.results.length > 0) {
+          currentCO2 = co2Data.results[0].co2.toString()
+        }
+        return currentCO2
+      } catch(err){
+        console.log(err)
         this.$store.dispatch('redirectError')
-        return
       }
-      const co2Data = res2.data
-      let currentCO2 = "noValues"
-      if(co2Data.results.length > 0) {
-        currentCO2 = co2Data.results[0].co2.toString()
-      }
-      return currentCO2
     }
   },
   data() {

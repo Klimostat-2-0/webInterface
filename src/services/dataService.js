@@ -114,6 +114,12 @@ export default {
     getAllUsers() {
         return axiosInt.get('users')
     },
+    getUser(id) {
+        return axiosInt.get('users/' + id)
+    },
+    patchUser(id, username, email, role) {
+        return axiosInt.patch('users/' + id, {"name": username, "email":email})
+    },
     deleteUser(id) {
         return axiosInt.delete('users/' + id)
     },

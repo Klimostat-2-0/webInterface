@@ -65,7 +65,7 @@
         <div class="row footer-indent">
             <div class="col">Klimostat 2.0</div>
             <div class="col">Copyright &copy; 2021</div>
-            <a class="col" href="https://klimostat.at/login.html">Our Website</a>
+            <a class="col" href="https://klimostat.at/login.html">Website</a>
         </div>
         <p></p>
     </footer>

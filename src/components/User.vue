@@ -1,13 +1,24 @@
 <template>
-<div class="user">
-    <h3>{{username}}</h3>
-    <div>
-    Email: {{email}}
-    <br>
-    Role: {{role}}
-    </div>
-    <div class="icon" v-on:click="deleteUser">
-        <i :class="'fas fa-trash-alt'" />
+<div class="user-box">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <h3>{{username}}</h3>
+            </div>
+            <div class="col-md-8">
+            Email: {{email}}
+            <br>
+            Role: {{role}}
+            </div>
+            <div class="col-md-2">
+                <div class="edit-icon user-list-icon" v-on:click="none">
+                    <i :class="'fas fa-user-edit'" />
+                </div>
+                <div class="icon user-list-icon" v-on:click="deleteUser">
+                    <i :class="'fas fa-trash-alt'" />
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </template>
@@ -41,26 +52,5 @@ export default ({
 </script>
 
 <style scoped>
-.user{
-    display: flex;
-    gap: 30px;
-    text-align: left;
-    align-items: center;
-    background-color: rgb(200,200,200);
-    border-radius: 25px;
-    padding: 20px;
-    width: 40%;
-}
-.icon{
-    color: red;
-    margin-left: auto;
-    margin-right: 20px;
-    font-size: 20px;
-    border-radius: 5px;
-    padding: 10px;
-}
-
-.icon:hover{
-    background-color: rgba(100,100,100,0.5);
-}
+@import "../styles/user.css";
 </style>

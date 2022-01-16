@@ -120,8 +120,17 @@ export default {
 
 <style scoped>
 #chartContainer {
-    width: 40%;
     display: inline-block;
     text-align: center;
+}
+@media (min-width: 768px) {
+    #chartContainer {
+        width: 40%;
+    }
+}
+@media (max-width: 767px) {
+    #login-form{
+        width: 100%;
+      }
 }
 </style>

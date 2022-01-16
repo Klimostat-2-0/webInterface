@@ -4,6 +4,8 @@
       <h2>Overview</h2>
       <p>
         Looking at Data from <b>{{displayFrom}}</b> to <b>{{displayTo}}</b>
+        <br>
+        {{infoText}} 
       </p>
       <div>
         <input v-on:click="previousData" class="custom-btn modified-btn" type="button" value="Previous" />
@@ -88,6 +90,7 @@
         this.$refs.co2.updateData(updatingDisplayNames, updatingCo2);
         this.$refs.temp.updateData(updatingDisplayNames, updatingTemp);
         this.$refs.hum.updateData(updatingDisplayNames, updatingHum);
+        this.countDown = 60 * this.intervallValue
       },
       async setupData() {
         const currentDate = handleCo2Data.hoursAgoToTimestamp(this.range*this.indexBack, currentDate)
@@ -132,7 +135,18 @@
       async changeInterval(newIntervall){
         clearInterval(this.intervalls)
         this.intervalls = setInterval(this.updateData, newIntervall * 60000)
+        this.intervallValue = newIntervall
+        this.countDown = 60 * this.intervallValue
+      },
+      getRemaningTime: function() {
+      if(this.indexBack > 0) {
+        this.infoText = "Not updating while viewing the history";
+        return
       }
+      this.countDown--
+      if(this.countDown < 0) this.countDown = 0
+      this.infoText = "Next update in: " + this.countDown + "s"
+    }
   },
   data() {
     return {
@@ -155,7 +169,11 @@
       nextStationObj: [],
       intervalls: null,
       displayFrom: "notSelected",
-      displayTo: "Now"
+      displayTo: "Now",
+      intervallValue: 1,
+      calcTimeToUpdateInterval: null,
+      infoText: "Configuring updates...",
+      countDown: 60
     }
   },
   props: {
@@ -174,10 +192,12 @@
   async created(){
     await this.setupData()
     if(this.indexBack == 0) this.intervalls = setInterval(this.updateData, 60000)
+    this.calcTimeToUpdateInterval = setInterval(this.getRemaningTime, 1000)
     this.isFetching++
 },
   beforeUnmount() {
     clearInterval(this.intervalls)
+    clearInterval(this.calcTimeToUpdateInterval)
   }
 }
 </script>

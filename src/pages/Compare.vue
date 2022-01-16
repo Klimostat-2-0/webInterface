@@ -35,7 +35,8 @@
   </div>
   
   <div v-if="this.dataLoaded" :key="isFetching">
-    <multi-chart-view :stationObj="staionsForComparission"/>
+    <multi-chart-view :stationObj="staionsForComparission" :range="timeScale" :indexBack="indexBack"
+    @previousData="previousData" @nextData="nextData"/>
   </div>
 </template>
 
@@ -60,6 +61,19 @@
             this.dataLoaded = true
             this.isFetching++
           }
+      },
+      async changeScale(){
+        this.indexBack = Math.floor((this.indexBack*this.previousTimeScale)/this.timeScale)
+        this.previousTimeScale = this.timeScale
+        this.isFetching++
+      },
+      async previousData(){
+        this.indexBack++
+        this.isFetching++
+      },
+      async nextData(){
+        if(this.indexBack>0) this.indexBack--
+        this.isFetching++
       }
   },
   data() {
@@ -72,7 +86,10 @@
       station1: '',
       station2: '',
       dataLoaded: false,
-      staionsForComparission: []
+      staionsForComparission: [],
+      indexBack: 0,
+      timeScale: 1,
+      previousTimeScale: 1
     }
   },
   async created(){

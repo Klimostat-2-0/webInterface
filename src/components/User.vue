@@ -2,10 +2,10 @@
 <div class="user-box">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col">
                 <h3>{{username}}</h3>
             </div>
-            <div class="col-md-8">
+            <div class="col">
             Email: {{email}}
             <br>
             Role: {{role}}

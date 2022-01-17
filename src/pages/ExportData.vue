@@ -38,7 +38,7 @@
           this.mDownloadActive = true
           this.mButtonText = "Downloading..."
           const res = await dataService.downloadMeasurements()
-          let blob = new Blob([JSON.stringify(res)], {
+          let blob = new Blob([JSON.stringify(res.data)], {
               type: "text/plain;charset=utf-8"
           });
           saveAs(blob, "measurements.json")
@@ -49,7 +49,7 @@
           this.sDownloadActive = true
           this.sButtonText = "Downloading..."
           const res = await dataService.downloadStations()
-          let blob = new Blob([JSON.stringify(res)], {
+          let blob = new Blob([JSON.stringify(res.data)], {
               type: "text/plain;charset=utf-8"
           });
           saveAs(blob, "stations.json")

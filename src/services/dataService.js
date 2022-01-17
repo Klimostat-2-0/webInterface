@@ -64,6 +64,9 @@ export default {
     getStations() {
         return axiosInt.get('station/')
     },
+    createStation(name, location, room) {
+        return axiosInt.post('station/', {"name": name, "location": location, "roomNr": room})
+    },
     getStationsById(stationId) {
         return axiosInt.get('station/'+stationId)
     },

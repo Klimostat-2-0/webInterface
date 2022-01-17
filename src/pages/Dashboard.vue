@@ -1,7 +1,7 @@
 <template>
   <h1>Dashboard</h1>
   <p>This is an Overview of all Stations</p>
-  <div id="flexbox" v-if="!isFetching">
+  <div id="flexbox" :key="isFetching">
     <dashboard-field v-for="station in stations" :key="station.id" 
     :routeIdProp="station[3]" :stationIdProp='"Room" + station[2]' :co2Prop='station[4]' :nameProp='station[0]' 
     :locationProp='station[1]'  :co2LimitProp='station[5]' :co2ResetProp='station[6]'/>
@@ -40,7 +40,7 @@
   data() {
     return {
       stations: [],
-      isFetching: true,
+      isFetching: 0,
       intervalls: []
     }
   },
@@ -64,7 +64,7 @@
       }, 5000))
       index++
       }
-      this.isFetching = false
+      this.isFetching++
     } catch(err) {
       this.$store.dispatch('redirectError')
     }

@@ -1,13 +1,14 @@
 <template>
     <div>
         <h1>About</h1>
-        <h2>Wir wollen Klassenräume mit guter, frischer Luft!</h2>
+        <h2>We want classrooms with good, fresh air!</h2>
         <p>
-            Nach drei Jahren an unserer Schule ist uns nach und nach und vor allem durch 
-            die Pandemie bewusst geworden, wie wichtig gut durchlüftete Klassen für ideale
-            Lern- und Gesundheitsbedingungen sind. Daher hat sich das Klimostat 2.0 Team die 
-            Aufgabe gesetzt ein System zu entwickeln, das die Luftqualität von Klassen überwacht 
-            und dafür sorgt, dass regelmäßig gelüftet wird.
+            After three years at our school, we have gradually become aware, 
+            how important well-ventilated classes are 
+            for ideal learning and health conditions. Therefore, the Klimostat 
+            2.0 team has set out to develop a system 
+            that monitors the air quality of classes  and ensures that 
+            the classrooms are regularly ventilated.
         </p>
     </div>
 </template>

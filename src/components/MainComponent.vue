@@ -2,7 +2,7 @@
 <div class="wrapper">
   <nav id="sidebar" v-bind:class = "(toggle)?'show':'hide'">
       <div class="sidebar-header">
-          <h3>Klimostat</h3>
+          <img id="sidebar-image" src="../assets/logo_white.svg" alt="Logo" class="mb-4">
           <div id="dismiss" v-bind:class = "(toggle)?'rotated':''" @click='toggle = !toggle'>
             <i class="fas fa-arrow-left"></i>
           </div>

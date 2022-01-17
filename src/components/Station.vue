@@ -13,10 +13,10 @@
             ID: {{stationId}}
             </div>
             <div class="col-md-2">
-                <div class="edit-icon user-list-icon" v-on:click="deleteStation">
+                <div class="edit-icon user-list-icon" v-on:click="editStation">
                     <i :class="'fas fa-edit'" />
                 </div>
-                <div class="icon user-list-icon" v-on:click="editStation">
+                <div class="icon user-list-icon" v-on:click="deleteStation">
                     <i :class="'fas fa-trash-alt'" />
                 </div>
             </div>

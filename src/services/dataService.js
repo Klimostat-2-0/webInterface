@@ -64,6 +64,9 @@ export default {
     getStations() {
         return axiosInt.get('station/')
     },
+    deleteStation(id) {
+        return axiosInt.delete('station/'+id)
+    },
     createStation(name, location, room) {
         return axiosInt.post('station/', {"name": name, "location": location, "roomNr": room})
     },

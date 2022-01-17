@@ -22,8 +22,8 @@
   <div class="shadow-box">
   <h1>All Stations</h1>
     <div id="flexbox" v-if="!isFetching">
-      <station :key="station.id" v-for="station in stations" :stationName="station.name" 
-      :stationLocation="station.location" :stationRoom="station.roomNr" :stationId="station.id"/>
+      <station @delete-station="deleteStation" @edit-station="editStation" :key="station.id" v-for="station in stations" 
+      :stationName="station.name" :stationLocation="station.location" :stationRoom="station.roomNr" :stationId="station.id"/>
     </div>
   </div>
 </div>
@@ -39,6 +39,22 @@ import station from '../components/Station'
     station
   },
   methods: {
+    async deleteStation(id) {
+      try{
+        const res = await dataService.deleteStation(id)
+        if(res.status != 200 && res.status != 204 ) {
+          this.$store.dispatch('redirectError')
+          return
+        }
+        this.stations = this.stations.filter((station) => station.id != id)
+      } catch {
+        console.log(err)
+        this.$store.dispatch('redirectError')
+      }
+    },
+    async editStation(id) {
+      this.$store.dispatch('redirectStationEdit', id)
+    },
     async onClick(e) {
         try{
           const res = await dataService.createStation(this.stationName, this.stationLocation, this.stationRoom)

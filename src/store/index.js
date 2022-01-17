@@ -9,6 +9,7 @@ export default createStore({
         isAdmin: localStorage.getItem("isAdmin") == 'true' || false,
         showLoginError: null,
         loggedIn: localStorage.getItem("loggedIn") == 'true' || false,
+        userId: localStorage.getItem("userId") || null,
         dashboardValues: []
     },
     mutations: {

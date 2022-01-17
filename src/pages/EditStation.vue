@@ -34,7 +34,13 @@ import dataService from '../services/dataService'
   methods: {
     async onClick(e) {
       try{
-        const res = await dataService.patchStation(this.stationId, this.stationName, this.stationLocation, this.roomNr)
+        let res = null
+        if(this.oldStationName!=this.stationName) {
+          res = await dataService.patchStation(this.stationId, this.stationName, this.stationLocation, this.roomNr)
+        } else {
+          res = await dataService.patchStation(this.stationId, null, this.stationLocation, this.roomNr)
+        }
+        this.oldStationName = this.stationName
         if(res.status != 200) {
           this.msgColor="red"
           this.successMsg="There was an error while updating the station"
@@ -52,6 +58,7 @@ import dataService from '../services/dataService'
     return {
       stationId: '',
       stationName: '',
+      oldStationName: '',
       stationLocation: '',
       roomNr: null,
       successMsg: null,
@@ -67,6 +74,7 @@ import dataService from '../services/dataService'
           return
         }
         this.stationName = res.data.name
+        this.oldStationName = res.data.name
         this.stationLocation = res.data.location
         this.roomNr = res.data.roomNr
       } catch(err){

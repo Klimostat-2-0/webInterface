@@ -74,6 +74,7 @@ export default {
         return axiosInt.get('station/'+stationId)
     },
     patchStation(stationId, name, location, room) {
+        if(name == null) return axiosInt.patch('station/' + stationId, {"location": location, "roomNr": room})
         return axiosInt.patch('station/' + stationId, {"name": name, "location": location, "roomNr": room})
     },
     updateCO2Data(stationID, timestamp) {

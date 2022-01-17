@@ -12,6 +12,7 @@ import VerifyEmail from '../pages/VerifyEmail'
 import ForgotPassword from '../pages/ForgotPassword'
 import ResetPassword from '../pages/ResetPassword'
 import EditUser from '../pages/EditUser'
+import EditStation from '../pages/EditStation'
 import AddStation from '../pages/AddStation'
 import store from "../store/index"
 
@@ -39,6 +40,15 @@ const routes = [
         path: '/user/:id',
         name: 'useredit',
         component: EditUser,
+        meta: {
+            requiresAuth: true,
+            requiresAdminAuth: true
+        }
+    },
+    {
+        path: '/station/:id',
+        name: 'editStation',
+        component: EditStation,
         meta: {
             requiresAuth: true,
             requiresAdminAuth: true

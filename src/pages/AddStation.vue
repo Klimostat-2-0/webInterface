@@ -64,7 +64,7 @@ import station from '../components/Station'
           } else {
             this.msgColor = "green"
             this.successMsg = "You Successfully created a new station with the ID:\n" + res.data.id
-            this.stations.push(res.data.station)
+            this.stations.push(res.data)
           }
         } catch(err){
           console.log(err)

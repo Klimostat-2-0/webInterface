@@ -73,6 +73,9 @@ export default {
     getStationsById(stationId) {
         return axiosInt.get('station/'+stationId)
     },
+    patchStation(stationId, name, location, room) {
+        return axiosInt.patch('station/' + stationId, {"name": name, "location": location, "roomNr": room})
+    },
     updateCO2Data(stationID, timestamp) {
         return axiosInt.get('measurement?station=' + stationID + "&sortBy=timestamp%3Adesc&limit=100&page=1&"
          + new URLSearchParams({

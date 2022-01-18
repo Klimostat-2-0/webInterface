@@ -1,8 +1,18 @@
 <template>
   <h1>Dashboard</h1>
   <p>This is an Overview of all Stations</p>
+  <div id="dashboard-search-bar">
+    <div class="input-group">
+      <input v-model="searchTerm" type="text" class="form-control" 
+      aria-label="Search" placeholder="Search..." 
+      v-on:keyup="searchDashboard">
+      <span class="input-group-text">
+        <i class="fas fa-search"></i>
+      </span>
+    </div>
+  </div>
   <div id="flexbox" :key="isFetching">
-    <dashboard-field v-for="station in stations" :key="station.id" 
+    <dashboard-field v-for="station in stationSearches" :key="station.id" 
     :routeIdProp="station[3]" :stationIdProp='"Room" + station[2]' :co2Prop='station[4]' :nameProp='station[0]' 
     :locationProp='station[1]'  :co2LimitProp='station[5]' :co2ResetProp='station[6]'/>
   </div>
@@ -18,6 +28,11 @@
     DashboardField
   },
   methods: {
+    searchDashboard() {
+      this.stationSearches = this.stations.filter((station) => station[0].toLowerCase()
+      .includes(this.searchTerm.toLowerCase()))
+      this.isFetching++
+    },
     async requestDataUpdate(element) {
       try{
         const res2 = await dataService.requestDataUpdateDashboard(element.id)
@@ -40,8 +55,10 @@
   data() {
     return {
       stations: [],
+      stationSearches: [],
       isFetching: 0,
-      intervalls: []
+      intervalls: [],
+      searchTerm: ''
     }
   },
   async created(){
@@ -56,6 +73,7 @@
       this.$store.commit("updateDashboard", [index, await this.requestDataUpdate(element)])
       this.stations.push([element.name, element.location, element.roomNr, element.id, 
       index.toString(), element.co2_limit, element.co2_reset])
+      this.stationSearches = this.stations
       let that = this
       const constIndex = index
       this.intervalls.push(setInterval(async function(idx = constIndex){
@@ -82,5 +100,10 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+#dashboard-search-bar{
+  width: 400px;
+  display: inline-block;
 }
 </style>

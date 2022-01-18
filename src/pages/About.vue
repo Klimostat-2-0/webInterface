@@ -13,7 +13,7 @@
         <br>
         <br>
         <p>
-            For more information check out our <a class="col" href="https://klimostat.at/login.html">Website</a>
+            For more information check out our <a class="col" href="https://klimostat.at">Website</a>
         </p>
     </div>
 </template>

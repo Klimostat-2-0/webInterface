@@ -103,7 +103,7 @@
 }
 
 #dashboard-search-bar{
-  width: 400px;
+  width: 350px;
   display: inline-block;
 }
 </style>

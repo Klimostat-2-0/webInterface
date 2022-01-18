@@ -10,6 +10,11 @@
             that monitors the air quality of classes  and ensures that 
             the classrooms are regularly ventilated.
         </p>
+        <br>
+        <br>
+        <p>
+            For more information check out our <a class="col" href="https://klimostat.at/login.html">Website</a>
+        </p>
     </div>
 </template>
 

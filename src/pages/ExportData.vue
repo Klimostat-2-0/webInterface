@@ -5,16 +5,25 @@
         <br>
         <h3>Download measurements</h3>
         <p>Download all the measurements that have ever been collected</p>
-        <input v-on:click="startMeasurementDownload" class="custom-btn w-50 mb-4" type="button" :value="mButtonText" 
-        :disabled="mDownloadActive"/>
-
+        <button v-on:click="startMeasurementDownload" class="custom-btn w-50 mb-4" type="button" 
+        :disabled="mDownloadActive">
+            <span v-if="mDownloadActive" class="spinner-border spinner-border-sm" 
+            role="status" aria-hidden="true"></span>
+            <span v-if="mDownloadActive"> Downloading...</span>
+            <span v-if="!mDownloadActive">Download now</span>
+        </button>
         <br>
         <br>
 
         <h3>Download stations</h3>
         <p>Download all stations that are registered</p>
-        <input v-on:click="startStationDownload" class="custom-btn w-50 mb-4" type="button" value="Download now" 
-        :disabled="sDownloadActive"/>
+        <button v-on:click="startStationDownload" class="custom-btn w-50 mb-4" type="button"
+        :disabled="sDownloadActive">
+            <span v-if="sDownloadActive" class="spinner-border spinner-border-sm" 
+            role="status" aria-hidden="true"></span>
+            <span v-if="sDownloadActive"> Downloading...</span>
+            <span v-if="!sDownloadActive">Download now</span>
+        </button>
     </div>
 </template>
 
@@ -28,9 +37,7 @@
   data() {
     return {
       mDownloadActive: false,
-      sDownloadActive: false,
-      mButtonText: "Download now",
-      sButtonText: "Download now"
+      sDownloadActive: false
     }
   },
   methods: {

@@ -16,6 +16,10 @@
     border: none;
 }
 
+.custom-btn:hover {
+    background-color: #46cc6a;
+}
+
 .shadow-box {
     display: inline-block;
     box-shadow: 0px 10px 35px rgb(0 0 0 / 10%);

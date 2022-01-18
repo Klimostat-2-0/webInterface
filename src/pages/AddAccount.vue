@@ -69,6 +69,10 @@ import User from '../components/User'
             this.msgColor = "green"
             this.successMsg = "You Successfully created a new user"
             this.users.push(res.data.user)
+            this.username = ''
+            this.email = ''
+            this.password = ''
+            this.secondPassword = ''
           }
         } catch(err){
           console.log(err)
@@ -80,10 +84,6 @@ import User from '../components/User'
         this.successMsg = "The password has to be at least 8 characters long and contain numbers and letters"
       }
       e.target.reset()
-      this.username = ''
-      this.email = ''
-      this.password = ''
-      this.secondPassword = ''
       setTimeout(() => this.successMsg = null, 7000)
     }
   },

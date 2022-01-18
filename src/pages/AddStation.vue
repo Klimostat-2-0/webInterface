@@ -65,6 +65,9 @@ import station from '../components/Station'
             this.msgColor = "green"
             this.successMsg = "You Successfully created a new station with the ID:\n" + res.data.id
             this.stations.push(res.data)
+            this.stationName = ''
+            this.stationLocation = ''
+            this.stationRoom = null
           }
         } catch(err){
           console.log(err)
@@ -72,9 +75,6 @@ import station from '../components/Station'
           this.successMsg = "There was an error while creating the station"
         }
       e.target.reset()
-      this.stationName = ''
-      this.stationLocation = ''
-      this.stationRoom = null
       setTimeout(() => this.successMsg = null, 7000)
   }
   },

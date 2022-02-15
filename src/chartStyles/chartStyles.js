@@ -13,7 +13,7 @@ function co2ChartOptions(co2LimitConst) {
                 yMin: co2LimitConst,
                 yMax: co2LimitConst,
                 borderColor: 'rgb(0, 0, 0, 0.75)',
-                borderWidth: 3,
+                borderWidth: 1.5,
                 }
             }
             }

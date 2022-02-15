@@ -10,7 +10,8 @@ export default createStore({
         showLoginError: null,
         loggedIn: localStorage.getItem("loggedIn") == 'true' || false,
         userId: localStorage.getItem("userId") || null,
-        dashboardValues: []
+        dashboardValues: [],
+        toggle: document.documentElement.clientWidth < 768
     },
     mutations: {
       auth_success(state, data) {
@@ -41,6 +42,9 @@ export default createStore({
       },
       updateDashboard(state, data) {
         state.dashboardValues[data[0]] = data[1]
+      },
+      switchToggle(state) {
+        state.toggle = !state.toggle
       }
     },
     actions: {
@@ -114,6 +118,9 @@ export default createStore({
         } else {
           return false
         }
+      },
+      getToggle: state => {
+        return state.toggle
       }
     }
 }) 

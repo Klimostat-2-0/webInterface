@@ -1,15 +1,15 @@
 <template>
 <div class="wrapper">
-  <nav id="sidebar" v-bind:class = "(toggle)?'show':'hide'">
+  <nav id="sidebar" v-bind:class = "(this.$store.getters.getToggle)?'show':'hide'">
       <div class="sidebar-header">
           <img id="sidebar-image" src="../assets/logo_white.svg" alt="Logo" class="mb-4">
-          <div id="dismiss" v-bind:class = "(toggle)?'rotated':''" @click='toggle = !toggle'>
+          <div id="dismiss" v-bind:class = "(this.$store.getters.getToggle)?'rotated':''" @click='this.$store.commit("switchToggle")'>
             <i class="fas fa-arrow-left"></i>
           </div>
       </div>
       <ul class="list-unstyled components">
           <li v-if="!this.$store.state.loggedIn" >
-              <router-link  class="sidebarelement" to="/" tag="div">
+              <router-link class="sidebarelement" to="/" tag="div">
                 <i class="icon" :class="'fas fa-sign-in-alt'" />
                 <span class="sidebar-text">Login</span>
               </router-link>
@@ -59,10 +59,10 @@
       </ul>
   </nav>
 
-  <div id="content" v-bind:class = "(toggle)?'collapsed':'extended'">
+  <div id="content" v-bind:class = "(this.$store.getters.getToggle)?'collapsed':'extended'">
       <nav class="navbar d-md-none navbar-light bg-light">
           <div class="container-fluid">
-              <button type="button" id="sidebarCollapse" class="btn" @click='toggle = !toggle'>
+              <button type="button" id="sidebarCollapse" class="btn" @click='this.$store.commit("switchToggle")'>
                     <i class="icon" :class="'fas fa-bars'" />
               </button>
           </div>
@@ -93,12 +93,17 @@ export default {
   },
   data(){
   return {
-     toggle: document.documentElement.clientWidth < 768
   }
   },
   methods: {
         logOut(e) {
+            console.log("Calling")
             this.$store.dispatch('logout')
+        },
+        sideBarClick(e) {
+            if(document.documentElement.clientWidth < 768) {
+                this.toggle = true
+            }
         }
     },
     computed: {

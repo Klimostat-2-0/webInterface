@@ -138,22 +138,28 @@ const routes = [
     }
 ]
 
-const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL), 
-    routes,
-    scrollBehavior(to, from, savedPosition) {
-        return { left: 0, top: 0 };
-    }
-})
 
-router.beforeEach((to, from, next) => {
-    if(to.matched.some(record => record.meta.requiresAuth) && !store.getters.getLogInInfo) {
-        next('/')
-    } else if(to.matched.some(record => record.meta.requiresAdminAuth) && !store.getters.getAdminAccess){
-        next('/dashboard')
-    }else{
-        next()
-    }
-})
+function initRouter() {
+    let router = createRouter({
+        history: createWebHistory(process.env.BASE_URL), 
+        routes,
+        scrollBehavior(to, from, savedPosition) {
+            return { left: 0, top: 0 };
+        }
+    })
+    router.beforeEach((to, from, next) => { 
+        if(document.documentElement.clientWidth < 768) {
+            store.commit("switchToggle")
+        }
+        if(to.matched.some(record => record.meta.requiresAuth) && !store.getters.getLogInInfo) {
+            next('/')
+        } else if(to.matched.some(record => record.meta.requiresAdminAuth) && !store.getters.getAdminAccess){
+            next('/dashboard')
+        }else{
+            next()
+        }
+    })
+    return router
+}
 
-export default router
+export default initRouter()

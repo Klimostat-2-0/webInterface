@@ -76,7 +76,7 @@
       <footer class="container-fluid custom-footer">
         <div class="row footer-indent">
             <div class="col">Klimostat 2.0</div>
-            <div class="col">Copyright &copy; 2021</div>
+            <div class="col">Copyright &copy; 2022</div>
             <a class="col" href="https://klimostat.at/">Website</a>
         </div>
         <p></p>

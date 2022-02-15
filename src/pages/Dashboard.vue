@@ -29,7 +29,7 @@
   },
   methods: {
     searchDashboard() {
-      this.stationSearches = this.stations.filter((station) => station[0].toLowerCase()
+      this.stationSearches = this.stations.filter((station) => (station[0].toLowerCase() + ";room" + station[2] + ";" + station[1].toLowerCase())
       .includes(this.searchTerm.toLowerCase()))
       this.isFetching++
     },
